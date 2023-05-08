@@ -34,8 +34,8 @@ public class NotaProduto {
 	
 	@Override
 	public String toString() {
-		return "ID NORA DO PRODUTO : " +getIdNotaProduto()+" --- " + " TITULO DO PRODUTO : " + getColecao().getMoeda().getTitulo()+ 
-				" --- " + "  VALOR DO PRODUTO  " + getValorUni()+" --- " + "STATUS :"+getColecao().getTipoTransacao();
+		return "ID NOTA: " +getIdNotaProduto()+" --- " + " TITULO : " + getColecao().getMoeda().getTitulo()+ 
+				" --- " + "  VALOR : " + getValorUni()+" --- " + "VENDEDOR :"+getColecao().getUsuario();
 	}
 	
 

@@ -197,8 +197,8 @@ public class TelaNotaProduto extends JFrame {
 		btnCriarColec.setBounds(368, 147, 164, 21);
 		contentPane.add(btnCriarColec);
 
-		JLabel lblNewLabel_2 = new JLabel("MOEDAS");
-		lblNewLabel_2.setBounds(10, 65, 96, 13);
+		JLabel lblNewLabel_2 = new JLabel("PRODUTOS PARA VENDA");
+		lblNewLabel_2.setBounds(10, 65, 263, 13);
 		contentPane.add(lblNewLabel_2);
 
 		JLabel lblNewLabel_4 = new JLabel("COLEÇÃO DE :");

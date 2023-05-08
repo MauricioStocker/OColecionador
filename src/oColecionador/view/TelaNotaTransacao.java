@@ -111,13 +111,21 @@ public class TelaNotaTransacao extends JFrame {
 		table = new JTable();
 		scrollPane.setViewportView(table);
 		table.setModel(new DefaultTableModel(
-				new Object[][] { { null, null, null }, { null, null, null }, { null, null, null }, },
-				new String[] { "ID NOTA", "DADOS DA MOEDA PRA VENDA", "VALOR DA MOEDA" }));
-		table.getColumnModel().getColumn(0).setPreferredWidth(17);
-		table.getColumnModel().getColumn(1).setPreferredWidth(591);
-		table.getColumnModel().getColumn(2).setPreferredWidth(34);
+			new Object[][] {
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+			},
+			new String[] {
+				"ID TRANSA\u00C7\u00C3O", "DADOS DO PRODUTO", "COMPRADOR", "VALOR", "DATA"
+			}
+		));
+		table.getColumnModel().getColumn(0).setPreferredWidth(15);
+		table.getColumnModel().getColumn(1).setPreferredWidth(568);
+		table.getColumnModel().getColumn(3).setPreferredWidth(59);
+		table.getColumnModel().getColumn(4).setPreferredWidth(62);
 
-		JLabel lblMoedas = new JLabel("                    NOTAS GERADAS DE PRODUTOS");
+		JLabel lblMoedas = new JLabel("                    NOTAS GERADAS TRANSAÇÃO");
 		lblMoedas.setFont(new Font("Goudy Stout", Font.ITALIC, 16));
 		lblMoedas.setBounds(113, 208, 670, 97);
 		contentPane.add(lblMoedas);
@@ -209,26 +217,27 @@ public class TelaNotaTransacao extends JFrame {
 				notaTransacao.setNumNota(txtNfe.getText());
 				notaTransacao.setUsuario(usuario);
 				notaTransacaoRepository.inserir(notaTransacao);
+				preencheLIstaColecaoProd();
 
 				Colecao alterStatus = colecaoRepository.pesquisaPeloId(notaProduto.getColecao().getIdColecao());
 
 				JOptionPane.showMessageDialog(null, alterStatus);
-
+				
 				
 			}
 		});
 		btnCriarColec.setBounds(572, 146, 164, 21);
 		contentPane.add(btnCriarColec);
 
-		JLabel lblNewLabel_2 = new JLabel("MOEDAS");
-		lblNewLabel_2.setBounds(10, 65, 96, 13);
+		JLabel lblNewLabel_2 = new JLabel("NOTAS DOS PRODUTOS A VENDA");
+		lblNewLabel_2.setBounds(10, 65, 276, 13);
 		contentPane.add(lblNewLabel_2);
 
-		JLabel lblNewLabel_4 = new JLabel("COLEÇÃO DE :");
+		JLabel lblNewLabel_4 = new JLabel("COMPRADOR  :");
 		lblNewLabel_4.setBounds(10, 197, 186, 13);
 		contentPane.add(lblNewLabel_4);
 
-		preencheLIstaColecao();
+		preencheLIstaColecaoProd();
 
 	}
 
@@ -244,13 +253,13 @@ public class TelaNotaTransacao extends JFrame {
 	}
 
 	public void preencheLIstaColecaoProd() {
-		NotaProdutoRepository colecaoRepository = new NotaProdutoRepository();
-		List<NotaProduto> lista = colecaoRepository.listar();
+		NotaTransacaoRepository notaTransacaoRepository = new NotaTransacaoRepository();
+		List<NotaTransacao> lista = notaTransacaoRepository.listar();
 		DefaultTableModel modeloTabela = (DefaultTableModel) table.getModel();
 		modeloTabela.setRowCount(0);
-		for (NotaProduto colecao : lista) {
+		for (NotaTransacao transacao : lista) {
 			modeloTabela
-					.addRow(new Object[] { colecao.getIdNotaProduto(), colecao.getColecao(), colecao.getValorUni() });
+					.addRow(new Object[] {transacao.getIdTransacao(), transacao.getNotaProduto(), transacao.getUsuario(), transacao.getValor(), transacao.getData()  });
 		}
 	}
 

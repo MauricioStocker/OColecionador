@@ -32,6 +32,11 @@ public class NotaProduto {
 	@Column(name = "valor_unidade")
 	private String valorUni;
 	
+	@Override
+	public String toString() {
+		return "ID NORA DO PRODUTO : " +getIdNotaProduto()+" --- " + " TITULO DO PRODUTO : " + getColecao().getMoeda().getTitulo()+ 
+				" --- " + "  VALOR DO PRODUTO  " + getValorUni()+" --- " + "STATUS :"+getColecao().getTipoTransacao();
+	}
 	
 
 }

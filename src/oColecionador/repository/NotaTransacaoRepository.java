@@ -7,15 +7,17 @@ import javax.persistence.*;
 import oColecionador.entity.Bordas;
 import oColecionador.entity.Colecao;
 import oColecionador.entity.NotaProduto;
+import oColecionador.entity.NotaTransacao;
+import oColecionador.entity.TipoTransacao;
 import oColecionador.entity.Usuario;
 
-public class NotaProdutoRepository {
+public class NotaTransacaoRepository {
 	private static EntityManager em = Persistence.createEntityManagerFactory("o_colecionador").createEntityManager();
 
-	public void inserir(NotaProduto notaProduto) {
+	public void inserir(NotaTransacao transacao) {
 		try {
 			em.getTransaction().begin();
-			em.persist(notaProduto);
+			em.persist(transacao);
 			em.getTransaction().commit();
 		} catch (Exception e) {
 			em.getTransaction().rollback();
@@ -24,10 +26,10 @@ public class NotaProdutoRepository {
 		}
 	}
 
-	public void atualizar(NotaProduto notaProduto) {
+	public void atualizar(NotaTransacao transacao) {
 		try {
 			em.getTransaction().begin();
-			em.merge(notaProduto);
+			em.merge(transacao);
 			em.getTransaction().commit();
 		} catch (Exception e) {
 			em.getTransaction().rollback();
@@ -36,25 +38,25 @@ public class NotaProdutoRepository {
 		}
 	}
 
-	public NotaProduto pesquisaPeloId(Long id) {
-		NotaProduto notaProduto = null;
+	public NotaTransacao pesquisaPeloId(Long id) {
+		NotaTransacao transacao = null;
 		try {
-			notaProduto = em.find(NotaProduto.class, id);
+			transacao = em.find(NotaTransacao.class, id);
 		} catch (Exception e) {
 			System.out.println("Ocorreu um erro ao pesquisar o fabricante pelo id");
 		}
-		return notaProduto;
+		return transacao;
 	}
 
 	public void remover(Long id) {
-		NotaProduto notaProduto = pesquisaPeloId(id);
-		remover(notaProduto);
+		NotaTransacao transacao = pesquisaPeloId(id);
+		remover(transacao);
 	}
 
-	public void remover(NotaProduto notaProduto) {
+	public void remover(NotaTransacao transacao) {
 		try {
 			em.getTransaction().begin();
-			em.remove(notaProduto);
+			em.remove(transacao);
 			em.getTransaction().commit();
 		} catch (Exception e) {
 			em.getTransaction().rollback();
@@ -63,33 +65,33 @@ public class NotaProdutoRepository {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<NotaProduto> listar() {
-		List<NotaProduto> notaProdutos = null;
-		Query query = em.createQuery("SELECT f FROM NotaProduto f");
+	public List<NotaTransacao> listar() {
+		List<NotaTransacao> transacaos = null;
+		Query query = em.createQuery("SELECT f FROM NotaTransacao f");
 		try {
-			notaProdutos = query.getResultList();
+			transacaos = query.getResultList();
 		} catch (Exception e) {
 			System.out.println("Ocorreu um erro ao listar todos os fabricantes");
 		}
-		return notaProdutos;
+		return transacaos;
 	}
 
 	// Implementar
 	@SuppressWarnings("unchecked")
-	public NotaProduto pesquisaPeloNome(String nome) {
-		NotaProduto notaProduto = null;
-		Query query = em.createQuery("SELECT f FROM NotaProduto f WHERE f.nome = :nome");
+	public NotaTransacao pesquisaPeloNome(String nome) {
+		NotaTransacao transacao = null;
+		Query query = em.createQuery("SELECT f FROM NotaTransacao f WHERE f.nome = :nome");
 		query.setParameter("nome", nome);
 		try {
-			List<NotaProduto> notaProdutos = null;
-			notaProdutos = query.getResultList();
-			if (notaProdutos != null) {
-				notaProduto = notaProdutos.get(0);
+			List<NotaTransacao> transacaos = null;
+			transacaos = query.getResultList();
+			if (transacaos != null) {
+				transacao = transacaos.get(0);
 			}
 		} catch (Exception e) {
 			System.out.println("Ocorreu um erro ao pesquisar um fabricante pelo nome");
 		}
-		return notaProduto;
+		return transacao;
 	}
 
 	public List<NotaProduto> obterColecoesDoUsuarioLogado(Usuario usuario) {
@@ -104,15 +106,7 @@ public class NotaProdutoRepository {
 		return notaProdutos;
 	}
 	
-	public List<NotaProduto> obterNotasProdutoVenda() {
-	    List<NotaProduto> notasProdutoVenda = null;
-	    try {
-	        Query query = em.createQuery("SELECT n FROM NotaProduto n WHERE n.colecao.tipoTransacao.nome = 'VENDER'");
-	        notasProdutoVenda = query.getResultList();
-	    } catch (Exception e) {
-	        System.out.println("Ocorreu um erro ao obter as notas de produto para venda");
-	    }
-	    return notasProdutoVenda;
-	}
+
+
 
 }

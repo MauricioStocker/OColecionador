@@ -164,7 +164,7 @@ public class TelaLogin extends JFrame {
 				recSenha.setLocationRelativeTo(null);
 			}
 		});
-		btnNewButton.setBounds(136, 261, 149, 13);
+		btnNewButton.setBounds(67, 261, 288, 13);
 		contentPane.add(btnNewButton);
 	}
 }

@@ -8,6 +8,7 @@ import javax.swing.border.EmptyBorder;
 
 import oColecionador.entity.Usuario;
 import oColecionador.repository.UsuarioRepository;
+import oColecionador.service.UsuarioService;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -74,19 +75,14 @@ public class TelaRecSenha extends JFrame {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-
+				UsuarioRepository repository = new UsuarioRepository();
 				
-				
-				
-				if(txtEmail.getText().isEmpty()) {
-					JOptionPane.showMessageDialog(null,"PREENCHA O CAMPO DE EMAIL " );
+				Usuario Recupera = repository.pesquisaPeloEmail(txtEmail.getText());
+				if(Recupera == null) {
 					
 				}else {
-					UsuarioRepository repository = new UsuarioRepository();
-					Usuario recSenha =  repository.pesquisaPeloEmail(txtEmail.getText());
-					JOptionPane.showMessageDialog(null,"Olá " + recSenha.getNome() +"\n" +"Sua senha é : " + recSenha.getSenha());
+					JOptionPane.showMessageDialog(null,"Olá "+Recupera.getNome()+ "\nSUA SENHA É: "+Recupera.getSenha());
 				}
-
 				
 
 			}

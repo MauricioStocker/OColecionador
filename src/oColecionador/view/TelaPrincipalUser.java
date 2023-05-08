@@ -35,6 +35,7 @@ import javax.swing.event.AncestorListener;
 import javax.swing.event.AncestorEvent;
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.awt.event.ActionEvent;
 
 public class TelaPrincipalUser extends JFrame {
@@ -122,6 +123,20 @@ public class TelaPrincipalUser extends JFrame {
 		contentPane.add(btnNotaProduto);
 
 		JButton btnTransacao = new JButton("Venda");
+		btnTransacao.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				TelaNotaTransacao notaTransacao;
+				try {
+					notaTransacao = new TelaNotaTransacao();
+					notaTransacao.setUser(lblUser.getText());
+					notaTransacao.setVisible(true);
+				} catch (ParseException e1) {
+					// TODO Bloco catch gerado automaticamente
+					e1.printStackTrace();
+				}
+				
+			}
+		});
 		btnTransacao.setBounds(380, 82, 85, 21);
 		contentPane.add(btnTransacao);
 

@@ -8,11 +8,16 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import lombok.Data;
-
+import lombok.Getter;
+import lombok.Setter;
+@Getter
+@Setter
 @Entity
 @Data
 @Table(name = "tipo")
 public class TipoTransacao {
+
+	
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

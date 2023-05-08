@@ -1,6 +1,6 @@
 package oColecionador.entity;
 
-import java.util.Calendar;
+
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -33,5 +33,7 @@ public class NotaTransacao {
 	@Column(name = "valor")
 	private String valor;
 	@Column(name = "data")
-	private Calendar data;
+	private String data;
+	@Column(name = "numero_nota")
+	private String numNota;
 }

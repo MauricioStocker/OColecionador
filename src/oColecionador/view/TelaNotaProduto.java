@@ -188,6 +188,8 @@ public class TelaNotaProduto extends JFrame {
 				notaProduto.setQuantidade(txtQuantidade.getText());
 				notaProduto.setValorUni(txtQuant.getText());
 				dao.inserir(notaProduto);
+				JOptionPane.showMessageDialog(null,"NOTA DO PRODUTO GERADA COM SUCESSO"+
+						"\nVENDEDOR: "+notaProduto.getColecao().getUsuario()+"\nVALOR: "+notaProduto.getValorUni());
 				preencheLIstaColecaoProd();
 				
 				

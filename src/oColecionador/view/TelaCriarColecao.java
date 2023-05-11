@@ -59,6 +59,7 @@ public class TelaCriarColecao extends JFrame {
 					TelaCriarColecao frame = new TelaCriarColecao();
 					frame.setVisible(true);
 					frame.setLocationRelativeTo(null);
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -94,9 +95,7 @@ public class TelaCriarColecao extends JFrame {
 		lblNewLabel_1.setBounds(10, 25, 76, 13);
 		getContentPane().add(lblNewLabel_1);
 
-		JButton btnAjuda = new JButton("Ajuda");
-		btnAjuda.setBounds(862, 82, 85, 21);
-		contentPane.add(btnAjuda);
+	
 
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 267, 949, 239);
@@ -116,6 +115,7 @@ public class TelaCriarColecao extends JFrame {
 		lblMoedas.setBounds(261, 179, 316, 97);
 		contentPane.add(lblMoedas);
 
+		
 		JComboBox cbUserLog = new JComboBox();
 		cbUserLog.setEnabled(false);
 		cbUserLog.addAncestorListener(new AncestorListener() {
@@ -134,7 +134,23 @@ public class TelaCriarColecao extends JFrame {
 		});
 		cbUserLog.setBounds(131, 193, 252, 21);
 		contentPane.add(cbUserLog);
+		JButton btnAjuda = new JButton("ATUALIZA COLEÇÃO");
+		btnAjuda.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Usuario usuario = (Usuario) cbUserLog.getSelectedItem();
 
+				ColecaoRepository colecaoRepository = new ColecaoRepository();
+				List<Colecao> lista = colecaoRepository.obterColecoesDoUsuarioLogado(usuario);
+				DefaultTableModel modeloTabela = (DefaultTableModel) table.getModel();
+				modeloTabela.setRowCount(0);
+				for (Colecao colecao1 : lista) {
+					modeloTabela.addRow(new Object[] { colecao1.getUsuario(), colecao1.getMoeda(),
+							 colecao1.getTipoTransacao() });
+				}
+			}
+		});
+		btnAjuda.setBounds(663, 236, 170, 21);
+		contentPane.add(btnAjuda);
 		JComboBox cbMoeda = new JComboBox();
 		cbMoeda.addAncestorListener(new AncestorListener() {
 			public void ancestorAdded(AncestorEvent event) {
@@ -200,13 +216,14 @@ public class TelaCriarColecao extends JFrame {
 				colecao.setUsuario(usuario);
 				colecao.setTipoTransacao(tipo);
 				dao.inserir(colecao);
+				JOptionPane.showMessageDialog(null,"MOEDA SALVA NA COLEÇÃO DE "+colecao.getUsuario()+" COM SUCESSO");
 				ColecaoRepository colecaoRepository = new ColecaoRepository();
 				List<Colecao> lista = colecaoRepository.obterColecoesDoUsuarioLogado(usuario);
 				DefaultTableModel modeloTabela = (DefaultTableModel) table.getModel();
 				modeloTabela.setRowCount(0);
 				for (Colecao colecao1 : lista) {
-					modeloTabela.addRow(new Object[] { colecao1.getUsuario(), colecao1.getMoeda(),
-							 colecao1.getTipoTransacao() });
+					modeloTabela.addRow(
+							new Object[] { colecao1.getUsuario(), colecao1.getMoeda(), colecao1.getTipoTransacao() });
 				}
 			}
 		});
@@ -226,19 +243,10 @@ public class TelaCriarColecao extends JFrame {
 		contentPane.add(lblNewLabel_4);
 
 	}
-
+	
 	public void preencheLIsta() {
-		MoedaRepository moedaRepository = new MoedaRepository();
-		List<Moeda> lista = moedaRepository.listar();
-		DefaultTableModel modeloTabela = (DefaultTableModel) table.getModel();
-		modeloTabela.setRowCount(0);
-		for (Moeda moeda : lista) {
-			modeloTabela.addRow(new Object[] { moeda.getCodigoCatalogo(), moeda.getTitulo(), moeda.getPais(),
-					moeda.getAno(), moeda.getValor(), moeda.getPeso(), moeda.getEspessura(), moeda.getDiametro(),
-					moeda.getBordas(), moeda.getMaterial() });
 
-		}
-
+		
 	}
 
 }

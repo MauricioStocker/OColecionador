@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-
 import oColecionador.entity.Moeda;
 
 import oColecionador.repository.MoedaRepository;
@@ -21,10 +20,12 @@ public class MoedaService {
 			Moeda entity = moedaRepository.pesquisaPeloNome(moeda.getTitulo());
 			if (entity == null) {
 				moedaRepository.inserir(moeda);
-				JOptionPane.showInternalMessageDialog(null, "Moeda cadastrado !!");
+				JOptionPane.showInternalMessageDialog(null,
+						"Moeda  " + " ' " + entity.getTitulo() + " ' " + "cadastrado !!");
 			} else {
-				JOptionPane.showInternalMessageDialog(null, "Moeda Já cadastrada !!!!");
-				
+				JOptionPane.showInternalMessageDialog(null,
+						"Moeda " + " ' " + entity.getTitulo() + " ' " + "Já cadastrada !!!!");
+
 			}
 		} else {
 			moedaRepository.atualizar(moeda);

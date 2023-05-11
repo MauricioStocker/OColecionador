@@ -217,6 +217,8 @@ public class TelaNotaTransacao extends JFrame {
 				notaTransacao.setNumNota(txtNfe.getText());
 				notaTransacao.setUsuario(usuario);
 				notaTransacaoRepository.inserir(notaTransacao);
+				JOptionPane.showMessageDialog(null,"NOTA DA VENDA GERADA COM SUCESSO"+"\nCOMPRADOR: " +notaTransacao.getUsuario()+"\nVENDEDOR: "
+				+ notaTransacao.getNotaProduto().getColecao().getUsuario());
 				preencheLIstaColecaoProd();
 
 				Colecao alterStatus = colecaoRepository.pesquisaPeloId(notaProduto.getColecao().getIdColecao());

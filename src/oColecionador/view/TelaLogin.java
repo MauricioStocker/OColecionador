@@ -124,6 +124,7 @@ public class TelaLogin extends JFrame {
 
 						principal.setVisible(true);
 						principal.setLocationRelativeTo(null);
+						setVisible(false);
 
 					} else {
 						userLog = usuario.getUser();
@@ -135,7 +136,7 @@ public class TelaLogin extends JFrame {
 						principalUser.setUser(userLog);
 						principalUser.setVisible(true);
 						criarColecao.setUser(userLog);
-
+						setVisible(false);
 						principalUser.setLocationRelativeTo(null);
 					}
 
@@ -155,7 +156,7 @@ public class TelaLogin extends JFrame {
 		lblOColecionador.setFont(new Font("Goudy Stout", Font.ITALIC, 16));
 		lblOColecionador.setBounds(-15, -28, 523, 97);
 		contentPane.add(lblOColecionador);
-		
+
 		JButton btnNewButton = new JButton("RECUPERAR SENHA");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -167,4 +168,5 @@ public class TelaLogin extends JFrame {
 		btnNewButton.setBounds(67, 261, 288, 13);
 		contentPane.add(btnNewButton);
 	}
+
 }

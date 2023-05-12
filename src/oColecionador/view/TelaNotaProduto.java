@@ -15,6 +15,7 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.MaskFormatter;
 
 import oColecionador.entity.Bordas;
 import oColecionador.entity.Colecao;
@@ -32,10 +33,12 @@ import oColecionador.repository.UsuarioRepository;
 
 import javax.swing.JScrollPane;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.event.AncestorListener;
 import javax.swing.event.AncestorEvent;
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.awt.event.ActionEvent;
 
 public class TelaNotaProduto extends JFrame {
@@ -70,8 +73,9 @@ public class TelaNotaProduto extends JFrame {
 
 	/**
 	 * Create the frame.
+	 * @throws ParseException 
 	 */
-	public TelaNotaProduto() {
+	public TelaNotaProduto() throws ParseException {
 
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1016, 580);
@@ -172,7 +176,7 @@ public class TelaNotaProduto extends JFrame {
 		lblNewLabel.setBounds(10, 125, 156, 13);
 		contentPane.add(lblNewLabel);
 
-		txtQuantidade = new JTextField();
+		txtQuantidade = new JFormattedTextField(new MaskFormatter(" ###"));
 		txtQuantidade.setBounds(10, 148, 96, 19);
 		contentPane.add(txtQuantidade);
 		txtQuantidade.setColumns(10);
@@ -211,7 +215,7 @@ public class TelaNotaProduto extends JFrame {
 		lblNewLabel_3.setBounds(205, 125, 96, 13);
 		contentPane.add(lblNewLabel_3);
 
-		txtQuant = new JTextField();
+		txtQuant = new JFormattedTextField(new MaskFormatter(" ###.###"));
 		txtQuant.setBounds(205, 148, 96, 19);
 		contentPane.add(txtQuant);
 		txtQuant.setColumns(10);

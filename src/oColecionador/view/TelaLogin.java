@@ -141,7 +141,9 @@ public class TelaLogin extends JFrame {
 					}
 
 				} else {
-					JOptionPane.showInternalMessageDialog(null, "Erro ao logar, usuário ou senha inválidos!!");
+					JOptionPane.showMessageDialog(null, "Erro ao logar, usuário ou senha inválidos!!", "Erro",
+							JOptionPane.ERROR_MESSAGE);
+					
 				}
 
 				txtUser.setText("");

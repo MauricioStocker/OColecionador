@@ -15,6 +15,7 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.MaskFormatter;
 
 import oColecionador.entity.Colecao;
 import oColecionador.entity.Moeda;
@@ -31,10 +32,12 @@ import revendaCarros.entity.Pessoa;
 
 import javax.swing.JScrollPane;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.event.AncestorListener;
 import javax.swing.event.AncestorEvent;
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.awt.event.ActionEvent;
 
 public class TelaCriarColecao extends JFrame {
@@ -104,11 +107,19 @@ public class TelaCriarColecao extends JFrame {
 		table = new JTable();
 		scrollPane.setViewportView(table);
 		table.setModel(new DefaultTableModel(
-				new Object[][] { { null, null, "", null }, { null, null, null, null }, { null, null, null, null }, },
-				new String[] { "Usu\u00E1rio", "Moeda", "Status" }));
+			new Object[][] {
+				{null, null, null, ""},
+				{null, null, null, null},
+				{null, null, null, null},
+			},
+			new String[] {
+				"Usu\u00E1rio", "Moeda", "Quantidade", "Status"
+			}
+		));
 		table.getColumnModel().getColumn(0).setPreferredWidth(139);
 		table.getColumnModel().getColumn(1).setPreferredWidth(333);
-		table.getColumnModel().getColumn(2).setPreferredWidth(38);
+		table.getColumnModel().getColumn(2).setPreferredWidth(41);
+		table.getColumnModel().getColumn(3).setPreferredWidth(38);
 
 		JLabel lblMoedas = new JLabel("                    COLEÇÃO");
 		lblMoedas.setFont(new Font("Goudy Stout", Font.ITALIC, 16));
@@ -144,7 +155,7 @@ public class TelaCriarColecao extends JFrame {
 				DefaultTableModel modeloTabela = (DefaultTableModel) table.getModel();
 				modeloTabela.setRowCount(0);
 				for (Colecao colecao1 : lista) {
-					modeloTabela.addRow(new Object[] { colecao1.getUsuario(), colecao1.getMoeda(),
+					modeloTabela.addRow(new Object[] { colecao1.getUsuario(), colecao1.getMoeda(),colecao1.getQuantidade() ,
 							 colecao1.getTipoTransacao() });
 				}
 			}
@@ -198,7 +209,12 @@ public class TelaCriarColecao extends JFrame {
 		lblNewLabel.setBounds(247, 125, 76, 13);
 		contentPane.add(lblNewLabel);
 
-		txtQuantidade = new JTextField();
+		try {
+			txtQuantidade = new JFormattedTextField(new MaskFormatter(" ##"));
+		} catch (ParseException e1) {
+			// TODO Bloco catch gerado automaticamente
+			e1.printStackTrace();
+		}
 		txtQuantidade.setBounds(247, 148, 96, 19);
 		contentPane.add(txtQuantidade);
 		txtQuantidade.setColumns(10);
@@ -223,7 +239,7 @@ public class TelaCriarColecao extends JFrame {
 				modeloTabela.setRowCount(0);
 				for (Colecao colecao1 : lista) {
 					modeloTabela.addRow(
-							new Object[] { colecao1.getUsuario(), colecao1.getMoeda(), colecao1.getTipoTransacao() });
+							new Object[] { colecao1.getUsuario(), colecao1.getMoeda(), colecao1.getTipoTransacao(),colecao1.getQuantidade() });
 				}
 			}
 		});

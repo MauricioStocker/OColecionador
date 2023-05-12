@@ -21,6 +21,8 @@ import oColecionador.service.MoedaService;
 import oColecionador.service.PaisService;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.text.ParseException;
 
@@ -85,6 +87,7 @@ public class FormMoeda extends JFrame {
 		contentPane.add(lblNewLabel_1);
 
 		txtTitulo = new JTextField();
+		
 		txtTitulo.setBounds(10, 125, 319, 19);
 		contentPane.add(txtTitulo);
 		txtTitulo.setColumns(10);
@@ -104,7 +107,7 @@ public class FormMoeda extends JFrame {
 		lblNewLabel_1_1.setBounds(10, 176, 75, 23);
 		contentPane.add(lblNewLabel_1_1);
 
-		txtValor = new JTextField();
+		txtValor = new JFormattedTextField(new MaskFormatter(" ###.##"));
 		txtValor.setBounds(10, 213, 96, 19);
 		contentPane.add(txtValor);
 		txtValor.setColumns(10);
@@ -114,7 +117,7 @@ public class FormMoeda extends JFrame {
 		lblNewLabel_1_1_1.setBounds(178, 176, 75, 23);
 		contentPane.add(lblNewLabel_1_1_1);
 
-		txtPeso = new JTextField();
+		txtPeso = new JFormattedTextField(new MaskFormatter(" ###,###g"));
 		txtPeso.setBounds(178, 213, 96, 19);
 		contentPane.add(txtPeso);
 		txtPeso.setColumns(10);
@@ -124,7 +127,7 @@ public class FormMoeda extends JFrame {
 		lblNewLabel_1_1_2.setBounds(347, 176, 75, 23);
 		contentPane.add(lblNewLabel_1_1_2);
 
-		txtEspessura = new JTextField();
+		txtEspessura = new JFormattedTextField(new MaskFormatter(" ###,###mm"));
 		txtEspessura.setBounds(347, 213, 96, 19);
 		contentPane.add(txtEspessura);
 		txtEspessura.setColumns(10);
@@ -134,7 +137,7 @@ public class FormMoeda extends JFrame {
 		lblNewLabel_1_1_3.setBounds(532, 176, 75, 23);
 		contentPane.add(lblNewLabel_1_1_3);
 
-		txtDiametro = new JTextField();
+		txtDiametro = new JFormattedTextField(new MaskFormatter(" ###,###mm"));
 		txtDiametro.setBounds(532, 213, 96, 19);
 		contentPane.add(txtDiametro);
 		txtDiametro.setColumns(10);
@@ -237,6 +240,16 @@ public class FormMoeda extends JFrame {
 				Bordas bordas = (Bordas) cbBordas.getSelectedItem();
 				Material material = (Material) cbMaterial.getSelectedItem();
 				Pais pais = (Pais) cbPais.getSelectedItem();
+				  String titulo = txtTitulo.getText();
+
+			        if (!titulo.matches("[a-zA-Z]+")) {
+			        	txtTitulo.setText("");
+			            // Exibe uma mensagem de erro informando que o campo deve conter apenas letras
+					JOptionPane.showMessageDialog(null, "O campo 'Título' deve conter apenas letras", "Erro",
+							JOptionPane.ERROR_MESSAGE);
+			            return ;
+			            
+			        }
 				moeda.setTitulo(txtTitulo.getText());
 				moeda.setAno(txtData.getText());
 				moeda.setValor(txtValor.getText());
@@ -274,6 +287,16 @@ public class FormMoeda extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				Pais pais = new Pais();
 				PaisService paisService = new PaisService();
+				String pais1 = txtPais.getText();
+
+		        if (!pais1.matches("[a-zA-Z]+")) {
+		        	txtPais.setText("");
+		            // Exibe uma mensagem de erro informando que o campo deve conter apenas letras
+				JOptionPane.showMessageDialog(null, "O campo 'Pais' deve conter apenas letras", "Erro",
+						JOptionPane.ERROR_MESSAGE);
+		            return ;
+		            
+		        }
 				pais.setNome(txtPais.getText());
 				paisService.salvar(pais);
 				txtPais.setText("");
@@ -307,6 +330,17 @@ public class FormMoeda extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				Material material = new Material();
 				MaterialService materialService = new MaterialService();
+				String material1 = txtMaterial.getText();
+
+		        if (!material1.matches("[a-zA-Z]+")) {
+		        	txtMaterial.setText("");
+		            // Exibe uma mensagem de erro informando que o campo deve conter apenas letras
+				JOptionPane.showMessageDialog(null, "O campo 'Material' deve conter apenas letras", "Erro",
+						JOptionPane.ERROR_MESSAGE);
+		            return ;
+		            
+		        }
+				
 				material.setNome(txtMaterial.getText());
 				materialService.salvar(material);
 				txtMaterial.setText("");
@@ -329,6 +363,16 @@ public class FormMoeda extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				Bordas bordas = new Bordas();
 				BordasService bordasService = new BordasService();
+				String borda = txtBordas.getText();
+
+		        if (!borda.matches("[a-zA-Z]+")) {
+		        	txtBordas.setText("");
+		            // Exibe uma mensagem de erro informando que o campo deve conter apenas letras
+				JOptionPane.showMessageDialog(null, "O campo 'Bordas' deve conter apenas letras", "Erro",
+						JOptionPane.ERROR_MESSAGE);
+		            return ;
+		            
+		        }
 				bordas.setNome(txtBordas.getText());
 				bordasService.salvar(bordas);
 				txtBordas.setText("");
@@ -356,4 +400,15 @@ public class FormMoeda extends JFrame {
 		contentPane.add(lblCadastro);
 
 	}
+	private MaskFormatter setMascara(String mascara) {
+		MaskFormatter mask = null;
+		try {
+			mask = new MaskFormatter(mascara);
+		} catch (ParseException e) {
+
+			e.printStackTrace();
+		}
+		return mask;
+	}
+	
 }

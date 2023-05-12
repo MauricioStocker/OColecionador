@@ -33,6 +33,7 @@ public class TelaRecSenha extends JFrame {
 				try {
 					TelaRecSenha frame = new TelaRecSenha();
 					frame.setVisible(true);
+					frame.setLocationRelativeTo(null);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

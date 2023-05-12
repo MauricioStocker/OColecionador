@@ -181,7 +181,7 @@ public class TelaNotaTransacao extends JFrame {
 		lblNewLabel.setBounds(10, 125, 112, 13);
 		contentPane.add(lblNewLabel);
 
-		txtValorTRans = new JTextField();
+		txtValorTRans = new JFormattedTextField(new MaskFormatter(" ###.###"));
 		txtValorTRans.setBounds(10, 147, 96, 19);
 		contentPane.add(txtValorTRans);
 		txtValorTRans.setColumns(10);

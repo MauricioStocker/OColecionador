@@ -140,10 +140,14 @@ public class UsuarioRepository {
 			if (usuarios != null) {
 				usuario = usuarios.get(0);
 			}else {
-				JOptionPane.showConfirmDialog(null, "preencha o campo");
+				JOptionPane.showMessageDialog(null, "preencha o campos!!", "Erro",
+						JOptionPane.ERROR_MESSAGE);
+				
 			}
 		} catch (Exception exception) {
-			JOptionPane.showMessageDialog(null, "preencha o campo corretamente com seu EMAIL");
+			JOptionPane.showMessageDialog(null, "preencha o campo corretamente com seu EMAIL!!", "Erro",
+					JOptionPane.ERROR_MESSAGE);
+			
 		}
 		return usuario;
 	}

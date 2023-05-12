@@ -12,6 +12,8 @@ import oColecionador.entity.Usuario;
 import oColecionador.service.UsuarioService;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.text.ParseException;
 
@@ -125,6 +127,16 @@ public class FormUsuario extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				Usuario usuario = new Usuario();
 				UsuarioService usuarioService = new UsuarioService();
+				String nome1 = txtNome.getText();
+
+		        if (!nome1.matches("[a-zA-Z]+")) {
+		        	txtNome.setText("");
+		            // Exibe uma mensagem de erro informando que o campo deve conter apenas letras
+				JOptionPane.showMessageDialog(null, "O campo 'Nome' deve conter apenas letras", "Erro",
+						JOptionPane.ERROR_MESSAGE);
+		            return ;
+		            
+		        }
 				usuario.setNome(txtNome.getText());
 				usuario.setEndereco(txtEndereco.getText());
 				usuario.setTelefone(txtTell.getText());

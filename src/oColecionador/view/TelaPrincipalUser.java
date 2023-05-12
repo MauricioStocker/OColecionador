@@ -114,9 +114,15 @@ public class TelaPrincipalUser extends JFrame {
 		JButton btnNotaProduto = new JButton("Gerar nota Produto");
 		btnNotaProduto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaNotaProduto notaProduto = new TelaNotaProduto();
-				notaProduto.setUser(lblUser.getText());
-				notaProduto.setVisible(true);
+				try {
+					TelaNotaProduto notaProduto = new TelaNotaProduto();
+					notaProduto.setUser(lblUser.getText());
+					notaProduto.setVisible(true);
+				} catch (ParseException e1) {
+					// TODO Bloco catch gerado automaticamente
+					e1.printStackTrace();
+				}
+				
 			}
 		});
 		btnNotaProduto.setBounds(168, 82, 175, 21);

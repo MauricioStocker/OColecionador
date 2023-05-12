@@ -18,7 +18,7 @@ public class UsuarioService {
 			return true;
 		}
 		if (usuarioRepository.pesquisaPeloUserAndSenha(usuario.getUser(), usuario.getSenha()) == null) {
-			JOptionPane.showInternalMessageDialog(null, "Preencha os campos LOGIN/SENHA para realizar o login");
+		
 			return false;
 		} else {
 			return false;

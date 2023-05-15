@@ -22,15 +22,17 @@ public class MoedaService {
 			if (entity == null) {
 				moedaRepository.inserir(moeda);
 				JOptionPane.showInternalMessageDialog(null,
-						"Moeda  " + " ' " + entity.getTitulo() + " ' " + "cadastrado !!");
+						"Moeda  " + " ' " + moeda.getTitulo() + " ' " + "cadastrado !!");
 			} else {
 				JOptionPane.showInternalMessageDialog(null,
-						"Moeda " + " ' " + entity.getTitulo() + " ' " + "Já cadastrada !!!!");
+						"Moeda " + " ' " + moeda.getTitulo() + " ' " + "Já cadastrada !!!!");
 
 			}
 		} else {
 			
 			moedaRepository.atualizar(moeda);
+			JOptionPane.showInternalMessageDialog(null,
+					"Moeda Atualizado com sucesso  !!!!");
 		
 		}
 		return moeda;
@@ -40,8 +42,13 @@ public class MoedaService {
 		return moedaRepository.listar();
 	}
 
-	public void remover(Moeda moeda) {
-		moedaRepository.remover(moeda);
+	public void remover(Long idMoeda) {
+		if(idMoeda.equals(null)) {
+			JOptionPane.showConfirmDialog(null, "Não existe moedas para deletar");
+		}else {
+			moedaRepository.remover(idMoeda);
+		}
+		
 	}
 
 }

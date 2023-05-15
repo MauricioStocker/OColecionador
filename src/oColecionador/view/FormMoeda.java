@@ -153,7 +153,7 @@ public class FormMoeda extends JFrame {
 		contentPane.add(txtCodigoCat);
 		txtCodigoCat.setColumns(10);
 
-		JLabel lblNewLabel_1_1_5 = new JLabel("Pais");
+		JLabel lblNewLabel_1_1_5 = new JLabel("Pais (8)");
 		lblNewLabel_1_1_5.setFont(new Font("Verdana", Font.PLAIN, 13));
 		lblNewLabel_1_1_5.setBounds(10, 277, 75, 23);
 		contentPane.add(lblNewLabel_1_1_5);
@@ -181,9 +181,9 @@ public class FormMoeda extends JFrame {
 		cbPais.setBounds(10, 310, 439, 21);
 		contentPane.add(cbPais);
 
-		JLabel lblNewLabel_1_1_6 = new JLabel("Material");
+		JLabel lblNewLabel_1_1_6 = new JLabel("Material (9)");
 		lblNewLabel_1_1_6.setFont(new Font("Verdana", Font.PLAIN, 13));
-		lblNewLabel_1_1_6.setBounds(10, 355, 75, 23);
+		lblNewLabel_1_1_6.setBounds(10, 355, 116, 23);
 		contentPane.add(lblNewLabel_1_1_6);
 
 		JComboBox cbMaterial = new JComboBox();
@@ -206,7 +206,6 @@ public class FormMoeda extends JFrame {
 		});
 		cbMaterial.setBounds(10, 397, 439, 21);
 		contentPane.add(cbMaterial);
-
 		JButton btnEditarMat = new JButton("Editar Materia");
 		btnEditarMat.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -232,9 +231,9 @@ public class FormMoeda extends JFrame {
 		btnEditarMat.setBounds(460, 358, 109, 21);
 		contentPane.add(btnEditarMat);
 
-		JLabel lblNewLabel_1_1_7 = new JLabel("Bordas");
+		JLabel lblNewLabel_1_1_7 = new JLabel("Bordas (10)");
 		lblNewLabel_1_1_7.setFont(new Font("Verdana", Font.PLAIN, 13));
-		lblNewLabel_1_1_7.setBounds(10, 447, 75, 23);
+		lblNewLabel_1_1_7.setBounds(10, 447, 96, 23);
 		contentPane.add(lblNewLabel_1_1_7);
 
 		JComboBox cbBordas = new JComboBox();
@@ -304,6 +303,25 @@ public class FormMoeda extends JFrame {
 		});
 		btmEditar.setBounds(460, 280, 109, 21);
 		contentPane.add(btmEditar);
+		JComboBox cbMoedasEdit = new JComboBox();
+		cbMoedasEdit.addAncestorListener(new AncestorListener() {
+			public void ancestorAdded(AncestorEvent event) {
+				MoedaRepository repository = new MoedaRepository();
+				for (Moeda b : repository.listar()) {
+
+					cbMoedasEdit.addItem(b);
+
+				}
+			}
+
+			public void ancestorMoved(AncestorEvent event) {
+			}
+
+			public void ancestorRemoved(AncestorEvent event) {
+			}
+		});
+		cbMoedasEdit.setBounds(10, 83, 872, 21);
+		contentPane.add(cbMoedasEdit);
 
 		JButton btnSalvar = new JButton("Cadastrar");
 		btnSalvar.addActionListener(new ActionListener() {
@@ -313,16 +331,7 @@ public class FormMoeda extends JFrame {
 				Bordas bordas = (Bordas) cbBordas.getSelectedItem();
 				Material material = (Material) cbMaterial.getSelectedItem();
 				Pais pais = (Pais) cbPais.getSelectedItem();
-				String titulo = txtTitulo.getText();
 
-				if (!titulo.matches("[a-zA-Z]+")) {
-					txtTitulo.setText("");
-					// Exibe uma mensagem de erro informando que o campo deve conter apenas letras
-					JOptionPane.showMessageDialog(null, "O campo 'Título' deve conter apenas letras", "Erro",
-							JOptionPane.ERROR_MESSAGE);
-					return;
-
-				}
 				moeda.setTitulo(txtTitulo.getText());
 				moeda.setAno(txtData.getText());
 				moeda.setValor(txtValor.getText());
@@ -342,12 +351,18 @@ public class FormMoeda extends JFrame {
 				txtPeso.setText("");
 				txtTitulo.setText("");
 				txtValor.setText("");
+				MoedaRepository repository = new MoedaRepository();
+				for (Moeda b : repository.listar()) {
+
+					cbMoedasEdit.addItem(b);
+
+				}
 
 			}
 		});
 		btnSalvar.setBounds(new Rectangle(7, 0, 7, 0));
 		btnSalvar.setFont(new Font("Verdana", Font.PLAIN, 16));
-		btnSalvar.setBounds(216, 547, 155, 29);
+		btnSalvar.setBounds(10, 547, 155, 29);
 		contentPane.add(btnSalvar);
 
 		txtPais = new JTextField();
@@ -360,16 +375,7 @@ public class FormMoeda extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				Pais pais = new Pais();
 				PaisService paisService = new PaisService();
-				String pais1 = txtPais.getText();
 
-				if (!pais1.matches("[a-zA-Z]+")) {
-					txtPais.setText("");
-					// Exibe uma mensagem de erro informando que o campo deve conter apenas letras
-					JOptionPane.showMessageDialog(null, "O campo 'Pais' deve conter apenas letras", "Erro",
-							JOptionPane.ERROR_MESSAGE);
-					return;
-
-				}
 				pais.setNome(txtPais.getText());
 				paisService.salvar(pais);
 				txtPais.setText("");
@@ -390,12 +396,12 @@ public class FormMoeda extends JFrame {
 
 		txtMaterial = new JTextField();
 		txtMaterial.setColumns(10);
-		txtMaterial.setBounds(74, 359, 215, 19);
+		txtMaterial.setBounds(97, 359, 215, 19);
 		contentPane.add(txtMaterial);
 
 		txtBordas = new JTextField();
 		txtBordas.setColumns(10);
-		txtBordas.setBounds(74, 451, 215, 19);
+		txtBordas.setBounds(97, 451, 215, 19);
 		contentPane.add(txtBordas);
 
 		JButton btnSalvar_1 = new JButton("Incluir");
@@ -403,16 +409,6 @@ public class FormMoeda extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				Material material = new Material();
 				MaterialService materialService = new MaterialService();
-				String material1 = txtMaterial.getText();
-
-				if (!material1.matches("[a-zA-Z]+")) {
-					txtMaterial.setText("");
-					// Exibe uma mensagem de erro informando que o campo deve conter apenas letras
-					JOptionPane.showMessageDialog(null, "O campo 'Material' deve conter apenas letras", "Erro",
-							JOptionPane.ERROR_MESSAGE);
-					return;
-
-				}
 
 				material.setNome(txtMaterial.getText());
 				materialService.salvar(material);
@@ -436,16 +432,7 @@ public class FormMoeda extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				Bordas bordas = new Bordas();
 				BordasService bordasService = new BordasService();
-				String borda = txtBordas.getText();
 
-				if (!borda.matches("[a-zA-Z]+")) {
-					txtBordas.setText("");
-					// Exibe uma mensagem de erro informando que o campo deve conter apenas letras
-					JOptionPane.showMessageDialog(null, "O campo 'Bordas' deve conter apenas letras", "Erro",
-							JOptionPane.ERROR_MESSAGE);
-					return;
-
-				}
 				bordas.setNome(txtBordas.getText());
 				bordasService.salvar(bordas);
 				txtBordas.setText("");
@@ -467,34 +454,48 @@ public class FormMoeda extends JFrame {
 		lblOColecionador.setBounds(162, -35, 523, 97);
 		contentPane.add(lblOColecionador);
 
-		JLabel lblCadastro = new JLabel("                    CADASTRO");
+		JLabel lblCadastro = new JLabel("                    CADASTRO MOEDAS");
 		lblCadastro.setFont(new Font("Goudy Stout", Font.ITALIC, 16));
 		lblCadastro.setBounds(194, 0, 523, 97);
 		contentPane.add(lblCadastro);
 
-		JComboBox cbMoedasEdit = new JComboBox();
-		cbMoedasEdit.addAncestorListener(new AncestorListener() {
-			public void ancestorAdded(AncestorEvent event) {
-				MoedaRepository repository = new MoedaRepository();
-				for (Moeda b : repository.listar()) {
-
-					cbMoedasEdit.addItem(b);
-
-				}
-			}
-
-			public void ancestorMoved(AncestorEvent event) {
-			}
-
-			public void ancestorRemoved(AncestorEvent event) {
-			}
-		});
-		cbMoedasEdit.setBounds(10, 83, 872, 21);
-		contentPane.add(cbMoedasEdit);
-
 		JLabel lblNewLabel = new JLabel("Moeda");
 		lblNewLabel.setBounds(10, 60, 45, 13);
 		contentPane.add(lblNewLabel);
+		JButton btnDeletarMoeda = new JButton("Deletar Moeda");
+		btnDeletarMoeda.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				MoedaService service = new MoedaService();
+				Moeda moeda1 = (Moeda) cbMoedasEdit.getSelectedItem();
+				Moeda moeda = new Moeda();
+
+				if (moeda1 == null) {
+					JOptionPane.showMessageDialog(null, "NÃO EXISTE MOEDA PARA DELETAR", "Erro",
+							JOptionPane.ERROR_MESSAGE);
+				} else {
+					int escolha = JOptionPane.showConfirmDialog(null,
+							"Deseja realizar o delete de " + moeda.getTitulo(), " : ", JOptionPane.YES_NO_OPTION);
+					if (escolha == JOptionPane.YES_OPTION) {
+						moeda.setIdMoeda(moeda1.getIdMoeda());
+						service.remover(moeda.getIdMoeda());
+						JOptionPane.showMessageDialog(null, "MOEDA DELATADA COM SUCESSO !!");
+
+					}
+				}
+
+				MoedaRepository pdao = new MoedaRepository();
+				cbMoedasEdit.removeAllItems();
+				for (Moeda p : pdao.listar()) {
+
+					cbMoedasEdit.addItem(p);
+
+				}
+
+			}
+		});
+		btnDeletarMoeda.setFont(new Font("Verdana", Font.PLAIN, 16));
+		btnDeletarMoeda.setBounds(378, 547, 155, 28);
+		contentPane.add(btnDeletarMoeda);
 
 		JButton btnNewButton_1 = new JButton("Editar Moeda");
 		btnNewButton_1.addActionListener(new ActionListener() {
@@ -504,20 +505,13 @@ public class FormMoeda extends JFrame {
 				Bordas bordas = (Bordas) cbBordas.getSelectedItem();
 				Material material = (Material) cbMaterial.getSelectedItem();
 				Pais pais = (Pais) cbPais.getSelectedItem();
-				String titulo = txtTitulo.getText();
-				Moeda moedas = (Moeda) cbMoedasEdit.getSelectedItem();
-				if (!titulo.matches("[a-zA-Z]+")) {
-					txtTitulo.setText("");
-					// Exibe uma mensagem de erro informando que o campo deve conter apenas letras
-					JOptionPane.showMessageDialog(null, "O campo 'Título' deve conter apenas letras", "Erro",
-							JOptionPane.ERROR_MESSAGE);
-					return;
 
-				}
+				Moeda moedas = (Moeda) cbMoedasEdit.getSelectedItem();
+
 				moeda.setTitulo(txtTitulo.getText());
 				moeda.setIdMoeda(moedas.getIdMoeda());
 				moeda.setAno(txtData.getText());
-			
+
 				moeda.setValor(txtValor.getText());
 				moeda.setPeso(txtPeso.getText());
 				moeda.setEspessura(txtEspessura.getText());
@@ -527,7 +521,7 @@ public class FormMoeda extends JFrame {
 				moeda.setMaterial(material);
 				moeda.setPais(pais);
 				service.salvar(moeda);
-				
+
 				cbMoedasEdit.removeAll();
 				MoedaRepository repository = new MoedaRepository();
 				for (Moeda b : repository.listar()) {
@@ -546,7 +540,7 @@ public class FormMoeda extends JFrame {
 			}
 		});
 		btnNewButton_1.setFont(new Font("Verdana", Font.PLAIN, 16));
-		btnNewButton_1.setBounds(396, 547, 189, 28);
+		btnNewButton_1.setBounds(178, 547, 189, 28);
 		contentPane.add(btnNewButton_1);
 
 	}

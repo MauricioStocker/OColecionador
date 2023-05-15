@@ -39,8 +39,11 @@ public class PaisService {
 		return paisRepository.listar();
 	}
 
-	public void remover(Pais pais) {
-		paisRepository.remover(pais);
+	public void remover(Long idPais) {
+		paisRepository.remover(idPais);
+		JOptionPane.showInternalMessageDialog(null,
+				"removido  ");
+		
 	}
 
 }

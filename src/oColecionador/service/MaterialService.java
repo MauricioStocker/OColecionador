@@ -37,8 +37,10 @@ public class MaterialService {
 		return materialRepository.listar();
 	}
 
-	public void remover(Material material) {
-		materialRepository.remover(material);
+	public void remover(Long idMaterial) {
+		materialRepository.remover(idMaterial);
+		JOptionPane.showInternalMessageDialog(null,
+				"Excluido ");
 	}
 
 }

@@ -16,8 +16,9 @@ public class MoedaService {
 	}
 
 	public Moeda salvar(Moeda moeda) {
+		Moeda entity = moedaRepository.pesquisaPeloNome(moeda.getTitulo());
 		if (moeda.getIdMoeda() == null) {
-			Moeda entity = moedaRepository.pesquisaPeloNome(moeda.getTitulo());
+			
 			if (entity == null) {
 				moedaRepository.inserir(moeda);
 				JOptionPane.showInternalMessageDialog(null,
@@ -28,7 +29,9 @@ public class MoedaService {
 
 			}
 		} else {
+			
 			moedaRepository.atualizar(moeda);
+		
 		}
 		return moeda;
 	}

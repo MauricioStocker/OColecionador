@@ -121,8 +121,8 @@ public class TelaNotaProduto extends JFrame {
 			}
 		));
 		table.getColumnModel().getColumn(0).setPreferredWidth(17);
-		table.getColumnModel().getColumn(1).setPreferredWidth(591);
-		table.getColumnModel().getColumn(2).setPreferredWidth(34);
+		table.getColumnModel().getColumn(1).setPreferredWidth(851);
+		table.getColumnModel().getColumn(2).setPreferredWidth(35);
 
 		JLabel lblMoedas = new JLabel("                    NOTAS GERADAS DE PRODUTOS");
 		lblMoedas.setFont(new Font("Goudy Stout", Font.ITALIC, 16));

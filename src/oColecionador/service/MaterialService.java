@@ -5,7 +5,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import oColecionador.entity.Material;
-
+import oColecionador.entity.Pais;
 import oColecionador.repository.MaterialRepository;
 
 public class MaterialService {
@@ -25,6 +25,10 @@ public class MaterialService {
 			}
 		} else {
 			materialRepository.atualizar(material);
+			Material material1 = new Material();
+			material1 = materialRepository.pesquisaPeloNome(material.getNome());
+			JOptionPane.showInternalMessageDialog(null,
+					"Nome do Material foi editado para : "+ material1);
 		}
 		return material;
 	}

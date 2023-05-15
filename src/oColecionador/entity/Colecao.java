@@ -40,7 +40,7 @@ public class Colecao {
 	
 	@Override
 	public String toString() {
-		return  "USUÁRIO : "  +getUsuario() +  "        " + " MOEDA  : "  + getMoeda()+ "        " + " STATUS :   " + getTipoTransacao() ;
+		return  "USUÁRIO : "  +getUsuario() +  "  " + " MOEDA  : "  + getMoeda()+ "   " + " STATUS : " + getTipoTransacao() ;
 	}
 
 }

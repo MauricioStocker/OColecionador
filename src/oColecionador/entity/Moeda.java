@@ -55,7 +55,8 @@ public class Moeda {
 
 	@Override
 	public String toString() {
-		return " TITULO : " + getTitulo() +" -- " + " CODIGO CATALOGO :  " +getCodigoCatalogo();
+		return " (1) " + getTitulo() +" (2) " + getAno()+ " (3) " +getValor() +" (4) " + getPeso() + " (5) " +getEspessura() + " (6) "
+	+getDiametro()+ " (7) " + getCodigoCatalogo();
 	}
 	
 

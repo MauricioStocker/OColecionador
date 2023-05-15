@@ -15,16 +15,22 @@ public class PaisService {
 		paisRepository = new PaisRepository();
 	}
 
+	
 	public Pais salvar(Pais pais) {
+		Pais entity = paisRepository.pesquisaPeloNome(pais.getNome());
 		if (pais.getIdPais() == null) {
-			Pais entity = paisRepository.pesquisaPeloNome(pais.getNome());
+			
 			if (entity == null) {
 				paisRepository.inserir(pais);
 			} else {
-				JOptionPane.showInternalMessageDialog(null, " Pais "  +  " '"  +  pais.getNome() +  "' "  +  " já cadastrado");
+				JOptionPane.showInternalMessageDialog(null, " Pais " + " '" + pais.getNome() + "' " + " já cadastrado");
 			}
 		} else {
 			paisRepository.atualizar(pais);
+			Pais pais1 = new Pais();
+			pais1 = paisRepository.pesquisaPeloNome(pais.getNome());
+			JOptionPane.showInternalMessageDialog(null,
+					"Nome do pais foi editado para : "+ pais1);
 		}
 		return pais;
 	}

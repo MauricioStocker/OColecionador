@@ -117,9 +117,10 @@ public class TelaCriarColecao extends JFrame {
 			}
 		));
 		table.getColumnModel().getColumn(0).setPreferredWidth(139);
-		table.getColumnModel().getColumn(1).setPreferredWidth(333);
-		table.getColumnModel().getColumn(2).setPreferredWidth(41);
-		table.getColumnModel().getColumn(3).setPreferredWidth(38);
+		table.getColumnModel().getColumn(1).setPreferredWidth(473);
+		table.getColumnModel().getColumn(2).setPreferredWidth(15);
+		table.getColumnModel().getColumn(2).setMinWidth(10);
+		table.getColumnModel().getColumn(3).setPreferredWidth(15);
 
 		JLabel lblMoedas = new JLabel("                    COLEÇÃO");
 		lblMoedas.setFont(new Font("Goudy Stout", Font.ITALIC, 16));
@@ -180,7 +181,7 @@ public class TelaCriarColecao extends JFrame {
 			public void ancestorRemoved(AncestorEvent event) {
 			}
 		});
-		cbMoeda.setBounds(10, 82, 486, 21);
+		cbMoeda.setBounds(10, 82, 845, 21);
 		contentPane.add(cbMoeda);
 
 		JComboBox cbStatus = new JComboBox();

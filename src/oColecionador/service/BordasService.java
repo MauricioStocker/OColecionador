@@ -5,6 +5,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import oColecionador.entity.Bordas;
+import oColecionador.entity.Material;
 import oColecionador.repository.BordasRepository;
 
 public class BordasService {
@@ -26,6 +27,10 @@ public class BordasService {
 			}
 		} else {
 			bordasRepository.atualizar(bordas);
+			Bordas bordas1 = new Bordas();
+			bordas1 = bordasRepository.pesquisaPeloNome(bordas.getNome());
+			JOptionPane.showInternalMessageDialog(null,
+					"Nome do Material foi editado para : "+ bordas1);
 		}
 		return bordas;
 	}

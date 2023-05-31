@@ -6,7 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import oColecionador.entity.Usuario;
+import oColecionador.entity.UsuarioEntity;
 import oColecionador.repository.UsuarioRepository;
 import oColecionador.service.UsuarioService;
 
@@ -23,6 +23,7 @@ public class TelaRecSenha extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtEmail;
+	private UsuarioService usuarioService = new UsuarioService();
 
 	/**
 	 * Launch the application.
@@ -76,9 +77,9 @@ public class TelaRecSenha extends JFrame {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				UsuarioRepository repository = new UsuarioRepository();
+			
 				
-				Usuario Recupera = repository.pesquisaPeloEmail(txtEmail.getText());
+				UsuarioEntity Recupera = usuarioService.pesquisaEmail(txtEmail.getText());
 				if(Recupera == null) {
 					
 				}else {

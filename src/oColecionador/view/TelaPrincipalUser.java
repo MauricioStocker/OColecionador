@@ -16,16 +16,18 @@ import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import oColecionador.entity.Colecao;
-import oColecionador.entity.Moeda;
-import oColecionador.entity.Pais;
-import oColecionador.entity.TipoTransacao;
-import oColecionador.entity.Usuario;
+import oColecionador.entity.ColecaoEntity;
+import oColecionador.entity.MoedaEntity;
+import oColecionador.entity.PaisEntity;
+import oColecionador.entity.TipoTransacaoEntity;
+import oColecionador.entity.UsuarioEntity;
 import oColecionador.repository.ColecaoRepository;
 import oColecionador.repository.MoedaRepository;
 import oColecionador.repository.PaisRepository;
 import oColecionador.repository.TipoRepository;
 import oColecionador.repository.UsuarioRepository;
+import oColecionador.service.MoedaService;
+import oColecionador.service.UsuarioService;
 import revendaCarros.DAO.ColecaoDAO;
 import revendaCarros.entity.Pessoa;
 
@@ -43,6 +45,9 @@ public class TelaPrincipalUser extends JFrame {
 	private JPanel contentPane;
 	private JTable table;
 	private JLabel lblUser;
+	private JComboBox cbUserLog;
+	private UsuarioService usuarioService = new UsuarioService();
+	private MoedaService moedaService = new MoedaService();
 
 	// metodo de pegar o user do usuario logado, e guardado na jlabel
 	public void setUser(String user) {
@@ -89,17 +94,14 @@ public class TelaPrincipalUser extends JFrame {
 		getContentPane().add(lblUser);
 		lblUser.setFont(new Font("Tahoma", Font.BOLD, 14));
 
-		
 		// mostrando o usuário
 		JLabel lblNewLabel_1 = new JLabel("Usuário  :");
 		lblNewLabel_1.setBounds(10, 25, 76, 13);
 		getContentPane().add(lblNewLabel_1);
-		UsuarioRepository repository = new UsuarioRepository();
-		Usuario userLog = repository.pesquisaPeloUser(lblUser.getText());
 		JButton btnColecao = new JButton("Criar Coleção");
 		btnColecao.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaCriarColecao criarColecao = new TelaCriarColecao();
+				TelaCriarColecao1 criarColecao = new TelaCriarColecao1();
 				criarColecao.setUser(lblUser.getText());
 				criarColecao.setVisible(true);
 			}
@@ -114,15 +116,10 @@ public class TelaPrincipalUser extends JFrame {
 		JButton btnNotaProduto = new JButton("Gerar nota Produto");
 		btnNotaProduto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try {
-					TelaNotaProduto notaProduto = new TelaNotaProduto();
-					notaProduto.setUser(lblUser.getText());
-					notaProduto.setVisible(true);
-				} catch (ParseException e1) {
-					// TODO Bloco catch gerado automaticamente
-					e1.printStackTrace();
-				}
-				
+				TelaNotaProduto1 notaProduto = new TelaNotaProduto1();
+				notaProduto.setUser(lblUser.getText());
+				notaProduto.setVisible(true);
+
 			}
 		});
 		btnNotaProduto.setBounds(168, 82, 175, 21);
@@ -140,7 +137,7 @@ public class TelaPrincipalUser extends JFrame {
 					// TODO Bloco catch gerado automaticamente
 					e1.printStackTrace();
 				}
-				
+
 			}
 		});
 		btnTransacao.setBounds(380, 82, 85, 21);
@@ -173,8 +170,8 @@ public class TelaPrincipalUser extends JFrame {
 		lblMoedas.setBounds(179, 124, 316, 97);
 		contentPane.add(lblMoedas);
 
-		JComboBox cbUserLog = new JComboBox();
-		cbUserLog.setVisible(false);
+		cbUserLog = new JComboBox();
+		cbUserLog.setVisible(true);
 		cbUserLog.setFont(new Font("Arial Black", Font.PLAIN, 14));
 		cbUserLog.setFocusTraversalKeysEnabled(false);
 		cbUserLog.setEnabled(false);
@@ -182,8 +179,8 @@ public class TelaPrincipalUser extends JFrame {
 		cbUserLog.setEditable(true);
 		cbUserLog.addAncestorListener(new AncestorListener() {
 			public void ancestorAdded(AncestorEvent event) {
-				UsuarioRepository repository = new UsuarioRepository();
-				Usuario userLog = repository.pesquisaPeloUser(lblUser.getText());
+
+				UsuarioEntity userLog = usuarioService.pesquisaUser(lblUser.getText());
 				cbUserLog.addItem(userLog);
 
 			}
@@ -201,28 +198,18 @@ public class TelaPrincipalUser extends JFrame {
 	}
 
 	public void preencheLIsta() {
-		MoedaRepository moedaRepository = new MoedaRepository();
-		List<Moeda> lista = moedaRepository.listar();
+	
+		List<MoedaEntity> lista = moedaService.listar();
 		DefaultTableModel modeloTabela = (DefaultTableModel) table.getModel();
 		modeloTabela.setRowCount(0);
-		for (Moeda moeda : lista) {
-			modeloTabela.addRow(new Object[] { moeda.getCodigoCatalogo(), moeda.getTitulo(), moeda.getPais(),
-					moeda.getAno(), moeda.getValor(), moeda.getPeso(), moeda.getEspessura(), moeda.getDiametro(),
-					moeda.getBordas(), moeda.getMaterial() });
+		for (MoedaEntity moedaEntity : lista) {
+			modeloTabela.addRow(new Object[] { moedaEntity.getCodigoCatalogo(), moedaEntity.getTitulo(),
+					moedaEntity.getPaisEntity(), moedaEntity.getAno(), moedaEntity.getValor(), moedaEntity.getPeso(),
+					moedaEntity.getEspessura(), moedaEntity.getDiametro(), moedaEntity.getBordas(),
+					moedaEntity.getMateriais() });
 
 		}
 
-	}
-
-	public void preencheLIstaColecao() {
-		ColecaoRepository colecaoRepository = new ColecaoRepository();
-		List<Colecao> lista = colecaoRepository.listar();
-		DefaultTableModel modeloTabela = (DefaultTableModel) table.getModel();
-		modeloTabela.setRowCount(0);
-		for (Colecao colecao : lista) {
-			modeloTabela.addRow(new Object[] { colecao.getUsuario(), colecao.getMoeda(), colecao.getQuantidade(),
-					colecao.getTipoTransacao() });
-		}
 	}
 
 }

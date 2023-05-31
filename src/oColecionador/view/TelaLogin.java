@@ -6,7 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import oColecionador.entity.Usuario;
+import oColecionador.entity.UsuarioEntity;
 import oColecionador.repository.UsuarioRepository;
 import oColecionador.service.UsuarioService;
 
@@ -27,6 +27,7 @@ public class TelaLogin extends JFrame {
 	private JPanel contentPane;
 	private JTextField txtUser;
 	private JPasswordField pswSenha;
+	private UsuarioService usuarioService = new UsuarioService();
 
 	/**
 	 * Launch the application.
@@ -103,22 +104,21 @@ public class TelaLogin extends JFrame {
 		btnEntrar.setMnemonic(KeyEvent.VK_ENTER);
 		btnEntrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Usuario usuario = new Usuario();
-				UsuarioRepository repository = new UsuarioRepository();
+				UsuarioEntity usuarioEntity = new UsuarioEntity();
 
 				TelaPrincipal principal = new TelaPrincipal();
 				TelaPrincipalUser principalUser = new TelaPrincipalUser();
 				String userLog = null;
-				UsuarioService usuarioService = new UsuarioService();
-				TelaCriarColecao criarColecao = new TelaCriarColecao();
-				usuario.setUser(txtUser.getText());
-				usuario.setSenha(pswSenha.getText());
-				usuarioService.login(usuario);
-				if (usuarioService.login(usuario).booleanValue()) {
-					if (usuario.getSenha().equals("admin") && usuario.getUser().equals("admin")) {
-						userLog = usuario.getUser();
+				
+				TelaCriarColecao1 criarColecao = new TelaCriarColecao1();
+				usuarioEntity.setUser(txtUser.getText());
+				usuarioEntity.setSenha(pswSenha.getText());
+				usuarioService.login(usuarioEntity);
+				if (usuarioService.login(usuarioEntity).booleanValue()) {
+					if (usuarioEntity.getSenha().equals("admin") && usuarioEntity.getUser().equals("admin")) {
+						userLog = usuarioEntity.getUser();
 
-						JOptionPane.showInternalMessageDialog(null, "Seja bem vindo " + userLog + " !!");
+						JOptionPane.showInternalMessageDialog(null, "Seja bem vindo " + userLog + " !! ");
 						principal = new TelaPrincipal();
 						principal.setUser(userLog);
 
@@ -127,9 +127,9 @@ public class TelaLogin extends JFrame {
 						setVisible(false);
 
 					} else {
-						userLog = usuario.getUser();
+						userLog = usuarioEntity.getUser();
 						System.out.println(userLog);
-						Usuario sessaoUser = repository.pesquisaPeloUser(userLog);
+						UsuarioEntity sessaoUser = usuarioService.pesquisaUser(userLog);
 						System.out.println(sessaoUser);
 						JOptionPane.showInternalMessageDialog(null, "Seja bem vindo " + sessaoUser.getNome() + " !!");
 						principalUser = new TelaPrincipalUser();
@@ -143,7 +143,7 @@ public class TelaLogin extends JFrame {
 				} else {
 					JOptionPane.showMessageDialog(null, "Erro ao logar, usuário ou senha inválidos!!", "Erro",
 							JOptionPane.ERROR_MESSAGE);
-					
+
 				}
 
 				txtUser.setText("");

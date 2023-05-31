@@ -4,8 +4,8 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import oColecionador.entity.Material;
-import oColecionador.entity.Pais;
+import oColecionador.entity.MaterialEntity;
+import oColecionador.entity.PaisEntity;
 import oColecionador.repository.MaterialRepository;
 
 public class MaterialService {
@@ -15,25 +15,25 @@ public class MaterialService {
 		materialRepository = new MaterialRepository();
 	}
 
-	public Material salvar(Material material) {
-		if (material.getIdMaterial() == null) {
-			Material entity = materialRepository.pesquisaPeloNome(material.getNome());
+	public MaterialEntity salvar(MaterialEntity materialEntity) {
+		if (materialEntity.getIdMaterial() == null) {
+			MaterialEntity entity = materialRepository.pesquisaPeloNome(materialEntity.getNome());
 			if (entity == null) {
-				materialRepository.inserir(material);
+				materialRepository.inserir(materialEntity);
 			} else {
-				JOptionPane.showInternalMessageDialog(null, " Material "  +  " '"  +  material.getNome() +  "' "  +  " já cadastrado");
+				JOptionPane.showInternalMessageDialog(null, " Material "  +  " '"  +  materialEntity.getNome() +  "' "  +  " já cadastrado");
 			}
 		} else {
-			materialRepository.atualizar(material);
-			Material material1 = new Material();
-			material1 = materialRepository.pesquisaPeloNome(material.getNome());
+			materialRepository.atualizar(materialEntity);
+			MaterialEntity material1 = new MaterialEntity();
+			material1 = materialRepository.pesquisaPeloNome(materialEntity.getNome());
 			JOptionPane.showInternalMessageDialog(null,
 					"Nome do Material foi editado para : "+ material1);
 		}
-		return material;
+		return materialEntity;
 	}
 
-	public List<Material> listar() {
+	public List<MaterialEntity> listar() {
 		return materialRepository.listar();
 	}
 

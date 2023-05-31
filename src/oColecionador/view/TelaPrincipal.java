@@ -11,8 +11,8 @@ import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import oColecionador.entity.Moeda;
-import oColecionador.entity.Usuario;
+import oColecionador.entity.MoedaEntity;
+import oColecionador.entity.UsuarioEntity;
 import oColecionador.repository.MoedaRepository;
 
 
@@ -82,14 +82,9 @@ public class TelaPrincipal extends JFrame {
 		JButton btnCadastrar = new JButton("Cadastrar");
 		btnCadastrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try {
-					FormMoeda moeda = new FormMoeda();
-					moeda.setVisible(true);
-					moeda.setLocationRelativeTo(null);
-				} catch (ParseException e1) {
-					// TODO Bloco catch gerado automaticamente
-					e1.printStackTrace();
-				}
+				FormMoeda moeda = new FormMoeda();
+				moeda.setVisible(true);
+				moeda.setLocationRelativeTo(null);
 				
 			}
 		});
@@ -130,12 +125,12 @@ public class TelaPrincipal extends JFrame {
 	}
 	public void preencheLIsta() {
 		MoedaRepository moedaRepository = new MoedaRepository();
-		List<Moeda> lista = moedaRepository.listar();
+		List<MoedaEntity> lista = moedaRepository.listar();
 		DefaultTableModel modeloTabela = (DefaultTableModel) table.getModel();
 		modeloTabela.setRowCount(0);
-		for (Moeda moeda : lista) {
-			modeloTabela.addRow(new Object[] { moeda.getCodigoCatalogo(),moeda.getTitulo(),moeda.getPais() , moeda.getAno(),moeda.getValor(), moeda.getPeso(), moeda.getEspessura(),
-					moeda.getDiametro(), moeda.getBordas(), moeda.getMaterial()});
+		for (MoedaEntity moedaEntity : lista) {
+			modeloTabela.addRow(new Object[] { moedaEntity.getCodigoCatalogo(),moedaEntity.getTitulo(),moedaEntity.getPaisEntity() , moedaEntity.getAno(),moedaEntity.getValor(), moedaEntity.getPeso(), moedaEntity.getEspessura(),
+					moedaEntity.getDiametro(), moedaEntity.getBordas(), moedaEntity.getMateriais()});
 
 		}
 

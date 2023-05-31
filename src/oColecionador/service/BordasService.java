@@ -4,8 +4,8 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import oColecionador.entity.Bordas;
-import oColecionador.entity.Material;
+import oColecionador.entity.BordasEntity;
+import oColecionador.entity.MaterialEntity;
 import oColecionador.repository.BordasRepository;
 
 public class BordasService {
@@ -15,32 +15,32 @@ public class BordasService {
 		bordasRepository = new BordasRepository();
 	}
 
-	public Bordas salvar(Bordas bordas) {
-		if (bordas.getIdBordas() == null) {
-			Bordas entity = bordasRepository.pesquisaPeloNome(bordas.getNome());
+	public BordasEntity salvar(BordasEntity bordasEntity) {
+		if (bordasEntity.getIdBordas() == null) {
+			BordasEntity entity = bordasRepository.pesquisaPeloNome(bordasEntity.getNome());
 			if (entity == null) {
-				bordasRepository.inserir(bordas);
+				bordasRepository.inserir(bordasEntity);
 			} else {
 				JOptionPane.showInternalMessageDialog(null,
-						" Borda " + " '" + bordas.getNome() + "' " + " já cadastrado");
+						" Borda " + " '" + bordasEntity.getNome() + "' " + " já cadastrado");
 
 			}
 		} else {
-			bordasRepository.atualizar(bordas);
-			Bordas bordas1 = new Bordas();
-			bordas1 = bordasRepository.pesquisaPeloNome(bordas.getNome());
+			bordasRepository.atualizar(bordasEntity);
+			BordasEntity bordas1 = new BordasEntity();
+			bordas1 = bordasRepository.pesquisaPeloNome(bordasEntity.getNome());
 			JOptionPane.showInternalMessageDialog(null,
 					"Nome do Material foi editado para : "+ bordas1);
 		}
-		return bordas;
+		return bordasEntity;
 	}
 
-	public List<Bordas> listar() {
+	public List<BordasEntity> listar() {
 		return bordasRepository.listar();
 	}
 
-	public void remover(Bordas bordas) {
-		bordasRepository.remover(bordas);
+	public void remover(BordasEntity bordasEntity) {
+		bordasRepository.remover(bordasEntity);
 	}
 
 }

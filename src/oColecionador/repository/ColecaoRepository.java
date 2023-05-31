@@ -4,98 +4,98 @@ import java.util.List;
 
 import javax.persistence.*;
 
-import oColecionador.entity.Bordas;
-import oColecionador.entity.Colecao;
-import oColecionador.entity.Usuario;
+import oColecionador.entity.BordasEntity;
+import oColecionador.entity.ColecaoEntity;
+import oColecionador.entity.UsuarioEntity;
 
 public class ColecaoRepository {
 	private static EntityManager em = Persistence.createEntityManagerFactory("o_colecionador").createEntityManager();
 
-	public void inserir(Colecao colecao) {
+	public void inserir(ColecaoEntity colecaoEntity) {
 		try {
 			em.getTransaction().begin();
-			em.persist(colecao);
+			em.persist(colecaoEntity);
 			em.getTransaction().commit();
 		} catch (Exception e) {
 			em.getTransaction().rollback();
-			System.out.println("Ocorreu um erro ao inserir os dados do fabricante.");
+			System.out.println("Ocorreu um erro ao inserir os dados da coleção.");
 			System.out.println(e.getMessage());
 		}
 	}
 
-	public void atualizar(Colecao colecao) {
+	public void atualizar(ColecaoEntity colecaoEntity) {
 		try {
 			em.getTransaction().begin();
-			em.merge(colecao);
+			em.merge(colecaoEntity);
 			em.getTransaction().commit();
 		} catch (Exception e) {
 			em.getTransaction().rollback();
-			System.out.println("Ocorreu um erro ao atualizar os dados do fabricante.");
+			System.out.println("Ocorreu um erro ao atualizar os dados da coleção.");
 			System.out.println(e.getMessage());
 		}
 	}
 
-	public Colecao pesquisaPeloId(Long id) {
-		Colecao colecao = null;
+	public ColecaoEntity pesquisaPeloId(Long id) {
+		ColecaoEntity colecaoEntity = null;
 		try {
-			colecao = em.find(Colecao.class, id);
+			colecaoEntity = em.find(ColecaoEntity.class, id);
 		} catch (Exception e) {
-			System.out.println("Ocorreu um erro ao pesquisar o fabricante pelo id");
+			System.out.println("Ocorreu um erro ao pesquisar a coleção pelo id");
 		}
-		return colecao;
+		return colecaoEntity;
 	}
 
 	public void remover(Long id) {
-		Colecao colecao = pesquisaPeloId(id);
-		remover(colecao);
+		ColecaoEntity colecaoEntity = pesquisaPeloId(id);
+		remover(colecaoEntity);
 	}
 
-	public void remover(Colecao colecao) {
+	public void remover(ColecaoEntity colecaoEntity) {
 		try {
 			em.getTransaction().begin();
-			em.remove(colecao);
+			em.remove(colecaoEntity);
 			em.getTransaction().commit();
 		} catch (Exception e) {
 			em.getTransaction().rollback();
-			System.out.println("Ocorreu um erro ao remover o fabricante");
+			System.out.println("Ocorreu um erro ao remover a coleção");
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Colecao> listar() {
-		List<Colecao> colecao = null;
-		Query query = em.createQuery("SELECT f FROM Colecao f");
+	public List<ColecaoEntity> listar() {
+		List<ColecaoEntity> colecaoEntity = null;
+		Query query = em.createQuery("SELECT f FROM ColecaoEntity f");
 		try {
-			colecao = query.getResultList();
+			colecaoEntity = query.getResultList();
 		} catch (Exception e) {
-			System.out.println("Ocorreu um erro ao listar todos os fabricantes");
+			System.out.println("Ocorreu um erro ao listar todas as coleções");
 		}
-		return colecao;
+		return colecaoEntity;
 	}
 
 	// Implementar
 	@SuppressWarnings("unchecked")
-	public Colecao pesquisaPeloNome(String nome) {
-		Colecao colecao = null;
-		Query query = em.createQuery("SELECT f FROM Colecao f WHERE f.nome = :nome");
+	public ColecaoEntity pesquisaPeloNome(String nome) {
+		ColecaoEntity colecaoEntity = null;
+		Query query = em.createQuery("SELECT f FROM ColecaoEntity f WHERE f.nome = :nome");
 		query.setParameter("nome", nome);
 		try {
-			List<Colecao> colecaos = null;
-			colecaos = query.getResultList();
-			if (colecaos != null) {
-				colecao = colecaos.get(0);
+			List<ColecaoEntity> colecaoEntities = null;
+			colecaoEntities = query.getResultList();
+			if (colecaoEntities != null) {
+				colecaoEntity = colecaoEntities.get(0);
 			}
 		} catch (Exception e) {
-			System.out.println("Ocorreu um erro ao pesquisar um fabricante pelo nome");
+			System.out.println("Ocorreu um erro ao pesquisar uma coleção pelo nome");
 		}
-		return colecao;
+		return colecaoEntity;
 	}
 	
-	public List<Colecao> listarColecaoPorTipoVenderDoUsuarioLogado(Usuario usuario) {
-	    List<Colecao> colecoes = null;
+	public List<ColecaoEntity> listarColecaoPorTipoVenderDoUsuarioLogado(UsuarioEntity usuarioEntity) {
+	    List<ColecaoEntity> colecoes = null;
 	    try {
-	        Query query = em.createQuery("SELECT c FROM Colecao c JOIN c.tipoTransacao t WHERE t.nome = 'VENDER' AND c.usuario = :usuario");
-	        query.setParameter("usuario", usuario);
+	        Query query = em.createQuery("SELECT c FROM ColecaoEntity c JOIN c.tipoTransacaoEntity t WHERE t.nome = 'VENDER' AND c.usuarioEntity = :usuario");
+	        query.setParameter("usuario", usuarioEntity);
 	        colecoes = query.getResultList();
 	    } catch (Exception e) {
 	        System.out.println("Ocorreu um erro ao listar as coleções do tipo VENDER do usuário logado");
@@ -104,11 +104,11 @@ public class ColecaoRepository {
 	}
 
 
-	public List<Colecao> obterColecoesDoUsuarioLogado(Usuario usuario) {
-	    List<Colecao> colecoes = null;
+	public List<ColecaoEntity> obterColecoesDoUsuarioLogado(UsuarioEntity usuarioEntity) {
+	    List<ColecaoEntity> colecoes = null;
 	    try {
-	        Query query = em.createQuery("SELECT c FROM Colecao c WHERE c.usuario = :usuario");
-	        query.setParameter("usuario", usuario);
+	        Query query = em.createQuery("SELECT c FROM ColecaoEntity c WHERE c.usuarioEntity = :usuarioEntity");
+	        query.setParameter("usuarioEntity", usuarioEntity);
 	        colecoes = query.getResultList();
 	    } catch (Exception e) {
 	        System.out.println("Ocorreu um erro ao listar as coleções do usuário logado");

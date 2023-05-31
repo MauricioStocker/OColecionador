@@ -5,140 +5,140 @@ import java.util.List;
 import javax.persistence.*;
 import javax.swing.JOptionPane;
 
-import oColecionador.entity.Colecao;
-import oColecionador.entity.Usuario;
+import oColecionador.entity.ColecaoEntity;
+import oColecionador.entity.UsuarioEntity;
 
 public class UsuarioRepository {
 	private static EntityManager em = Persistence.createEntityManagerFactory("o_colecionador").createEntityManager();
 
-	public void inserir(Usuario usuario) {
+	public void inserir(UsuarioEntity usuarioEntity) {
 		try {
 			em.getTransaction().begin();
-			em.persist(usuario);
+			em.persist(usuarioEntity);
 			em.getTransaction().commit();
 		} catch (Exception e) {
 			em.getTransaction().rollback();
-			System.out.println("Ocorreu um erro ao inserir os dados do fabricante.");
+			System.out.println("Ocorreu um erro ao inserir os dados do Usuário.");
 			System.out.println(e.getMessage());
 		}
 	}
 
-	public void atualizar(Usuario usuario) {
+	public void atualizar(UsuarioEntity usuarioEntity) {
 		try {
 			em.getTransaction().begin();
-			em.merge(usuario);
+			em.merge(usuarioEntity);
 			em.getTransaction().commit();
 		} catch (Exception e) {
 			em.getTransaction().rollback();
-			System.out.println("Ocorreu um erro ao atualizar os dados do fabricante.");
+			System.out.println("Ocorreu um erro ao atualizar os dados do Usuário.");
 			System.out.println(e.getMessage());
 		}
 	}
 
-	public Usuario pesquisaPeloId(Long id) {
-		Usuario usuario = null;
+	public UsuarioEntity pesquisaPeloId(Long id) {
+		UsuarioEntity usuarioEntity = null;
 		try {
-			usuario = em.find(Usuario.class, id);
+			usuarioEntity = em.find(UsuarioEntity.class, id);
 		} catch (Exception e) {
-			System.out.println("Ocorreu um erro ao pesquisar o fabricante pelo id");
+			System.out.println("Ocorreu um erro ao pesquisar o Usuário pelo id");
 		}
-		return usuario;
+		return usuarioEntity;
 	}
 
 	public void remover(Long id) {
-		Usuario usuario = pesquisaPeloId(id);
-		remover(usuario);
+		UsuarioEntity usuarioEntity = pesquisaPeloId(id);
+		remover(usuarioEntity);
 	}
 
-	public void remover(Usuario usuario) {
+	public void remover(UsuarioEntity usuarioEntity) {
 		try {
 			em.getTransaction().begin();
-			em.remove(usuario);
+			em.remove(usuarioEntity);
 			em.getTransaction().commit();
 		} catch (Exception e) {
 			em.getTransaction().rollback();
-			System.out.println("Ocorreu um erro ao remover o fabricante");
+			System.out.println("Ocorreu um erro ao remover o Usuário");
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Usuario> listar() {
-		List<Usuario> usuario = null;
-		Query query = em.createQuery("SELECT f FROM Usuario f");
+	public List<UsuarioEntity> listar() {
+		List<UsuarioEntity> usuarioEntity = null;
+		Query query = em.createQuery("SELECT f FROM UsuarioEntity f");
 		try {
-			usuario = query.getResultList();
+			usuarioEntity = query.getResultList();
 		} catch (Exception e) {
-			System.out.println("Ocorreu um erro ao listar todos os fabricantes");
+			System.out.println("Ocorreu um erro ao listar todos os Usuario");
 		}
-		return usuario;
+		return usuarioEntity;
 	}
 
 	// Implementar
 	@SuppressWarnings("unchecked")
-	public Usuario pesquisaPeloNome(String nome) {
-		Usuario usuario = null;
-		Query query = em.createQuery("SELECT f FROM Usuario f WHERE f.nome = :nome");
+	public UsuarioEntity pesquisaPeloNome(String nome) {
+		UsuarioEntity usuarioEntity = null;
+		Query query = em.createQuery("SELECT f FROM UsuarioEntity f WHERE f.nome = :nome");
 		query.setParameter("nome", nome);
 		try {
-			List<Usuario> usuarios = null;
-			usuarios = query.getResultList();
-			if (usuarios != null) {
-				usuario = usuarios.get(0);
+			List<UsuarioEntity> usuarioEntities = null;
+			usuarioEntities = query.getResultList();
+			if (usuarioEntities != null) {
+				usuarioEntity = usuarioEntities.get(0);
 			}
 		} catch (Exception e) {
-			System.out.println("Ocorreu um erro ao pesquisar um fabricante pelo nome");
+			System.out.println("Ocorreu um erro ao pesquisar um Usuário pelo nome");
 		}
-		return usuario;
+		return usuarioEntity;
 	}
 
-	public Usuario pesquisaPeloUserAndSenha(String user, String senha) {
+	public UsuarioEntity pesquisaPeloUserAndSenha(String user, String senha) {
 
-		Usuario usuario = null;
-		List<Usuario> usuarios = null;
-		Query query = em.createQuery("SELECT u FROM Usuario u WHERE u.user = :user AND u.senha = :senha");
+		UsuarioEntity usuarioEntity = null;
+		List<UsuarioEntity> usuarioEntities = null;
+		Query query = em.createQuery("SELECT u FROM UsuarioEntity u WHERE u.user = :user AND u.senha = :senha");
 		query.setParameter("user", user);
 		query.setParameter("senha", senha);
 
 		try {
-			usuarios = query.getResultList();
-			if (usuarios != null) {
-				usuario = usuarios.get(0);
+			usuarioEntities = query.getResultList();
+			if (usuarioEntities != null) {
+				usuarioEntity = usuarioEntities.get(0);
 			} else {
 
-				System.out.println("Ocorreu um erro ao listar todos os fabricantes nn");
+				System.out.println("Ocorreu um erro ao listar todos os Usuário ");
 			}
 		} catch (Exception e) {
 
 		}
-		return usuario;
+		return usuarioEntity;
 
 	}
 
-	public Usuario pesquisaPeloUser(String user) {
-		Usuario usuario = null;
-		Query query = em.createQuery("SELECT f FROM Usuario f WHERE f.user = :user");
+	public UsuarioEntity pesquisaPeloUser(String user) {
+		UsuarioEntity usuarioEntity = null;
+		Query query = em.createQuery("SELECT f FROM UsuarioEntity f WHERE f.user = :user");
 		query.setParameter("user", user);
 		try {
-			List<Usuario> usuarios = null;
-			usuarios = query.getResultList();
-			if (usuarios != null) {
-				usuario = usuarios.get(0);
+			List<UsuarioEntity> usuarioEntities = null;
+			usuarioEntities = query.getResultList();
+			if (usuarioEntities != null) {
+				usuarioEntity = usuarioEntities.get(0);
 			}
 		} catch (Exception e) {
-			System.out.println("Ocorreu um erro ao pesquisar um fabricante pelo nome");
+			System.out.println("Ocorreu um erro ao pesquisar um Usuário pelo user");
 		}
-		return usuario;
+		return usuarioEntity;
 	}
 
-	public Usuario pesquisaPeloEmail(String email) {
-		Usuario usuario = null;
-		Query query = em.createQuery("SELECT f FROM Usuario f WHERE f.email = :email");
+	public UsuarioEntity pesquisaPeloEmail(String email) {
+		UsuarioEntity usuarioEntity = null;
+		Query query = em.createQuery("SELECT f FROM UsuarioEntity f WHERE f.email = :email");
 		query.setParameter("email", email);
 		try {
-			List<Usuario> usuarios = null;
-			usuarios = query.getResultList();
-			if (usuarios != null) {
-				usuario = usuarios.get(0);
+			List<UsuarioEntity> usuarioEntities = null;
+			usuarioEntities = query.getResultList();
+			if (usuarioEntities != null) {
+				usuarioEntity = usuarioEntities.get(0);
 			}else {
 				JOptionPane.showMessageDialog(null, "preencha o campos!!", "Erro",
 						JOptionPane.ERROR_MESSAGE);
@@ -149,7 +149,7 @@ public class UsuarioRepository {
 					JOptionPane.ERROR_MESSAGE);
 			
 		}
-		return usuario;
+		return usuarioEntity;
 	}
 
 }

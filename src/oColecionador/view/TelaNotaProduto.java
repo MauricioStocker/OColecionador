@@ -17,13 +17,13 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.MaskFormatter;
 
-import oColecionador.entity.Bordas;
-import oColecionador.entity.Colecao;
-import oColecionador.entity.Moeda;
-import oColecionador.entity.NotaProduto;
-import oColecionador.entity.Pais;
-import oColecionador.entity.TipoTransacao;
-import oColecionador.entity.Usuario;
+import oColecionador.entity.BordasEntity;
+import oColecionador.entity.ColecaoEntity;
+import oColecionador.entity.MoedaEntity;
+import oColecionador.entity.NotaProdutoEntity;
+import oColecionador.entity.PaisEntity;
+import oColecionador.entity.TipoTransacaoEntity;
+import oColecionador.entity.UsuarioEntity;
 import oColecionador.repository.ColecaoRepository;
 import oColecionador.repository.MoedaRepository;
 import oColecionador.repository.NotaProdutoRepository;
@@ -126,7 +126,7 @@ public class TelaNotaProduto extends JFrame {
 
 		JLabel lblMoedas = new JLabel("                    NOTAS GERADAS DE PRODUTOS");
 		lblMoedas.setFont(new Font("Goudy Stout", Font.ITALIC, 16));
-		lblMoedas.setBounds(112, 195, 670, 97);
+		lblMoedas.setBounds(131, -25, 670, 97);
 		contentPane.add(lblMoedas);
 
 		JComboBox cbUserLog = new JComboBox();
@@ -135,7 +135,7 @@ public class TelaNotaProduto extends JFrame {
 			public void ancestorAdded(AncestorEvent event) {
 				//responsavel para mostrar o usuário logado usando o lbl para pesquisar o usuário
 				UsuarioRepository repository = new UsuarioRepository();
-				Usuario userLog = repository.pesquisaPeloUser(lblUser.getText());
+				UsuarioEntity userLog = repository.pesquisaPeloUser(lblUser.getText());
 				cbUserLog.addItem(userLog);
 
 			}
@@ -154,9 +154,9 @@ public class TelaNotaProduto extends JFrame {
 			public void ancestorAdded(AncestorEvent event) {
 				//responsavel para buscar o usuário para ser usando no metodo de retorno do usuario logado das coleções moeda
 				UsuarioRepository repository1 = new UsuarioRepository();
-				Usuario userLog = repository1.pesquisaPeloUser(lblUser.getText());
+				UsuarioEntity userLog = repository1.pesquisaPeloUser(lblUser.getText());
 				ColecaoRepository repository = new ColecaoRepository();
-				for (Colecao p : repository.listarColecaoPorTipoVenderDoUsuarioLogado(userLog)) {
+				for (ColecaoEntity p : repository.listarColecaoPorTipoVenderDoUsuarioLogado(userLog)) {
 
 					cbMoeda.addItem(p);
 
@@ -171,7 +171,7 @@ public class TelaNotaProduto extends JFrame {
 		});
 		cbMoeda.setBounds(10, 82, 829, 21);
 		contentPane.add(cbMoeda);
-		Colecao colecao = (Colecao) cbMoeda.getSelectedItem();
+		ColecaoEntity colecaoEntity = (ColecaoEntity) cbMoeda.getSelectedItem();
 		JLabel lblNewLabel = new JLabel("QUANTIDADE");
 		lblNewLabel.setBounds(10, 125, 156, 13);
 		contentPane.add(lblNewLabel);
@@ -184,16 +184,21 @@ public class TelaNotaProduto extends JFrame {
 		JButton btnCriarColec = new JButton("Salvar Nota do produto");
 		btnCriarColec.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				NotaProduto notaProduto = new NotaProduto();
+				NotaProdutoEntity notaProdutoEntity = new NotaProdutoEntity();
 				NotaProdutoRepository dao = new NotaProdutoRepository();
-				Colecao colecao = (Colecao) cbMoeda.getSelectedItem();
+				ColecaoEntity colecaoEntity = (ColecaoEntity) cbMoeda.getSelectedItem();
+				UsuarioEntity usuarioEntity = (UsuarioEntity) cbUserLog.getSelectedItem();
 				
-				notaProduto.setColecao(colecao);
-				notaProduto.setQuantidade(txtQuantidade.getText());
-				notaProduto.setValorUni(txtQuant.getText());
-				dao.inserir(notaProduto);
+				//corrigir com metodo de lista
+				//notaProdutoEntity.setColecaoEntity(colecaoEntity);
+				notaProdutoEntity.setUsuarioEntity(usuarioEntity);
+				//corrigir com lista
+				//notaProdutoEntity.setColecaos(colecaoEntity);
+				notaProdutoEntity.setQuantidade(txtQuantidade.getText());
+				notaProdutoEntity.setValorUni(txtQuant.getText());
+				dao.inserir(notaProdutoEntity);
 				JOptionPane.showMessageDialog(null,"NOTA DO PRODUTO GERADA COM SUCESSO"+
-						"\nVENDEDOR: "+notaProduto.getColecao().getUsuario()+"\nVALOR: "+notaProduto.getValorUni());
+						"\nVENDEDOR: "+notaProdutoEntity.getUsuarioEntity()+"\nVALOR: "+notaProdutoEntity.getValorUni());
 				preencheLIstaColecaoProd();
 				
 				
@@ -234,13 +239,13 @@ public class TelaNotaProduto extends JFrame {
 
 	public void preencheLIsta() {
 		MoedaRepository moedaRepository = new MoedaRepository();
-		List<Moeda> lista = moedaRepository.listar();
+		List<MoedaEntity> lista = moedaRepository.listar();
 		DefaultTableModel modeloTabela = (DefaultTableModel) table.getModel();
 		modeloTabela.setRowCount(0);
-		for (Moeda moeda : lista) {
-			modeloTabela.addRow(new Object[] { moeda.getCodigoCatalogo(), moeda.getTitulo(), moeda.getPais(),
-					moeda.getAno(), moeda.getValor(), moeda.getPeso(), moeda.getEspessura(), moeda.getDiametro(),
-					moeda.getBordas(), moeda.getMaterial() });
+		for (MoedaEntity moedaEntity : lista) {
+			modeloTabela.addRow(new Object[] { moedaEntity.getCodigoCatalogo(), moedaEntity.getTitulo(), moedaEntity.getPaisEntity(),
+					moedaEntity.getAno(), moedaEntity.getValor(), moedaEntity.getPeso(), moedaEntity.getEspessura(), moedaEntity.getDiametro()/*,
+					moedaEntity.getBordasEntity(), moedaEntity.getMaterialEntity()*/ });
 
 		}
 
@@ -248,11 +253,11 @@ public class TelaNotaProduto extends JFrame {
 
 	public void preencheLIstaColecaoProd() {
 		NotaProdutoRepository colecaoRepository = new NotaProdutoRepository();
-		List<NotaProduto> lista = colecaoRepository.listar();
+		List<NotaProdutoEntity> lista = colecaoRepository.listar();
 		DefaultTableModel modeloTabela = (DefaultTableModel) table.getModel();
 		modeloTabela.setRowCount(0);
-		for (NotaProduto colecao : lista) {
-			modeloTabela.addRow(new Object[] { colecao.getIdNotaProduto(), colecao.getColecao(), colecao.getValorUni() });
+		for (NotaProdutoEntity colecao : lista) {
+			modeloTabela.addRow(new Object[] { colecao.getIdNotaProduto()/*, colecao.getColecaoEntity()*/, colecao.getValorUni() });
 		}
 	}
 }

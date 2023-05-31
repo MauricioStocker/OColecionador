@@ -2,16 +2,27 @@ package oColecionador.view;
 
 import java.awt.EventQueue;
 
-import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.text.MaskFormatter;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
-import oColecionador.entity.Bordas;
-import oColecionador.entity.Material;
-import oColecionador.entity.Moeda;
-import oColecionador.entity.Pais;
+import java.awt.Font;
+import javax.swing.JComboBox;
+import javax.swing.JTextField;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
+import oColecionador.entity.BordasEntity;
+
+import oColecionador.entity.MaterialEntity;
+
+import oColecionador.entity.MoedaEntity;
+
+import oColecionador.entity.PaisEntity;
 import oColecionador.repository.BordasRepository;
 import oColecionador.repository.MaterialRepository;
 import oColecionador.repository.MoedaRepository;
@@ -21,34 +32,32 @@ import oColecionador.service.MaterialService;
 import oColecionador.service.MoedaService;
 import oColecionador.service.PaisService;
 
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
-import java.awt.Font;
-import java.text.ParseException;
-
-import javax.swing.JTextField;
-import javax.swing.JComboBox;
-import javax.swing.JButton;
-import java.awt.Rectangle;
+import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 import java.awt.event.ActionEvent;
-import javax.swing.event.AncestorListener;
-import javax.swing.event.AncestorEvent;
 
 public class FormMoeda extends JFrame {
 
-	private JPanel contentPane;
+	private JPanel cbMoedasCadastro;
 	private JTextField txtTitulo;
-	private JTextField txtData;
-	private JTextField txtValor;
-	private JTextField txtPeso;
+	private JTextField txtAnoCom;
+	private JTextField txtValorMoneta;
 	private JTextField txtEspessura;
+	private JTextField txtPeso;
 	private JTextField txtDiametro;
-	private JTextField txtCodigoCat;
-	private JTextField txtPais;
-	private JTextField txtMaterial;
+	private JTable table;
 	private JTextField txtBordas;
+	private JTextField txtMateriais;
+	private JTextField txtPais;
+	private JComboBox cbMoedasCad;
+	private JComboBox cbMateriais;
+	private JComboBox cbBordas;
+	private JComboBox cbPais;
+	private DefaultComboBoxModel<BordasEntity> cbRecebeBordasModel;
+	private DefaultComboBoxModel<MaterialEntity> cbRecebemateriaisModel;
+	private JTextField txtCodCatalogo;
 
 	/**
 	 * Launch the application.
@@ -59,7 +68,6 @@ public class FormMoeda extends JFrame {
 				try {
 					FormMoeda frame = new FormMoeda();
 					frame.setVisible(true);
-					frame.setLocationRelativeTo(null);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -69,490 +77,590 @@ public class FormMoeda extends JFrame {
 
 	/**
 	 * Create the frame.
-	 * 
-	 * @throws ParseException
 	 */
-	public FormMoeda() throws ParseException {
+	public FormMoeda() {
+		cbRecebeBordasModel = new DefaultComboBoxModel<>();
+		cbRecebeBordasModel.getSelectedItem();
 
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 940, 623);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(9, 5, 5, 13));
+		cbRecebemateriaisModel = new DefaultComboBoxModel<>();
+		cbRecebemateriaisModel.getSelectedItem();
+		setBounds(100, 100, 1615, 792);
+		cbMoedasCadastro = new JPanel();
+		cbMoedasCadastro.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		setContentPane(cbMoedasCadastro);
+		cbMoedasCadastro.setLayout(null);
 
-		JLabel lblNewLabel_1 = new JLabel("Titulo (1)");
-		lblNewLabel_1.setFont(new Font("Verdana", Font.PLAIN, 13));
-		lblNewLabel_1.setBounds(10, 114, 75, 23);
-		contentPane.add(lblNewLabel_1);
+		JLabel lblOColecionador_1 = new JLabel("    O COLECIONADOR");
+		lblOColecionador_1.setFont(new Font("Goudy Stout", Font.ITALIC, 16));
+		lblOColecionador_1.setBounds(643, 0, 371, 48);
+		cbMoedasCadastro.add(lblOColecionador_1);
+
+		JLabel lblCadastroMoedas = new JLabel("       CADASTRO MOEDAS");
+		lblCadastroMoedas.setFont(new Font("Goudy Stout", Font.ITALIC, 16));
+		lblCadastroMoedas.setBounds(617, 39, 417, 48);
+		cbMoedasCadastro.add(lblCadastroMoedas);
+
+		JLabel lblNewLabel_1_1_6_2_6 = new JLabel("Moedas para edição");
+		lblNewLabel_1_1_6_2_6.setFont(new Font("Verdana", Font.PLAIN, 13));
+		lblNewLabel_1_1_6_2_6.setBounds(10, 97, 197, 23);
+		cbMoedasCadastro.add(lblNewLabel_1_1_6_2_6);
+
+		cbMoedasCad = new JComboBox();
+		cbMoedasCad.setBounds(10, 120, 1436, 21);
+		cbMoedasCadastro.add(cbMoedasCad);
+
+		JLabel lblNewLabel_1_1_6_2 = new JLabel("Titulo (1)");
+		lblNewLabel_1_1_6_2.setFont(new Font("Verdana", Font.PLAIN, 13));
+		lblNewLabel_1_1_6_2.setBounds(10, 181, 116, 23);
+		cbMoedasCadastro.add(lblNewLabel_1_1_6_2);
 
 		txtTitulo = new JTextField();
-
-		txtTitulo.setBounds(10, 147, 319, 19);
-		contentPane.add(txtTitulo);
+		txtTitulo.setBounds(10, 216, 229, 19);
+		cbMoedasCadastro.add(txtTitulo);
 		txtTitulo.setColumns(10);
 
-		JLabel lblNewLabel_2 = new JLabel("Ano comemorativo (2)");
-		lblNewLabel_2.setFont(new Font("Verdana", Font.PLAIN, 13));
-		lblNewLabel_2.setBounds(447, 114, 165, 23);
-		contentPane.add(lblNewLabel_2);
+		JLabel lblNewLabel_1_1_6_2_1 = new JLabel("Ano comemorativo (3)");
+		lblNewLabel_1_1_6_2_1.setFont(new Font("Verdana", Font.PLAIN, 13));
+		lblNewLabel_1_1_6_2_1.setBounds(10, 252, 177, 23);
+		cbMoedasCadastro.add(lblNewLabel_1_1_6_2_1);
 
-		txtData = new JFormattedTextField(new MaskFormatter(" ##/##/####"));
-		txtData.setBounds(447, 147, 138, 19);
-		contentPane.add(txtData);
-		txtData.setColumns(10);
+		txtAnoCom = new JTextField();
+		txtAnoCom.setBounds(10, 285, 116, 19);
+		cbMoedasCadastro.add(txtAnoCom);
+		txtAnoCom.setColumns(10);
 
-		JLabel lblNewLabel_1_1 = new JLabel("Valor (3)");
-		lblNewLabel_1_1.setFont(new Font("Verdana", Font.PLAIN, 13));
-		lblNewLabel_1_1.setBounds(10, 176, 75, 23);
-		contentPane.add(lblNewLabel_1_1);
+		JLabel lblNewLabel_1_1_6_2_2 = new JLabel("Valor monetario (4)");
+		lblNewLabel_1_1_6_2_2.setFont(new Font("Verdana", Font.PLAIN, 13));
+		lblNewLabel_1_1_6_2_2.setBounds(171, 252, 139, 23);
+		cbMoedasCadastro.add(lblNewLabel_1_1_6_2_2);
 
-		txtValor = new JFormattedTextField(new MaskFormatter(" ###.##"));
-		txtValor.setBounds(10, 213, 96, 19);
-		contentPane.add(txtValor);
-		txtValor.setColumns(10);
+		txtValorMoneta = new JTextField();
+		txtValorMoneta.setBounds(171, 285, 104, 19);
+		cbMoedasCadastro.add(txtValorMoneta);
+		txtValorMoneta.setColumns(10);
 
-		JLabel lblNewLabel_1_1_1 = new JLabel("Peso (4)");
-		lblNewLabel_1_1_1.setFont(new Font("Verdana", Font.PLAIN, 13));
-		lblNewLabel_1_1_1.setBounds(178, 176, 75, 23);
-		contentPane.add(lblNewLabel_1_1_1);
+		JLabel lblNewLabel_1_1_6_2_5 = new JLabel("Espessura (5)");
+		lblNewLabel_1_1_6_2_5.setFont(new Font("Verdana", Font.PLAIN, 13));
+		lblNewLabel_1_1_6_2_5.setBounds(320, 252, 116, 23);
+		cbMoedasCadastro.add(lblNewLabel_1_1_6_2_5);
 
-		txtPeso = new JFormattedTextField(new MaskFormatter(" ###,###g"));
-		txtPeso.setBounds(178, 213, 96, 19);
-		contentPane.add(txtPeso);
-		txtPeso.setColumns(10);
-
-		JLabel lblNewLabel_1_1_2 = new JLabel("Espessura (5)");
-		lblNewLabel_1_1_2.setFont(new Font("Verdana", Font.PLAIN, 13));
-		lblNewLabel_1_1_2.setBounds(347, 176, 116, 23);
-		contentPane.add(lblNewLabel_1_1_2);
-
-		txtEspessura = new JFormattedTextField(new MaskFormatter(" ###,###mm"));
-		txtEspessura.setBounds(347, 213, 96, 19);
-		contentPane.add(txtEspessura);
+		txtEspessura = new JTextField();
+		txtEspessura.setBounds(320, 285, 74, 19);
+		cbMoedasCadastro.add(txtEspessura);
 		txtEspessura.setColumns(10);
 
-		JLabel lblNewLabel_1_1_3 = new JLabel("Diametro (6)");
-		lblNewLabel_1_1_3.setFont(new Font("Verdana", Font.PLAIN, 13));
-		lblNewLabel_1_1_3.setBounds(532, 176, 96, 23);
-		contentPane.add(lblNewLabel_1_1_3);
+		JLabel lblNewLabel_1_1_6_2_3 = new JLabel("Peso (6)");
+		lblNewLabel_1_1_6_2_3.setFont(new Font("Verdana", Font.PLAIN, 13));
+		lblNewLabel_1_1_6_2_3.setBounds(10, 335, 116, 23);
+		cbMoedasCadastro.add(lblNewLabel_1_1_6_2_3);
 
-		txtDiametro = new JFormattedTextField(new MaskFormatter(" ###,###mm"));
-		txtDiametro.setBounds(532, 213, 96, 19);
-		contentPane.add(txtDiametro);
+		txtPeso = new JTextField();
+		txtPeso.setBounds(10, 372, 74, 19);
+		cbMoedasCadastro.add(txtPeso);
+		txtPeso.setColumns(10);
+
+		JLabel lblNewLabel_1_1_6_2_4 = new JLabel("Diametro (7)");
+		lblNewLabel_1_1_6_2_4.setFont(new Font("Verdana", Font.PLAIN, 13));
+		lblNewLabel_1_1_6_2_4.setBounds(123, 335, 116, 23);
+		cbMoedasCadastro.add(lblNewLabel_1_1_6_2_4);
+
+		txtDiametro = new JTextField();
+		txtDiametro.setBounds(123, 372, 74, 19);
+		cbMoedasCadastro.add(txtDiametro);
 		txtDiametro.setColumns(10);
 
-		JLabel lblNewLabel_1_1_4 = new JLabel("Codigo do catalogo (7)");
-		lblNewLabel_1_1_4.setFont(new Font("Verdana", Font.PLAIN, 13));
-		lblNewLabel_1_1_4.setBounds(701, 176, 155, 23);
-		contentPane.add(lblNewLabel_1_1_4);
+		JLabel lblNewLabel_1_1_6_2_5_1 = new JLabel("Pais (8)");
+		lblNewLabel_1_1_6_2_5_1.setFont(new Font("Verdana", Font.PLAIN, 13));
+		lblNewLabel_1_1_6_2_5_1.setBounds(242, 335, 116, 23);
+		cbMoedasCadastro.add(lblNewLabel_1_1_6_2_5_1);
 
-		txtCodigoCat = new JTextField();
-		txtCodigoCat.setBounds(701, 213, 155, 19);
-		contentPane.add(txtCodigoCat);
-		txtCodigoCat.setColumns(10);
+		cbPais = new JComboBox();
+		cbPais.setBounds(242, 371, 152, 21);
+		cbMoedasCadastro.add(cbPais);
 
-		JLabel lblNewLabel_1_1_5 = new JLabel("Pais (8)");
-		lblNewLabel_1_1_5.setFont(new Font("Verdana", Font.PLAIN, 13));
-		lblNewLabel_1_1_5.setBounds(10, 277, 75, 23);
-		contentPane.add(lblNewLabel_1_1_5);
+		JLabel lblNewLabel_1_1_6_2_5_2 = new JLabel("Bordas (9)");
+		lblNewLabel_1_1_6_2_5_2.setFont(new Font("Verdana", Font.PLAIN, 13));
+		lblNewLabel_1_1_6_2_5_2.setBounds(10, 428, 116, 23);
+		cbMoedasCadastro.add(lblNewLabel_1_1_6_2_5_2);
 
-		JComboBox cbPais = new JComboBox();
-		cbPais.addAncestorListener(new AncestorListener() {
-			public void ancestorAdded(AncestorEvent event) {
+		JComboBox<BordasEntity> cbRecebeBordas = new JComboBox<>(cbRecebeBordasModel);
+		cbRecebeBordas.setBounds(10, 454, 197, 21);
+		cbMoedasCadastro.add(cbRecebeBordas);
 
-				PaisRepository pdao = new PaisRepository();
+		JLabel lblNewLabel_1_1_6_2_5_3 = new JLabel("Materiais (10)");
+		lblNewLabel_1_1_6_2_5_3.setFont(new Font("Verdana", Font.PLAIN, 13));
+		lblNewLabel_1_1_6_2_5_3.setBounds(10, 517, 116, 23);
+		cbMoedasCadastro.add(lblNewLabel_1_1_6_2_5_3);
 
-				for (Pais p : pdao.listar()) {
+		JComboBox<MaterialEntity> cbRecebemateriais = new JComboBox<>(cbRecebemateriaisModel);
+		cbRecebemateriais.setBounds(10, 543, 197, 21);
+		cbMoedasCadastro.add(cbRecebemateriais);
 
-					cbPais.addItem(p);
-
-				}
-
-			}
-
-			public void ancestorMoved(AncestorEvent event) {
-			}
-
-			public void ancestorRemoved(AncestorEvent event) {
-			}
-		});
-		cbPais.setBounds(10, 310, 439, 21);
-		contentPane.add(cbPais);
-
-		JLabel lblNewLabel_1_1_6 = new JLabel("Material (9)");
-		lblNewLabel_1_1_6.setFont(new Font("Verdana", Font.PLAIN, 13));
-		lblNewLabel_1_1_6.setBounds(10, 355, 116, 23);
-		contentPane.add(lblNewLabel_1_1_6);
-
-		JComboBox cbMaterial = new JComboBox();
-		cbMaterial.addAncestorListener(new AncestorListener() {
-			public void ancestorAdded(AncestorEvent event) {
-				MaterialRepository mdao = new MaterialRepository();
-
-				for (Material m : mdao.listar()) {
-
-					cbMaterial.addItem(m);
-
-				}
-			}
-
-			public void ancestorMoved(AncestorEvent event) {
-			}
-
-			public void ancestorRemoved(AncestorEvent event) {
-			}
-		});
-		cbMaterial.setBounds(10, 397, 439, 21);
-		contentPane.add(cbMaterial);
-		JButton btnEditarMat = new JButton("Editar Materia");
-		btnEditarMat.addActionListener(new ActionListener() {
+		JButton btnCadastrarMoeda = new JButton("Cadastrar");
+		btnCadastrarMoeda.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				MaterialService service = new MaterialService();
-				Material material1 = (Material) cbMaterial.getSelectedItem();
-				Material material = new Material();
-				material.setIdMaterial(material1.getIdMaterial());
-				material.setNome(txtMaterial.getText());
-				service.salvar(material);
-				txtMaterial.setText("");
-
-				// atualizacbPais
-				MaterialRepository mdao = new MaterialRepository();
-				cbMaterial.removeAllItems();
-				for (Material p : mdao.listar()) {
-
-					cbMaterial.addItem(p);
-
-				}
-
+				cadastrarMoeda();
+				preencheLIsta();
+				carregaMoedas();
 			}
 		});
-		btnEditarMat.setBounds(460, 358, 109, 21);
-		contentPane.add(btnEditarMat);
+		btnCadastrarMoeda.setBounds(10, 634, 85, 21);
+		cbMoedasCadastro.add(btnCadastrarMoeda);
 
-		JLabel lblNewLabel_1_1_7 = new JLabel("Bordas (10)");
-		lblNewLabel_1_1_7.setFont(new Font("Verdana", Font.PLAIN, 13));
-		lblNewLabel_1_1_7.setBounds(10, 447, 96, 23);
-		contentPane.add(lblNewLabel_1_1_7);
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(429, 203, 598, 542);
+		cbMoedasCadastro.add(scrollPane);
 
-		JComboBox cbBordas = new JComboBox();
-		cbBordas.addAncestorListener(new AncestorListener() {
-			public void ancestorAdded(AncestorEvent event) {
-				BordasRepository bdao = new BordasRepository();
+		table = new JTable();
+		scrollPane.setViewportView(table);
+		table.setModel(new DefaultTableModel(
+				new Object[][] { { null, null }, { null, null }, { null, null }, { null, null }, },
+				new String[] { "New column", "New column" }));
 
-				for (Bordas b : bdao.listar()) {
+		JLabel lblNewLabel_1_1_6_2_7_1 = new JLabel("RELAÇÃO DE MOEDAS");
+		lblNewLabel_1_1_6_2_7_1.setFont(new Font("Verdana", Font.PLAIN, 13));
+		lblNewLabel_1_1_6_2_7_1.setBounds(617, 151, 218, 23);
+		cbMoedasCadastro.add(lblNewLabel_1_1_6_2_7_1);
 
-					cbBordas.addItem(b);
+		JLabel lblNewLabel_1_1_6_2_7 = new JLabel("EDIÇÕES E CRIAÇÕES");
+		lblNewLabel_1_1_6_2_7.setFont(new Font("Verdana", Font.PLAIN, 13));
+		lblNewLabel_1_1_6_2_7.setBounds(1191, 151, 218, 23);
+		cbMoedasCadastro.add(lblNewLabel_1_1_6_2_7);
 
-				}
-			}
-
-			public void ancestorMoved(AncestorEvent event) {
-			}
-
-			public void ancestorRemoved(AncestorEvent event) {
-			}
-		});
-		cbBordas.setBounds(10, 492, 439, 21);
-		contentPane.add(cbBordas);
-		JButton btnEditarBordas = new JButton("Editar Borda");
-		btnEditarBordas.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				BordasService service = new BordasService();
-				Bordas bordas1 = (Bordas) cbBordas.getSelectedItem();
-				Bordas bordas = new Bordas();
-				bordas.setIdBordas(bordas1.getIdBordas());
-				bordas.setNome(txtBordas.getText());
-				service.salvar(bordas);
-				txtBordas.setText("");
-
-				// atualizacbPais
-				BordasRepository bdao = new BordasRepository();
-				cbBordas.removeAllItems();
-				for (Bordas p : bdao.listar()) {
-
-					cbBordas.addItem(p);
-
-				}
-			}
-		});
-		btnEditarBordas.setBounds(460, 450, 109, 21);
-		contentPane.add(btnEditarBordas);
-		JButton btmEditar = new JButton("Editar Pais");
-		btmEditar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				PaisService service = new PaisService();
-				Pais pais1 = (Pais) cbPais.getSelectedItem();
-				Pais pais = new Pais();
-				pais.setIdPais(pais1.getIdPais());
-				pais.setNome(txtPais.getText());
-				service.salvar(pais);
-				txtPais.setText("");
-
-				// atualizacbPais
-				PaisRepository pdao = new PaisRepository();
-				cbPais.removeAllItems();
-				for (Pais p : pdao.listar()) {
-
-					cbPais.addItem(p);
-
-				}
-
-			}
-		});
-		btmEditar.setBounds(460, 280, 109, 21);
-		contentPane.add(btmEditar);
-		JComboBox cbMoedasEdit = new JComboBox();
-		cbMoedasEdit.addAncestorListener(new AncestorListener() {
-			public void ancestorAdded(AncestorEvent event) {
-				MoedaRepository repository = new MoedaRepository();
-				for (Moeda b : repository.listar()) {
-
-					cbMoedasEdit.addItem(b);
-
-				}
-			}
-
-			public void ancestorMoved(AncestorEvent event) {
-			}
-
-			public void ancestorRemoved(AncestorEvent event) {
-			}
-		});
-		cbMoedasEdit.setBounds(10, 83, 872, 21);
-		contentPane.add(cbMoedasEdit);
-
-		JButton btnSalvar = new JButton("Cadastrar");
-		btnSalvar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Moeda moeda = new Moeda();
-				MoedaService service = new MoedaService();
-				Bordas bordas = (Bordas) cbBordas.getSelectedItem();
-				Material material = (Material) cbMaterial.getSelectedItem();
-				Pais pais = (Pais) cbPais.getSelectedItem();
-
-				moeda.setTitulo(txtTitulo.getText());
-				moeda.setAno(txtData.getText());
-				moeda.setValor(txtValor.getText());
-				moeda.setPeso(txtPeso.getText());
-				moeda.setEspessura(txtEspessura.getText());
-				moeda.setDiametro(txtDiametro.getText());
-				moeda.setCodigoCatalogo(txtCodigoCat.getText());
-				moeda.setBordas(bordas);
-				moeda.setMaterial(material);
-				moeda.setPais(pais);
-				service.salvar(moeda);
-				// limpeza dos campos
-				txtData.setText("");
-				txtCodigoCat.setText("");
-				txtEspessura.setText("");
-				txtDiametro.setText("");
-				txtPeso.setText("");
-				txtTitulo.setText("");
-				txtValor.setText("");
-				MoedaRepository repository = new MoedaRepository();
-				for (Moeda b : repository.listar()) {
-
-					cbMoedasEdit.addItem(b);
-
-				}
-
-			}
-		});
-		btnSalvar.setBounds(new Rectangle(7, 0, 7, 0));
-		btnSalvar.setFont(new Font("Verdana", Font.PLAIN, 16));
-		btnSalvar.setBounds(10, 547, 155, 29);
-		contentPane.add(btnSalvar);
-
-		txtPais = new JTextField();
-		txtPais.setBounds(74, 281, 215, 19);
-		contentPane.add(txtPais);
-		txtPais.setColumns(10);
-
-		JButton btnNewButton = new JButton("Incluir");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Pais pais = new Pais();
-				PaisService paisService = new PaisService();
-
-				pais.setNome(txtPais.getText());
-				paisService.salvar(pais);
-				txtPais.setText("");
-
-				// atualizacbPais
-				PaisRepository pdao = new PaisRepository();
-				cbPais.removeAllItems();
-				for (Pais p : pdao.listar()) {
-
-					cbPais.addItem(p);
-
-				}
-
-			}
-		});
-		btnNewButton.setBounds(358, 280, 85, 21);
-		contentPane.add(btnNewButton);
-
-		txtMaterial = new JTextField();
-		txtMaterial.setColumns(10);
-		txtMaterial.setBounds(97, 359, 215, 19);
-		contentPane.add(txtMaterial);
+		JLabel lblNewLabel_1_1_6_2_5_2_1 = new JLabel("Bordas");
+		lblNewLabel_1_1_6_2_5_2_1.setFont(new Font("Verdana", Font.PLAIN, 13));
+		lblNewLabel_1_1_6_2_5_2_1.setBounds(1073, 219, 116, 23);
+		cbMoedasCadastro.add(lblNewLabel_1_1_6_2_5_2_1);
 
 		txtBordas = new JTextField();
+		txtBordas.setBounds(1073, 256, 116, 19);
+		cbMoedasCadastro.add(txtBordas);
 		txtBordas.setColumns(10);
-		txtBordas.setBounds(97, 451, 215, 19);
-		contentPane.add(txtBordas);
 
-		JButton btnSalvar_1 = new JButton("Incluir");
-		btnSalvar_1.addActionListener(new ActionListener() {
+		cbBordas = new JComboBox();
+		cbBordas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Material material = new Material();
-				MaterialService materialService = new MaterialService();
-
-				material.setNome(txtMaterial.getText());
-				materialService.salvar(material);
-				txtMaterial.setText("");
-				// Atualiza cbMaterias
-				MaterialRepository mdao = new MaterialRepository();
-				cbMaterial.removeAllItems();
-				for (Material m : mdao.listar()) {
-
-					cbMaterial.addItem(m);
-
-				}
+				BordasEntity bordas = (BordasEntity) cbBordas.getSelectedItem();
+				cbRecebeBordasModel.addElement(bordas);
 
 			}
 		});
-		btnSalvar_1.setBounds(358, 358, 85, 21);
-		contentPane.add(btnSalvar_1);
+		cbBordas.setBounds(1073, 284, 183, 21);
+		cbMoedasCadastro.add(cbBordas);
 
-		JButton btnSalvar_2 = new JButton("Incluir");
-		btnSalvar_2.addActionListener(new ActionListener() {
+		JButton btnCadastraBorda = new JButton("cadastra Bordas");
+		btnCadastraBorda.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Bordas bordas = new Bordas();
-				BordasService bordasService = new BordasService();
-
-				bordas.setNome(txtBordas.getText());
-				bordasService.salvar(bordas);
-				txtBordas.setText("");
-				// atualiza cbBox
-				BordasRepository bdao = new BordasRepository();
-				cbBordas.removeAllItems();
-				for (Bordas b : bdao.listar()) {
-
-					cbBordas.addItem(b);
-
-				}
+				adicionaBorda();
+				limpaCbRecebeBordas();
 			}
 		});
-		btnSalvar_2.setBounds(358, 450, 85, 21);
-		contentPane.add(btnSalvar_2);
+		btnCadastraBorda.setBounds(1212, 255, 116, 21);
+		cbMoedasCadastro.add(btnCadastraBorda);
 
-		JLabel lblOColecionador = new JLabel("                    O COLECIONADOR");
-		lblOColecionador.setFont(new Font("Goudy Stout", Font.ITALIC, 16));
-		lblOColecionador.setBounds(162, -35, 523, 97);
-		contentPane.add(lblOColecionador);
+		JLabel lblNewLabel_1_1_6_2_8 = new JLabel("Materiais");
+		lblNewLabel_1_1_6_2_8.setFont(new Font("Verdana", Font.PLAIN, 13));
+		lblNewLabel_1_1_6_2_8.setBounds(1073, 355, 116, 23);
+		cbMoedasCadastro.add(lblNewLabel_1_1_6_2_8);
 
-		JLabel lblCadastro = new JLabel("                    CADASTRO MOEDAS");
-		lblCadastro.setFont(new Font("Goudy Stout", Font.ITALIC, 16));
-		lblCadastro.setBounds(194, 0, 523, 97);
-		contentPane.add(lblCadastro);
+		txtMateriais = new JTextField();
+		txtMateriais.setBounds(1073, 388, 116, 19);
+		cbMoedasCadastro.add(txtMateriais);
+		txtMateriais.setColumns(10);
 
-		JLabel lblNewLabel = new JLabel("Moeda");
-		lblNewLabel.setBounds(10, 60, 45, 13);
-		contentPane.add(lblNewLabel);
-		JButton btnDeletarMoeda = new JButton("Deletar Moeda");
+		cbMateriais = new JComboBox();
+		cbMateriais.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				MaterialEntity material = (MaterialEntity) cbMateriais.getSelectedItem();
+				cbRecebemateriaisModel.addElement(material);
+			}
+		});
+		cbMateriais.setBounds(1073, 417, 183, 21);
+		cbMoedasCadastro.add(cbMateriais);
+
+		JButton btnCadastraMaterial = new JButton("Cadastra Material");
+		btnCadastraMaterial.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				adicionaMateriais();
+				limpaCbRecebeMateriais();
+			}
+		});
+		btnCadastraMaterial.setBounds(1215, 387, 113, 21);
+		cbMoedasCadastro.add(btnCadastraMaterial);
+
+		JLabel lblNewLabel_1_1_6_2_5_1_1 = new JLabel("Pais");
+		lblNewLabel_1_1_6_2_5_1_1.setFont(new Font("Verdana", Font.PLAIN, 13));
+		lblNewLabel_1_1_6_2_5_1_1.setBounds(1073, 501, 116, 23);
+		cbMoedasCadastro.add(lblNewLabel_1_1_6_2_5_1_1);
+
+		txtPais = new JTextField();
+		txtPais.setBounds(1073, 544, 116, 19);
+		cbMoedasCadastro.add(txtPais);
+		txtPais.setColumns(10);
+
+		JButton btnCadastraPais = new JButton("cadastra Pais");
+		btnCadastraPais.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				adicionaPais();
+
+			}
+		});
+		btnCadastraPais.setBounds(1212, 543, 116, 21);
+		cbMoedasCadastro.add(btnCadastraPais);
+
+		JButton btnRemoveBordas = new JButton("Remover");
+		btnRemoveBordas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				BordasEntity bordas = (BordasEntity) cbRecebeBordasModel.getSelectedItem();
+				cbRecebeBordasModel.removeElement(bordas);
+			}
+		});
+		btnRemoveBordas.setBounds(221, 454, 85, 21);
+		cbMoedasCadastro.add(btnRemoveBordas);
+
+		JButton btnRemoverMate = new JButton("Remover");
+		btnRemoverMate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				MaterialEntity material = (MaterialEntity) cbRecebemateriaisModel.getSelectedItem();
+				cbRecebemateriaisModel.removeElement(material);
+			}
+		});
+		btnRemoverMate.setBounds(221, 543, 85, 21);
+		cbMoedasCadastro.add(btnRemoverMate);
+
+		JButton btnEditarMoeda = new JButton("Editar");
+		btnEditarMoeda.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				editarMoeda();
+				preencheLIsta();
+				carregaMoedas();
+			}
+		});
+		btnEditarMoeda.setBounds(122, 634, 85, 21);
+		cbMoedasCadastro.add(btnEditarMoeda);
+
+		JLabel lblNewLabel_1_1_6_2_9 = new JLabel("Codigo de catalogo (2)");
+		lblNewLabel_1_1_6_2_9.setFont(new Font("Verdana", Font.PLAIN, 13));
+		lblNewLabel_1_1_6_2_9.setBounds(267, 181, 152, 23);
+		cbMoedasCadastro.add(lblNewLabel_1_1_6_2_9);
+
+		txtCodCatalogo = new JTextField();
+		txtCodCatalogo.setBounds(262, 216, 132, 19);
+		cbMoedasCadastro.add(txtCodCatalogo);
+		txtCodCatalogo.setColumns(10);
+
+		JButton btnDeletarMoeda = new JButton("Deletar");
 		btnDeletarMoeda.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				MoedaService service = new MoedaService();
-				Moeda moeda1 = (Moeda) cbMoedasEdit.getSelectedItem();
-				Moeda moeda = new Moeda();
-
-				if (moeda1 == null) {
-					JOptionPane.showMessageDialog(null, "NÃO EXISTE MOEDA PARA DELETAR", "Erro",
-							JOptionPane.ERROR_MESSAGE);
-				} else {
-					int escolha = JOptionPane.showConfirmDialog(null,
-							"Deseja realizar o delete de " + moeda.getTitulo(), " : ", JOptionPane.YES_NO_OPTION);
-					if (escolha == JOptionPane.YES_OPTION) {
-						moeda.setIdMoeda(moeda1.getIdMoeda());
-						service.remover(moeda.getIdMoeda());
-						JOptionPane.showMessageDialog(null, "MOEDA DELATADA COM SUCESSO !!");
-
-					}
-				}
-
-				MoedaRepository pdao = new MoedaRepository();
-				cbMoedasEdit.removeAllItems();
-				for (Moeda p : pdao.listar()) {
-
-					cbMoedasEdit.addItem(p);
-
-				}
-
+				deletarMoeda();
+				preencheLIsta();
+				carregaMoedas();
 			}
 		});
-		btnDeletarMoeda.setFont(new Font("Verdana", Font.PLAIN, 16));
-		btnDeletarMoeda.setBounds(378, 547, 155, 28);
-		contentPane.add(btnDeletarMoeda);
+		btnDeletarMoeda.setBounds(241, 634, 85, 21);
+		cbMoedasCadastro.add(btnDeletarMoeda);
 
-		JButton btnNewButton_1 = new JButton("Editar Moeda");
-		btnNewButton_1.addActionListener(new ActionListener() {
+		JButton btnEditarPais = new JButton("Editar");
+		btnEditarPais.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Moeda moeda = new Moeda();
-				MoedaService service = new MoedaService();
-				Bordas bordas = (Bordas) cbBordas.getSelectedItem();
-				Material material = (Material) cbMaterial.getSelectedItem();
-				Pais pais = (Pais) cbPais.getSelectedItem();
-
-				Moeda moedas = (Moeda) cbMoedasEdit.getSelectedItem();
-
-				moeda.setTitulo(txtTitulo.getText());
-				moeda.setIdMoeda(moedas.getIdMoeda());
-				moeda.setAno(txtData.getText());
-
-				moeda.setValor(txtValor.getText());
-				moeda.setPeso(txtPeso.getText());
-				moeda.setEspessura(txtEspessura.getText());
-				moeda.setDiametro(txtDiametro.getText());
-				moeda.setCodigoCatalogo(txtCodigoCat.getText());
-				moeda.setBordas(bordas);
-				moeda.setMaterial(material);
-				moeda.setPais(pais);
-				service.salvar(moeda);
-
-				cbMoedasEdit.removeAll();
-				MoedaRepository repository = new MoedaRepository();
-				for (Moeda b : repository.listar()) {
-
-					cbMoedasEdit.addItem(b);
-
-				}
-				// limpeza dos campos
-				txtData.setText("");
-				txtCodigoCat.setText("");
-				txtEspessura.setText("");
-				txtDiametro.setText("");
-				txtPeso.setText("");
-				txtTitulo.setText("");
-				txtValor.setText("");
+				editarPais();
+				carregaPais();
+				carregaMoedas();
 			}
 		});
-		btnNewButton_1.setFont(new Font("Verdana", Font.PLAIN, 16));
-		btnNewButton_1.setBounds(178, 547, 189, 28);
-		contentPane.add(btnNewButton_1);
+		btnEditarPais.setBounds(1361, 543, 85, 21);
+		cbMoedasCadastro.add(btnEditarPais);
+
+		JButton btnEditarBordas = new JButton("Editar");
+		btnEditarBordas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				editarBordas();
+				carregaBordas();
+				carregaMoedas();
+
+			}
+		});
+		btnEditarBordas.setBounds(1361, 255, 85, 21);
+		cbMoedasCadastro.add(btnEditarBordas);
+
+		JButton btnEditarMaterial = new JButton("Editar");
+		btnEditarMaterial.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				editarMaterial();
+				carregaMaterial();
+			}
+		});
+		btnEditarMaterial.setBounds(1361, 387, 85, 21);
+		cbMoedasCadastro.add(btnEditarMaterial);
+
+		carregaMoedas();
+		preencheLIsta();
+		carregaMaterial();
+		carregaBordas();
+		carregaPais();
+		limpaCbRecebeBordas();
+		limpaCbRecebeMateriais();
+	}
+
+	public void preencheLIsta() {
+		MoedaService moedaService = new MoedaService();
+		try {
+			List<MoedaEntity> lista = moedaService.listar();
+			DefaultTableModel modeloTabela = (DefaultTableModel) table.getModel();
+			modeloTabela.setRowCount(0);
+			for (MoedaEntity moeda : lista) {
+				modeloTabela.addRow(new Object[] { moeda.getIdMoeda(), moeda.getTitulo() });
+
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	public void carregaMoedas() {
+		MoedaService moedaService = new MoedaService();
+		cbMoedasCad.removeAllItems();
+		for (MoedaEntity m : moedaService.listar()) {
+
+			cbMoedasCad.addItem(m);
+
+		}
+	}
+
+	public void cadastrarMoeda() {
+		MoedaEntity moeda = new MoedaEntity();
+		MoedaService service = new MoedaService();
+
+		List<MaterialEntity> materiais = new ArrayList<>();
+		for (int i = 0; i < cbRecebemateriaisModel.getSize(); i++) {
+			MaterialEntity material = cbRecebemateriaisModel.getElementAt(i);
+			materiais.add(material);
+		}
+		List<BordasEntity> bordas = new ArrayList<>();
+		for (int i = 0; i < cbRecebeBordasModel.getSize(); i++) {
+			BordasEntity borda = cbRecebeBordasModel.getElementAt(i);
+			bordas.add(borda);
+		}
+		PaisEntity pais = (PaisEntity) cbPais.getSelectedItem();
+
+		moeda.setCodigoCatalogo(txtCodCatalogo.getText());
+		moeda.setAno(txtAnoCom.getText());
+		moeda.setValor(txtValorMoneta.getText());
+		moeda.setDiametro(txtDiametro.getText());
+		moeda.setEspessura(txtEspessura.getText());
+		moeda.setPeso(txtPeso.getText());
+		moeda.setTitulo(txtTitulo.getText());
+		moeda.setMateriais(materiais);
+		moeda.setBordas(bordas);
+		moeda.setPaisEntity(pais);
+
+		service.salvar(moeda);
+
+		preencheLIsta();
+
+		cbRecebeBordasModel.removeAllElements();
+		cbRecebemateriaisModel.removeAllElements();
+		// limpeza dos campos
+
+		txtTitulo.setText("");
+		txtAnoCom.setText("");
+		txtDiametro.setText("");
+		txtEspessura.setText("");
+		txtPeso.setText("");
+		txtValorMoneta.setText("");
+		txtCodCatalogo.setText("");
 
 	}
 
-	private MaskFormatter setMascara(String mascara) {
-		MaskFormatter mask = null;
-		try {
-			mask = new MaskFormatter(mascara);
-		} catch (ParseException e) {
-
-			e.printStackTrace();
+	public void carregaMaterial() {
+		MaterialService materialService = new MaterialService();
+		cbMateriais.removeAllItems();
+		for (MaterialEntity m : materialService.listar()) {
+			cbMateriais.addItem(m);
 		}
-		return mask;
+	}
+
+	public void carregaBordas() {
+		BordasService bordasService = new BordasService();
+		cbBordas.removeAllItems();
+		for (BordasEntity m : bordasService.listar()) {
+
+			cbBordas.addItem(m);
+
+		}
+	}
+
+	public void carregaPais() {
+		PaisService paisService = new PaisService();
+		cbPais.removeAllItems();
+		for (PaisEntity p : paisService.listar()) {
+
+			cbPais.addItem(p);
+
+		}
+	}
+
+	public void limpaCbRecebeBordas() {
+		cbRecebeBordasModel.removeAllElements();
+
+	}
+
+	public void limpaCbRecebeMateriais() {
+		cbRecebemateriaisModel.removeAllElements();
+
+	}
+
+	public void adicionaBorda() {
+		BordasEntity bordas = new BordasEntity();
+		BordasService bordasService = new BordasService();
+
+		bordas.setNome(txtBordas.getText());
+		bordasService.salvar(bordas);
+		txtBordas.setText("");
+		// Atualiza cbMaterias
+
+		cbBordas.removeAllItems();
+		for (BordasEntity m : bordasService.listar()) {
+
+			cbBordas.addItem(m);
+
+		}
+	}
+
+	public void adicionaPais() {
+		PaisEntity pais = new PaisEntity();
+		PaisService paisService = new PaisService();
+
+		pais.setNome(txtPais.getText());
+		paisService.salvar(pais);
+		txtPais.setText("");
+		// Atualiza cbMaterias
+
+		cbPais.removeAllItems();
+		for (PaisEntity m : paisService.listar()) {
+
+			cbPais.addItem(m);
+
+		}
+
+	}
+
+	public void adicionaMateriais() {
+
+		MaterialEntity material = new MaterialEntity();
+		MaterialService materialService = new MaterialService();
+
+		material.setNome(txtMateriais.getText());
+		materialService.salvar(material);
+		txtMateriais.setText("");
+		// Atualiza cbMaterias
+		MaterialRepository mdao = new MaterialRepository();
+		cbMateriais.removeAllItems();
+		for (MaterialEntity m : mdao.listar()) {
+
+			cbMateriais.addItem(m);
+
+		}
+	}
+
+	public void editarMoeda() {
+		MoedaEntity moeda = new MoedaEntity();
+		MoedaService service = new MoedaService();
+		List<MaterialEntity> materiais = new ArrayList<>();
+		for (int i = 0; i < cbRecebemateriaisModel.getSize(); i++) {
+			MaterialEntity material = cbRecebemateriaisModel.getElementAt(i);
+			materiais.add(material);
+		}
+		List<BordasEntity> bordas = new ArrayList<>();
+		for (int i = 0; i < cbRecebeBordasModel.getSize(); i++) {
+			BordasEntity borda = cbRecebeBordasModel.getElementAt(i);
+			bordas.add(borda);
+		}
+		PaisEntity pais = (PaisEntity) cbPais.getSelectedItem();
+
+		MoedaEntity moedas = (MoedaEntity) cbMoedasCad.getSelectedItem();
+
+		moeda.setTitulo(txtTitulo.getText());
+		moeda.setIdMoeda(moedas.getIdMoeda());
+		moeda.setAno(txtAnoCom.getText());
+		moeda.setCodigoCatalogo(txtCodCatalogo.getText());
+		moeda.setValor(txtValorMoneta.getText());
+		moeda.setPeso(txtPeso.getText());
+		moeda.setEspessura(txtEspessura.getText());
+		moeda.setDiametro(txtDiametro.getText());
+
+		moeda.setBordas(bordas);
+		moeda.setMateriais(materiais);
+		moeda.setPaisEntity(pais);
+		service.salvar(moeda);
+
+		cbMoedasCad.removeAll();
+
+		for (MoedaEntity b : service.listar()) {
+
+			cbMoedasCad.addItem(b);
+
+		}
+		// limpeza dos campos
+		txtTitulo.setText("");
+		txtAnoCom.setText("");
+		txtDiametro.setText("");
+		txtEspessura.setText("");
+		txtPeso.setText("");
+		txtValorMoneta.setText("");
+		txtCodCatalogo.setText("");
+
+	}
+
+	public void deletarMoeda() {
+		MoedaService service = new MoedaService();
+		MoedaEntity moeda1 = (MoedaEntity) cbMoedasCad.getSelectedItem();
+		MoedaEntity moeda = new MoedaEntity();
+
+		if (moeda1 == null) {
+			JOptionPane.showMessageDialog(null, "NÃO EXISTE MOEDA PARA DELETAR", "Erro", JOptionPane.ERROR_MESSAGE);
+		} else {
+			int escolha = JOptionPane.showConfirmDialog(null, "Deseja realizar o delete de " + moeda.getTitulo(), " : ",
+					JOptionPane.YES_NO_OPTION);
+			if (escolha == JOptionPane.YES_OPTION) {
+				moeda.setIdMoeda(moeda1.getIdMoeda());
+				service.remover(moeda.getIdMoeda());
+				JOptionPane.showMessageDialog(null, "MOEDA DELATADA COM SUCESSO !!");
+
+			}
+		}
+
+	}
+
+	public void editarPais() {
+		PaisService service = new PaisService();
+		PaisEntity pais1 = (PaisEntity) cbPais.getSelectedItem();
+		PaisEntity pais = new PaisEntity();
+		pais.setIdPais(pais1.getIdPais());
+		pais.setNome(txtPais.getText());
+		service.salvar(pais);
+		txtPais.setText("");
+
+	}
+
+	public void editarBordas() {
+		BordasService service = new BordasService();
+		BordasEntity bordas1 = (BordasEntity) cbBordas.getSelectedItem();
+		BordasEntity bordas = new BordasEntity();
+		bordas.setIdBordas(bordas1.getIdBordas());
+		bordas.setNome(txtBordas.getText());
+		service.salvar(bordas);
+		txtBordas.setText("");
+	}
+
+	public void editarMaterial() {
+		MaterialService service = new MaterialService();
+		MaterialEntity material1 = (MaterialEntity) cbMateriais.getSelectedItem();
+		MaterialEntity material = new MaterialEntity();
+		material.setIdMaterial(material1.getIdMaterial());
+		material.setNome(txtMateriais.getText());
+		service.salvar(material);
+		txtMateriais.setText("");
 	}
 }

@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import oColecionador.entity.Pais;
+import oColecionador.entity.PaisEntity;
 
 import oColecionador.repository.PaisRepository;
 
@@ -16,26 +16,26 @@ public class PaisService {
 	}
 
 	
-	public Pais salvar(Pais pais) {
-		Pais entity = paisRepository.pesquisaPeloNome(pais.getNome());
-		if (pais.getIdPais() == null) {
+	public PaisEntity salvar(PaisEntity paisEntity) {
+		PaisEntity entity = paisRepository.pesquisaPeloNome(paisEntity.getNome());
+		if (paisEntity.getIdPais() == null) {
 			
 			if (entity == null) {
-				paisRepository.inserir(pais);
+				paisRepository.inserir(paisEntity);
 			} else {
-				JOptionPane.showInternalMessageDialog(null, " Pais " + " '" + pais.getNome() + "' " + " já cadastrado");
+				JOptionPane.showInternalMessageDialog(null, " Pais " + " '" + paisEntity.getNome() + "' " + " já cadastrado");
 			}
 		} else {
-			paisRepository.atualizar(pais);
-			Pais pais1 = new Pais();
-			pais1 = paisRepository.pesquisaPeloNome(pais.getNome());
+			paisRepository.atualizar(paisEntity);
+			PaisEntity pais1 = new PaisEntity();
+			pais1 = paisRepository.pesquisaPeloNome(paisEntity.getNome());
 			JOptionPane.showInternalMessageDialog(null,
 					"Nome do pais foi editado para : "+ pais1);
 		}
-		return pais;
+		return paisEntity;
 	}
 
-	public List<Pais> listar() {
+	public List<PaisEntity> listar() {
 		return paisRepository.listar();
 	}
 

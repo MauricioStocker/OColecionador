@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.MaskFormatter;
 
-import oColecionador.entity.Usuario;
+import oColecionador.entity.UsuarioEntity;
 import oColecionador.service.UsuarioService;
 
 import javax.swing.JLabel;
@@ -125,26 +125,17 @@ public class FormUsuario extends JFrame {
 		JButton btnSalvar = new JButton("CADASTRAR");
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Usuario usuario = new Usuario();
+				UsuarioEntity usuarioEntity = new UsuarioEntity();
 				UsuarioService usuarioService = new UsuarioService();
-				String nome1 = txtNome.getText();
-
-		        if (!nome1.matches("[a-zA-Z]+")) {
-		        	txtNome.setText("");
-		            // Exibe uma mensagem de erro informando que o campo deve conter apenas letras
-				JOptionPane.showMessageDialog(null, "O campo 'Nome' deve conter apenas letras", "Erro",
-						JOptionPane.ERROR_MESSAGE);
-		            return ;
-		            
-		        }
-				usuario.setNome(txtNome.getText());
-				usuario.setEndereco(txtEndereco.getText());
-				usuario.setTelefone(txtTell.getText());
-				usuario.setUser(txtUser.getText());
-				usuario.setSenha(txtSenha.getText());
-				usuario.setEmail(txtEmail.getText());
-				usuarioService.salvar(usuario);
-				if(usuarioService.salvar(usuario) == null) {
+				
+				usuarioEntity.setNome(txtNome.getText());
+				usuarioEntity.setEndereco(txtEndereco.getText());
+				usuarioEntity.setTelefone(txtTell.getText());
+				usuarioEntity.setUser(txtUser.getText());
+				usuarioEntity.setSenha(txtSenha.getText());
+				usuarioEntity.setEmail(txtEmail.getText());
+				usuarioService.salvar(usuarioEntity);
+				if(usuarioService.salvar(usuarioEntity) == null) {
 					
 					TelaLogin login = new TelaLogin();
 					login.setVisible(true);

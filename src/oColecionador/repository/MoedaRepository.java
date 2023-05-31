@@ -4,89 +4,89 @@ import java.util.List;
 
 import javax.persistence.*;
 
-import oColecionador.entity.Moeda;
+import oColecionador.entity.MoedaEntity;
 
 public class MoedaRepository {
 	private static EntityManager em = Persistence.createEntityManagerFactory("o_colecionador").createEntityManager();
 
-	public void inserir(Moeda moeda) {
+	public void inserir(MoedaEntity moedaEntity) {
 		try {
 			em.getTransaction().begin();
-			em.persist(moeda);
+			em.persist(moedaEntity);
 			em.getTransaction().commit();
 		} catch (Exception e) {
 			em.getTransaction().rollback();
-			System.out.println("Ocorreu um erro ao inserir os dados do fabricante.");
+			System.out.println("Ocorreu um erro ao inserir os dados da Moeda.");
 			System.out.println(e.getMessage());
 		}
 	}
 
-	public void atualizar(Moeda moeda) {
+	public void atualizar(MoedaEntity moedaEntity) {
 		try {
 			em.getTransaction().begin();
-			em.merge(moeda);
+			em.merge(moedaEntity);
 			em.getTransaction().commit();
 		} catch (Exception e) {
 			em.getTransaction().rollback();
-			System.out.println("Ocorreu um erro ao atualizar os dados do fabricante.");
+			System.out.println("Ocorreu um erro ao atualizar os dados da Moeda.");
 			System.out.println(e.getMessage());
 		}
 	}
 
-	public Moeda pesquisaPeloId(Long id) {
-		Moeda moeda = null;
+	public MoedaEntity pesquisaPeloId(Long id) {
+		MoedaEntity moedaEntity = null;
 		try {
-			moeda = em.find(Moeda.class, id);
+			moedaEntity = em.find(MoedaEntity.class, id);
 		} catch (Exception e) {
-			System.out.println("Ocorreu um erro ao pesquisar o fabricante pelo id");
+			System.out.println("Ocorreu um erro ao pesquisar a Moeda pelo id");
 		}
-		return moeda;
+		return moedaEntity;
 	}
 
 	public void remover(Long id) {
-		Moeda moeda = pesquisaPeloId(id);
-		remover(moeda);
+		MoedaEntity moedaEntity = pesquisaPeloId(id);
+		remover(moedaEntity);
 	}
 
-	public void remover(Moeda moeda) {
+	public void remover(MoedaEntity moedaEntity) {
 		try {
 			em.getTransaction().begin();
-			em.remove(moeda);
+			em.remove(moedaEntity);
 			em.getTransaction().commit();
 		} catch (Exception e) {
 			em.getTransaction().rollback();
-			System.out.println("Ocorreu um erro ao remover o fabricante");
+			System.out.println("Ocorreu um erro ao remover a Moeda");
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Moeda> listar() {
-		List<Moeda> moedas = null;
-		Query query = em.createQuery("SELECT f FROM Moeda f");
+	public List<MoedaEntity> listar() {
+		List<MoedaEntity> moedaEntities = null;
+		Query query = em.createQuery("SELECT f FROM MoedaEntity f");
 		try {
-			moedas = query.getResultList();
+			moedaEntities = query.getResultList();
 		} catch (Exception e) {
-			System.out.println("Ocorreu um erro ao listar todos os fabricantes");
+			System.out.println("Ocorreu um erro ao listar todas as moedas");
 		}
-		return moedas;
+		return moedaEntities;
 	}
 
 	// Implementar
 	@SuppressWarnings("unchecked")
-	public Moeda pesquisaPeloNome(String titulo) {
-		Moeda moeda = null;
-		Query query = em.createQuery("SELECT f FROM Moeda f WHERE f.titulo = :titulo");
+	public MoedaEntity pesquisaPeloNome(String titulo) {
+		MoedaEntity moedaEntity = null;
+		Query query = em.createQuery("SELECT f FROM MoedaEntity f WHERE f.titulo = :titulo");
 		query.setParameter("titulo", titulo);
 		try {
-			List<Moeda> moedas = null;
-			moedas = query.getResultList();
-			if (moedas != null) {
-				moeda = moedas.get(0);
+			List<MoedaEntity> moedaEntities = null;
+			moedaEntities = query.getResultList();
+			if (moedaEntities != null) {
+				moedaEntity = moedaEntities.get(0);
 			}
 		} catch (Exception e) {
-			System.out.println("Ocorreu um erro ao pesquisar um fabricante pelo nome");
+			System.out.println("Ocorreu um erro ao pesquisar uma moeda pelo titutlo");
 		}
-		return moeda;
+		return moedaEntity;
 	}
 
 }

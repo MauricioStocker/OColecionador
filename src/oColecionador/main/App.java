@@ -1,9 +1,9 @@
 package oColecionador.main;
 
-import oColecionador.entity.Bordas;
+import oColecionador.entity.BordasEntity;
 
-import oColecionador.entity.Material;
-import oColecionador.entity.Pais;
+import oColecionador.entity.MaterialEntity;
+import oColecionador.entity.PaisEntity;
 import oColecionador.service.BordasService;
 
 import oColecionador.service.MaterialService;
@@ -12,18 +12,18 @@ import oColecionador.service.PaisService;
 public class App {
 
 	public static void main(String[] args) {
-		Pais pais = new Pais();
+		PaisEntity paisEntity = new PaisEntity();
 		PaisService paisService = new PaisService();
 
 		BordasService service = new BordasService();
 		
-		Bordas principal = new Bordas();
+		BordasEntity principal = new BordasEntity();
 		
-		Material material = new Material();
+		MaterialEntity materialEntity = new MaterialEntity();
 		MaterialService service3 = new MaterialService();
-		pais.setIdPais(1L);
-		pais.setNome("Brasil");
-		paisService.salvar(pais);
+		paisEntity.setIdPais(1L);
+		paisEntity.setNome("Brasil");
+		paisService.salvar(paisEntity);
 		
 		
 		
@@ -33,9 +33,9 @@ public class App {
 		
 		
 		
-		material.setIdMaterial(1L);
-		material.setNome("cobre");
-		service3.salvar(material);
+		materialEntity.setIdMaterial(1L);
+		materialEntity.setNome("cobre");
+		service3.salvar(materialEntity);
 		
 		
 		

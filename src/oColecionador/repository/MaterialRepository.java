@@ -7,89 +7,89 @@ import javax.persistence.Persistence;
 import javax.persistence.Query;
 
 
-import oColecionador.entity.Material;
+import oColecionador.entity.MaterialEntity;
 
 public class MaterialRepository {
 	private static EntityManager em = Persistence.createEntityManagerFactory("o_colecionador").createEntityManager();
 
-	public void inserir(Material materia) {
+	public void inserir(MaterialEntity materia) {
 		try {
 			em.getTransaction().begin();
 			em.persist(materia);
 			em.getTransaction().commit();
 		} catch (Exception e) {
 			em.getTransaction().rollback();
-			System.out.println("Ocorreu um erro ao inserir os dados do fabricante.");
+			System.out.println("Ocorreu um erro ao inserir os dados do Material.");
 			System.out.println(e.getMessage());
 		}
 	}
 
-	public void atualizar(Material material) {
+	public void atualizar(MaterialEntity materialEntity) {
 		try {
 			em.getTransaction().begin();
-			em.merge(material);
+			em.merge(materialEntity);
 			em.getTransaction().commit();
 		} catch (Exception e) {
 			em.getTransaction().rollback();
-			System.out.println("Ocorreu um erro ao atualizar os dados do fabricante.");
+			System.out.println("Ocorreu um erro ao atualizar os dados do Material.");
 			System.out.println(e.getMessage());
 		}
 	}
 
-	public Material pesquisaPeloId(Long id) {
-		Material material = null;
+	public MaterialEntity pesquisaPeloId(Long id) {
+		MaterialEntity materialEntity = null;
 		try {
-			material = em.find(Material.class, id);
+			materialEntity = em.find(MaterialEntity.class, id);
 		} catch (Exception e) {
-			System.out.println("Ocorreu um erro ao pesquisar o fabricante pelo id");
+			System.out.println("Ocorreu um erro ao pesquisar o Material pelo id");
 		}
-		return material;
+		return materialEntity;
 	}
 
 	public void remover(Long id) {
-		Material material = pesquisaPeloId(id);
-		remover(material);
+		MaterialEntity materialEntity = pesquisaPeloId(id);
+		remover(materialEntity);
 	}
 
-	public void remover(Material material) {
+	public void remover(MaterialEntity materialEntity) {
 		try {
 			em.getTransaction().begin();
-			em.remove(material);
+			em.remove(materialEntity);
 			em.getTransaction().commit();
 		} catch (Exception e) {
 			em.getTransaction().rollback();
-			System.out.println("Ocorreu um erro ao remover o fabricante");
+			System.out.println("Ocorreu um erro ao remover o Material");
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Material> listar() {
-		List<Material> materials = null;
-		Query query = em.createQuery("SELECT f FROM Material f");
+	public List<MaterialEntity> listar() {
+		List<MaterialEntity> materialEntities = null;
+		Query query = em.createQuery("SELECT f FROM MaterialEntity f");
 		try {
-			materials = query.getResultList();
+			materialEntities = query.getResultList();
 		} catch (Exception e) {
-			System.out.println("Ocorreu um erro ao listar todos os fabricantes");
+			System.out.println("Ocorreu um erro ao listar todos os Materiais");
 		}
-		return materials;
+		return materialEntities;
 	}
 
 	// Implementar
 	@SuppressWarnings("unchecked")
-	public Material pesquisaPeloNome(String nome) {
-		Material material = null;
-		Query query = em.createQuery("SELECT f FROM Material f WHERE f.nome = :nome");
+	public MaterialEntity pesquisaPeloNome(String nome) {
+		MaterialEntity materialEntity = null;
+		Query query = em.createQuery("SELECT f FROM MaterialEntity f WHERE f.nome = :nome");
 		query.setParameter("nome", nome);
 		try {
-			List<Material> materials = null;
-			materials = query.getResultList();
-			if (materials != null) {
-				material = materials.get(0);
+			List<MaterialEntity> materialEntities = null;
+			materialEntities = query.getResultList();
+			if (materialEntities != null) {
+				materialEntity = materialEntities.get(0);
 			}
 		} catch (Exception e) {
-			System.out.println("Ocorreu um erro ao pesquisar um fabricante pelo nome");
+			System.out.println("Ocorreu um erro ao pesquisar um Material pelo nome");
 		}
-		return material;
+		return materialEntity;
 	}
 
 }

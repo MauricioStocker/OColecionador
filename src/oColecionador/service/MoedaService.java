@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import oColecionador.entity.Moeda;
+import oColecionador.entity.MoedaEntity;
 
 import oColecionador.repository.MoedaRepository;
 
@@ -15,30 +15,30 @@ public class MoedaService {
 		moedaRepository = new MoedaRepository();
 	}
 
-	public Moeda salvar(Moeda moeda) {
-		Moeda entity = moedaRepository.pesquisaPeloNome(moeda.getTitulo());
-		if (moeda.getIdMoeda() == null) {
+	public MoedaEntity salvar(MoedaEntity moedaEntity) {
+		MoedaEntity entity = moedaRepository.pesquisaPeloNome(moedaEntity.getTitulo());
+		if (moedaEntity.getIdMoeda() == null) {
 			
 			if (entity == null) {
-				moedaRepository.inserir(moeda);
+				moedaRepository.inserir(moedaEntity);
 				JOptionPane.showInternalMessageDialog(null,
-						"Moeda  " + " ' " + moeda.getTitulo() + " ' " + "cadastrado !!");
+						"Moeda  " + " ' " + moedaEntity.getTitulo() + " ' " + "cadastrado !!");
 			} else {
 				JOptionPane.showInternalMessageDialog(null,
-						"Moeda " + " ' " + moeda.getTitulo() + " ' " + "Já cadastrada !!!!");
+						"Moeda " + " ' " + moedaEntity.getTitulo() + " ' " + "Já cadastrada !!!!");
 
 			}
 		} else {
 			
-			moedaRepository.atualizar(moeda);
+			moedaRepository.atualizar(moedaEntity);
 			JOptionPane.showInternalMessageDialog(null,
 					"Moeda Atualizado com sucesso  !!!!");
 		
 		}
-		return moeda;
+		return moedaEntity;
 	}
 
-	public List<Moeda> listar() {
+	public List<MoedaEntity> listar() {
 		return moedaRepository.listar();
 	}
 

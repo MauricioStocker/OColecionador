@@ -4,89 +4,89 @@ import java.util.List;
 
 import javax.persistence.*;
 
-import oColecionador.entity.Bordas;
+import oColecionador.entity.BordasEntity;
 
 public class BordasRepository {
 	private static EntityManager em = Persistence.createEntityManagerFactory("o_colecionador").createEntityManager();
 
-	public void inserir(Bordas bordas) {
+	public void inserir(BordasEntity bordasEntity) {
 		try {
 			em.getTransaction().begin();
-			em.persist(bordas);
+			em.persist(bordasEntity);
 			em.getTransaction().commit();
 		} catch (Exception e) {
 			em.getTransaction().rollback();
-			System.out.println("Ocorreu um erro ao inserir os dados do fabricante.");
+			System.out.println("Ocorreu um erro ao inserir os dados da Borda.");
 			System.out.println(e.getMessage());
 		}
 	}
 
-	public void atualizar(Bordas bordas) {
+	public void atualizar(BordasEntity bordasEntity) {
 		try {
 			em.getTransaction().begin();
-			em.merge(bordas);
+			em.merge(bordasEntity);
 			em.getTransaction().commit();
 		} catch (Exception e) {
 			em.getTransaction().rollback();
-			System.out.println("Ocorreu um erro ao atualizar os dados do fabricante.");
+			System.out.println("Ocorreu um erro ao atualizar os dados da Borda.");
 			System.out.println(e.getMessage());
 		}
 	}
 
-	public Bordas pesquisaPeloId(Long id) {
-		Bordas bordas = null;
+	public BordasEntity pesquisaPeloId(Long id) {
+		BordasEntity bordasEntity = null;
 		try {
-			bordas = em.find(Bordas.class, id);
+			bordasEntity = em.find(BordasEntity.class, id);
 		} catch (Exception e) {
-			System.out.println("Ocorreu um erro ao pesquisar o fabricante pelo id");
+			System.out.println("Ocorreu um erro ao pesquisar a Borda pelo id");
 		}
-		return bordas;
+		return bordasEntity;
 	}
 
 	public void remover(Long id) {
-		Bordas bordas = pesquisaPeloId(id);
-		remover(bordas);
+		BordasEntity bordasEntity = pesquisaPeloId(id);
+		remover(bordasEntity);
 	}
 
-	public void remover(Bordas bordas) {
+	public void remover(BordasEntity bordasEntity) {
 		try {
 			em.getTransaction().begin();
-			em.remove(bordas);
+			em.remove(bordasEntity);
 			em.getTransaction().commit();
 		} catch (Exception e) {
 			em.getTransaction().rollback();
-			System.out.println("Ocorreu um erro ao remover o fabricante");
+			System.out.println("Ocorreu um erro ao remover a Borda");
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Bordas> listar() {
-		List<Bordas> bordas = null;
-		Query query = em.createQuery("SELECT f FROM Bordas f");
+	public List<BordasEntity> listar() {
+		List<BordasEntity> bordasEntity = null;
+		Query query = em.createQuery("SELECT f FROM BordasEntity f");
 		try {
-			bordas = query.getResultList();
+			bordasEntity = query.getResultList();
 		} catch (Exception e) {
-			System.out.println("Ocorreu um erro ao listar todos os fabricantes");
+			System.out.println("Ocorreu um erro ao listar todas as Bordas");
 		}
-		return bordas;
+		return bordasEntity;
 	}
 
 	// Implementar
 	@SuppressWarnings("unchecked")
-	public Bordas pesquisaPeloNome(String nome) {
-		Bordas bordas = null;
-		Query query = em.createQuery("SELECT f FROM Bordas f WHERE f.nome = :nome");
+	public BordasEntity pesquisaPeloNome(String nome) {
+		BordasEntity bordasEntity = null;
+		Query query = em.createQuery("SELECT f FROM BordasEntity f WHERE f.nome = :nome");
 		query.setParameter("nome", nome);
 		try {
-			List<Bordas> bordass = null;
+			List<BordasEntity> bordass = null;
 			bordass = query.getResultList();
 			if (bordass != null) {
-				bordas = bordass.get(0);
+				bordasEntity = bordass.get(0);
 			}
 		} catch (Exception e) {
-			System.out.println("Ocorreu um erro ao pesquisar um fabricante pelo nome");
+			System.out.println("Ocorreu um erro ao pesquisar uma Borda pelo nome");
 		}
-		return bordas;
+		return bordasEntity;
 	}
 
 }

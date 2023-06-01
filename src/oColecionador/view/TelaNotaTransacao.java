@@ -49,6 +49,7 @@ public class TelaNotaTransacao extends JFrame {
 	private JTextField txtDataTrans;
 	private JTextField txtNfe;
 	private UsuarioService usuarioService = new UsuarioService();
+
 	// metodo de pegar o user do usuario logado, e guardado na jlabel
 	public void setUser(String user) {
 		lblUser.setText(user);
@@ -131,7 +132,7 @@ public class TelaNotaTransacao extends JFrame {
 			public void ancestorAdded(AncestorEvent event) {
 				// responsavel para mostrar o usuário logado usando o lbl para pesquisar o
 				// usuário
-				
+
 				UsuarioEntity userLog = usuarioService.pesquisaUser(lblUser.getText());
 				cbUserLog.addItem(userLog);
 

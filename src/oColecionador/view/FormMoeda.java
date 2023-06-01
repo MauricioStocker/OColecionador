@@ -430,18 +430,20 @@ public class FormMoeda extends JFrame {
 
 	public void cadastrarMoeda() {
 		MoedaEntity moeda = new MoedaEntity();
-		MoedaService service = new MoedaService();
+		MoedaService moedaService = new MoedaService();
 
 		List<MaterialEntity> materiais = new ArrayList<>();
 		for (int i = 0; i < cbRecebemateriaisModel.getSize(); i++) {
 			MaterialEntity material = cbRecebemateriaisModel.getElementAt(i);
 			materiais.add(material);
 		}
+
 		List<BordasEntity> bordas = new ArrayList<>();
 		for (int i = 0; i < cbRecebeBordasModel.getSize(); i++) {
 			BordasEntity borda = cbRecebeBordasModel.getElementAt(i);
 			bordas.add(borda);
 		}
+
 		PaisEntity pais = (PaisEntity) cbPais.getSelectedItem();
 
 		moeda.setCodigoCatalogo(txtCodCatalogo.getText());
@@ -455,7 +457,7 @@ public class FormMoeda extends JFrame {
 		moeda.setBordas(bordas);
 		moeda.setPaisEntity(pais);
 
-		service.salvar(moeda);
+		moedaService.salvar(moeda);
 
 		preencheLIsta();
 

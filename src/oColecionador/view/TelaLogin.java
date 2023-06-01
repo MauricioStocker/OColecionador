@@ -7,12 +7,12 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import oColecionador.entity.UsuarioEntity;
-import oColecionador.repository.UsuarioRepository;
+
 import oColecionador.service.UsuarioService;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.SwingConstants;
+
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
@@ -109,7 +109,7 @@ public class TelaLogin extends JFrame {
 				TelaPrincipal principal = new TelaPrincipal();
 				TelaPrincipalUser principalUser = new TelaPrincipalUser();
 				String userLog = null;
-				
+
 				TelaCriarColecao1 criarColecao = new TelaCriarColecao1();
 				usuarioEntity.setUser(txtUser.getText());
 				usuarioEntity.setSenha(pswSenha.getText());

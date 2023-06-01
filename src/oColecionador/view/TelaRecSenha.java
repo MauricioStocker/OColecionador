@@ -76,16 +76,14 @@ public class TelaRecSenha extends JFrame {
 		JButton btnNewButton = new JButton("BUSCAR SENHA");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-			
-				
+
 				UsuarioEntity Recupera = usuarioService.pesquisaEmail(txtEmail.getText());
-				if(Recupera == null) {
-					
-				}else {
-					JOptionPane.showMessageDialog(null,"Olá "+Recupera.getNome()+ "\nSUA SENHA É: "+Recupera.getSenha());
+				if (Recupera == null) {
+
+				} else {
+					JOptionPane.showMessageDialog(null,
+							"Olá " + Recupera.getNome() + "\nSUA SENHA É: " + Recupera.getSenha());
 				}
-				
 
 			}
 		});

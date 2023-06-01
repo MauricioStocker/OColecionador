@@ -14,7 +14,7 @@ import javax.swing.table.DefaultTableModel;
 import oColecionador.entity.MoedaEntity;
 import oColecionador.entity.UsuarioEntity;
 import oColecionador.repository.MoedaRepository;
-
+import oColecionador.service.MoedaService;
 
 import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
@@ -27,13 +27,14 @@ public class TelaPrincipal extends JFrame {
 	private JPanel contentPane;
 	private JTable table;
 	private JLabel lblUser;
-	
-	
+	private MoedaService moedaService = new MoedaService();
+
 	// metodo de pegar o user do usuario logado, e guardado na jlabel
-		public void setUser(String user) {
-			lblUser.setText(user);
-		
-		}
+	public void setUser(String user) {
+		lblUser.setText(user);
+
+	}
+
 	/**
 	 * Launch the application.
 	 */
@@ -68,16 +69,16 @@ public class TelaPrincipal extends JFrame {
 		lblOColecionador.setFont(new Font("Goudy Stout", Font.ITALIC, 16));
 		lblOColecionador.setBounds(202, -19, 523, 97);
 		contentPane.add(lblOColecionador);
-		
+
 		lblUser = new JLabel("...");
 		lblUser.setBounds(80, 17, 99, 25);
 		getContentPane().add(lblUser);
 		lblUser.setFont(new Font("Tahoma", Font.BOLD, 14));
-		
+
 		// mostrando o usuário
-				JLabel lblNewLabel_1 = new JLabel("Usuário  :");
-				lblNewLabel_1.setBounds(10, 25, 76, 13);
-				getContentPane().add(lblNewLabel_1);
+		JLabel lblNewLabel_1 = new JLabel("Usuário  :");
+		lblNewLabel_1.setBounds(10, 25, 76, 13);
+		getContentPane().add(lblNewLabel_1);
 
 		JButton btnCadastrar = new JButton("Cadastrar");
 		btnCadastrar.addActionListener(new ActionListener() {
@@ -85,7 +86,7 @@ public class TelaPrincipal extends JFrame {
 				FormMoeda moeda = new FormMoeda();
 				moeda.setVisible(true);
 				moeda.setLocationRelativeTo(null);
-				
+
 			}
 		});
 		btnCadastrar.setBounds(10, 82, 99, 21);
@@ -98,15 +99,11 @@ public class TelaPrincipal extends JFrame {
 		table = new JTable();
 		scrollPane.setViewportView(table);
 		table.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null, null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null, null, null},
-			},
-			new String[] {
-				"C\u00F3digo de catalogo", "Titulo da Moeda", "Pais", "Data Comemorativo", "Valor Monetario", "Peso", "Espessura", "Diametro", "Borda", "Material"
-			}
-		));
+				new Object[][] { { null, null, null, null, null, null, null, null, null, null },
+						{ null, null, null, null, null, null, null, null, null, null },
+						{ null, null, null, null, null, null, null, null, null, null }, },
+				new String[] { "C\u00F3digo de catalogo", "Titulo da Moeda", "Pais", "Data Comemorativo",
+						"Valor Monetario", "Peso", "Espessura", "Diametro", "Borda", "Material" }));
 		table.getColumnModel().getColumn(0).setPreferredWidth(90);
 		table.getColumnModel().getColumn(1).setPreferredWidth(100);
 		table.getColumnModel().getColumn(2).setPreferredWidth(65);
@@ -116,24 +113,27 @@ public class TelaPrincipal extends JFrame {
 		table.getColumnModel().getColumn(7).setPreferredWidth(59);
 		table.getColumnModel().getColumn(8).setPreferredWidth(100);
 		table.getColumnModel().getColumn(9).setPreferredWidth(85);
-		
+
 		JLabel lblMoedas = new JLabel("                    MOEDAS");
 		lblMoedas.setFont(new Font("Goudy Stout", Font.ITALIC, 16));
 		lblMoedas.setBounds(190, 124, 523, 97);
 		contentPane.add(lblMoedas);
 		preencheLIsta();
 	}
+
 	public void preencheLIsta() {
-		MoedaRepository moedaRepository = new MoedaRepository();
-		List<MoedaEntity> lista = moedaRepository.listar();
+		
+		List<MoedaEntity> lista = moedaService.listar();
 		DefaultTableModel modeloTabela = (DefaultTableModel) table.getModel();
 		modeloTabela.setRowCount(0);
 		for (MoedaEntity moedaEntity : lista) {
-			modeloTabela.addRow(new Object[] { moedaEntity.getCodigoCatalogo(),moedaEntity.getTitulo(),moedaEntity.getPaisEntity() , moedaEntity.getAno(),moedaEntity.getValor(), moedaEntity.getPeso(), moedaEntity.getEspessura(),
-					moedaEntity.getDiametro(), moedaEntity.getBordas(), moedaEntity.getMateriais()});
+			modeloTabela.addRow(new Object[] { moedaEntity.getCodigoCatalogo(), moedaEntity.getTitulo(),
+					moedaEntity.getPaisEntity(), moedaEntity.getAno(), moedaEntity.getValor(), moedaEntity.getPeso(),
+					moedaEntity.getEspessura(), moedaEntity.getDiametro(), moedaEntity.getBordas(),
+					moedaEntity.getMateriais() });
 
 		}
 
 	}
-	
+
 }

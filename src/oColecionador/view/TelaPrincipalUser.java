@@ -198,7 +198,7 @@ public class TelaPrincipalUser extends JFrame {
 	}
 
 	public void preencheLIsta() {
-	
+
 		List<MoedaEntity> lista = moedaService.listar();
 		DefaultTableModel modeloTabela = (DefaultTableModel) table.getModel();
 		modeloTabela.setRowCount(0);

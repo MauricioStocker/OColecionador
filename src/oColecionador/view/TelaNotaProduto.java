@@ -73,7 +73,8 @@ public class TelaNotaProduto extends JFrame {
 
 	/**
 	 * Create the frame.
-	 * @throws ParseException 
+	 * 
+	 * @throws ParseException
 	 */
 	public TelaNotaProduto() throws ParseException {
 
@@ -111,15 +112,8 @@ public class TelaNotaProduto extends JFrame {
 		table = new JTable();
 		scrollPane.setViewportView(table);
 		table.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-			},
-			new String[] {
-				"ID NOTA", "DADOS DA MOEDA PRA VENDA", "VALOR DA MOEDA"
-			}
-		));
+				new Object[][] { { null, null, null }, { null, null, null }, { null, null, null }, },
+				new String[] { "ID NOTA", "DADOS DA MOEDA PRA VENDA", "VALOR DA MOEDA" }));
 		table.getColumnModel().getColumn(0).setPreferredWidth(17);
 		table.getColumnModel().getColumn(1).setPreferredWidth(851);
 		table.getColumnModel().getColumn(2).setPreferredWidth(35);
@@ -133,7 +127,8 @@ public class TelaNotaProduto extends JFrame {
 		cbUserLog.setEnabled(false);
 		cbUserLog.addAncestorListener(new AncestorListener() {
 			public void ancestorAdded(AncestorEvent event) {
-				//responsavel para mostrar o usuário logado usando o lbl para pesquisar o usuário
+				// responsavel para mostrar o usuário logado usando o lbl para pesquisar o
+				// usuário
 				UsuarioRepository repository = new UsuarioRepository();
 				UsuarioEntity userLog = repository.pesquisaPeloUser(lblUser.getText());
 				cbUserLog.addItem(userLog);
@@ -152,7 +147,8 @@ public class TelaNotaProduto extends JFrame {
 		JComboBox cbMoeda = new JComboBox();
 		cbMoeda.addAncestorListener(new AncestorListener() {
 			public void ancestorAdded(AncestorEvent event) {
-				//responsavel para buscar o usuário para ser usando no metodo de retorno do usuario logado das coleções moeda
+				// responsavel para buscar o usuário para ser usando no metodo de retorno do
+				// usuario logado das coleções moeda
 				UsuarioRepository repository1 = new UsuarioRepository();
 				UsuarioEntity userLog = repository1.pesquisaPeloUser(lblUser.getText());
 				ColecaoRepository repository = new ColecaoRepository();
@@ -188,21 +184,19 @@ public class TelaNotaProduto extends JFrame {
 				NotaProdutoRepository dao = new NotaProdutoRepository();
 				ColecaoEntity colecaoEntity = (ColecaoEntity) cbMoeda.getSelectedItem();
 				UsuarioEntity usuarioEntity = (UsuarioEntity) cbUserLog.getSelectedItem();
-				
-				//corrigir com metodo de lista
-				//notaProdutoEntity.setColecaoEntity(colecaoEntity);
+
+				// corrigir com metodo de lista
+				// notaProdutoEntity.setColecaoEntity(colecaoEntity);
 				notaProdutoEntity.setUsuarioEntity(usuarioEntity);
-				//corrigir com lista
-				//notaProdutoEntity.setColecaos(colecaoEntity);
+				// corrigir com lista
+				// notaProdutoEntity.setColecaos(colecaoEntity);
 				notaProdutoEntity.setQuantidade(txtQuantidade.getText());
 				notaProdutoEntity.setValorUni(txtQuant.getText());
 				dao.inserir(notaProdutoEntity);
-				JOptionPane.showMessageDialog(null,"NOTA DO PRODUTO GERADA COM SUCESSO"+
-						"\nVENDEDOR: "+notaProdutoEntity.getUsuarioEntity()+"\nVALOR: "+notaProdutoEntity.getValorUni());
+				JOptionPane.showMessageDialog(null, "NOTA DO PRODUTO GERADA COM SUCESSO" + "\nVENDEDOR: "
+						+ notaProdutoEntity.getUsuarioEntity() + "\nVALOR: " + notaProdutoEntity.getValorUni());
 				preencheLIstaColecaoProd();
-				
-				
-				
+
 			}
 		});
 		btnCriarColec.setBounds(368, 147, 164, 21);
@@ -224,7 +218,7 @@ public class TelaNotaProduto extends JFrame {
 		txtQuant.setBounds(205, 148, 96, 19);
 		contentPane.add(txtQuant);
 		txtQuant.setColumns(10);
-		
+
 		JButton btnNewButton = new JButton("att");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -234,7 +228,7 @@ public class TelaNotaProduto extends JFrame {
 		btnNewButton.setBounds(757, 211, 85, 21);
 		contentPane.add(btnNewButton);
 		preencheLIstaColecaoProd();
-	
+
 	}
 
 	public void preencheLIsta() {
@@ -243,9 +237,12 @@ public class TelaNotaProduto extends JFrame {
 		DefaultTableModel modeloTabela = (DefaultTableModel) table.getModel();
 		modeloTabela.setRowCount(0);
 		for (MoedaEntity moedaEntity : lista) {
-			modeloTabela.addRow(new Object[] { moedaEntity.getCodigoCatalogo(), moedaEntity.getTitulo(), moedaEntity.getPaisEntity(),
-					moedaEntity.getAno(), moedaEntity.getValor(), moedaEntity.getPeso(), moedaEntity.getEspessura(), moedaEntity.getDiametro()/*,
-					moedaEntity.getBordasEntity(), moedaEntity.getMaterialEntity()*/ });
+			modeloTabela.addRow(new Object[] { moedaEntity.getCodigoCatalogo(), moedaEntity.getTitulo(),
+					moedaEntity.getPaisEntity(), moedaEntity.getAno(), moedaEntity.getValor(), moedaEntity.getPeso(),
+					moedaEntity.getEspessura(),
+					moedaEntity.getDiametro()/*
+												 * , moedaEntity.getBordasEntity(), moedaEntity.getMaterialEntity()
+												 */ });
 
 		}
 
@@ -257,7 +254,8 @@ public class TelaNotaProduto extends JFrame {
 		DefaultTableModel modeloTabela = (DefaultTableModel) table.getModel();
 		modeloTabela.setRowCount(0);
 		for (NotaProdutoEntity colecao : lista) {
-			modeloTabela.addRow(new Object[] { colecao.getIdNotaProduto()/*, colecao.getColecaoEntity()*/, colecao.getValorUni() });
+			modeloTabela.addRow(new Object[] { colecao.getIdNotaProduto()/* , colecao.getColecaoEntity() */,
+					colecao.getValorUni() });
 		}
 	}
 }

@@ -46,7 +46,7 @@ public class TelaCriarColecao1 extends JFrame {
 	private JTable tbColecao;
 	private JComboBox cbMoedasRegistradas;
 	private JComboBox cbStatus;
-	private ColecaoService colecaoService =  new ColecaoService();
+	private ColecaoService colecaoService = new ColecaoService();
 	private MoedaService moedaService = new MoedaService();
 	private UsuarioService usuarioService = new UsuarioService();
 	private TipoService tipoService = new TipoService();
@@ -76,6 +76,7 @@ public class TelaCriarColecao1 extends JFrame {
 	 * Create the frame.
 	 */
 	public TelaCriarColecao1() {
+		
 		setBounds(100, 100, 1054, 746);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -142,6 +143,7 @@ public class TelaCriarColecao1 extends JFrame {
 		cbUserLog.setBounds(481, 187, 471, 21);
 		contentPane.add(cbUserLog);
 
+		
 		JButton btnCadastrarColecao = new JButton("Cadastrar");
 		btnCadastrarColecao.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -157,26 +159,18 @@ public class TelaCriarColecao1 extends JFrame {
 		lblOleo.setFont(new Font("Goudy Stout", Font.ITALIC, 16));
 		lblOleo.setBounds(321, 282, 226, 56);
 		contentPane.add(lblOleo);
-		
 
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(34, 383, 923, 302);
 		contentPane.add(scrollPane);
-	
+
 		tbColecao = new JTable();
 		scrollPane.setViewportView(tbColecao);
 		tbColecao.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-			},
-			new String[] {
-				"ID COLE\u00C7\u00C3O", "MOEDA", "USU\u00C1RIO", "STATUS"
-			}
-		));
-		
+				new Object[][] { { null, null, null, null }, { null, null, null, null }, { null, null, null, null },
+						{ null, null, null, null }, },
+				new String[] { "ID COLE\u00C7\u00C3O", "MOEDA", "USU\u00C1RIO", "STATUS" }));
+
 		tbColecao.getColumnModel().getColumn(0).setPreferredWidth(38);
 		tbColecao.getColumnModel().getColumn(1).setPreferredWidth(644);
 		tbColecao.getColumnModel().getColumn(2).setPreferredWidth(50);
@@ -184,14 +178,13 @@ public class TelaCriarColecao1 extends JFrame {
 
 		
 		preencheTabela();
-		
 		carregaStatus();
 		carregaMoedas();
-	
+		
 	}
 
 	public void carregaMoedas() {
-		
+
 		cbMoedasRegistradas.removeAllItems();
 		for (MoedaEntity m : moedaService.listar()) {
 			cbMoedasRegistradas.addItem(m);
@@ -228,12 +221,13 @@ public class TelaCriarColecao1 extends JFrame {
 	}
 
 	public void preencheTabela() {
-		List<ColecaoEntity> lista = colecaoService.listar();
+		UsuarioEntity usuarioEntity = (UsuarioEntity) cbUserLog.getSelectedItem();
+		List<ColecaoEntity> lista = colecaoService.listarColecaoLogado(usuarioEntity);
 		DefaultTableModel modeloTabela = (DefaultTableModel) tbColecao.getModel();
 		modeloTabela.setRowCount(0);
-		for (ColecaoEntity colecao1 : lista) {
-			modeloTabela.addRow(new Object[] { colecao1.getIdColecao(), colecao1.getMoedaEntity().getTitulo(), colecao1.getUsuarioEntity(), colecao1.getTipoTransacaoEntity()
-					 });
+		for (ColecaoEntity colecao : lista) {
+			modeloTabela.addRow(new Object[] { colecao.getIdColecao(), colecao.getMoedaEntity().getTitulo(),
+					colecao.getUsuarioEntity(), colecao.getTipoTransacaoEntity() });
 		}
 	}
 

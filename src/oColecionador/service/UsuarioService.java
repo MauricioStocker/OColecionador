@@ -42,15 +42,15 @@ public class UsuarioService {
 		}
 		return usuarioEntity;
 	}
-	
+
 	public UsuarioEntity pesquisaUser(String user) {
-		
+
 		return usuarioEntity = usuarioRepository.pesquisaPeloUser(user);
-			
-	
+
 	}
+
 	public UsuarioEntity pesquisaEmail(String email) {
 		return usuarioEntity = usuarioRepository.pesquisaPeloEmail(email);
 	}
-	
+
 }

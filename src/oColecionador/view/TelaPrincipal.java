@@ -11,10 +11,13 @@ import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import oColecionador.entity.BordasEntity;
+import oColecionador.entity.MaterialEntity;
 import oColecionador.entity.MoedaEntity;
 import oColecionador.entity.UsuarioEntity;
 import oColecionador.repository.MoedaRepository;
 import oColecionador.service.MoedaService;
+import oColecionador.util.FormataData;
 
 import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
@@ -58,7 +61,7 @@ public class TelaPrincipal extends JFrame {
 	public TelaPrincipal() {
 		System.out.println();
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 1016, 580);
+		setBounds(100, 100, 1357, 580);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -67,7 +70,7 @@ public class TelaPrincipal extends JFrame {
 
 		JLabel lblOColecionador = new JLabel("                    O COLECIONADOR");
 		lblOColecionador.setFont(new Font("Goudy Stout", Font.ITALIC, 16));
-		lblOColecionador.setBounds(202, -19, 523, 97);
+		lblOColecionador.setBounds(372, -19, 523, 68);
 		contentPane.add(lblOColecionador);
 
 		lblUser = new JLabel("...");
@@ -80,8 +83,8 @@ public class TelaPrincipal extends JFrame {
 		lblNewLabel_1.setBounds(10, 25, 76, 13);
 		getContentPane().add(lblNewLabel_1);
 
-		JButton btnCadastrar = new JButton("Cadastrar");
-		btnCadastrar.addActionListener(new ActionListener() {
+		JButton btnCadastrarMoedas = new JButton("Cadastrar Moedas");
+		btnCadastrarMoedas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				FormMoeda moeda = new FormMoeda();
 				moeda.setVisible(true);
@@ -89,11 +92,11 @@ public class TelaPrincipal extends JFrame {
 
 			}
 		});
-		btnCadastrar.setBounds(10, 82, 99, 21);
-		contentPane.add(btnCadastrar);
+		btnCadastrarMoedas.setBounds(10, 123, 169, 21);
+		contentPane.add(btnCadastrarMoedas);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 194, 949, 312);
+		scrollPane.setBounds(10, 194, 1299, 312);
 		contentPane.add(scrollPane);
 
 		table = new JTable();
@@ -116,24 +119,79 @@ public class TelaPrincipal extends JFrame {
 
 		JLabel lblMoedas = new JLabel("                    MOEDAS");
 		lblMoedas.setFont(new Font("Goudy Stout", Font.ITALIC, 16));
-		lblMoedas.setBounds(190, 124, 523, 97);
+		lblMoedas.setBounds(436, 154, 523, 49);
 		contentPane.add(lblMoedas);
+
+		JButton btnCadastraBordas = new JButton("Cadastrar Bordas");
+		btnCadastraBordas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				FormBordas formBordas = new FormBordas();
+				formBordas.setVisible(true);
+				formBordas.setLocationRelativeTo(null);
+			}
+		});
+		btnCadastraBordas.setBounds(198, 123, 164, 21);
+		contentPane.add(btnCadastraBordas);
+
+		JButton btnCadastraMateriais = new JButton("Cadastrar Materiais");
+		btnCadastraMateriais.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				FormMateriais formMateriais = new FormMateriais();
+				formMateriais.setVisible(true);
+				formMateriais.setLocationRelativeTo(null);
+			}
+		});
+		btnCadastraMateriais.setBounds(388, 123, 179, 21);
+		contentPane.add(btnCadastraMateriais);
+
+		JLabel lblPainelDeControle = new JLabel("Painel de controle");
+		lblPainelDeControle.setFont(new Font("Goudy Stout", Font.ITALIC, 16));
+		lblPainelDeControle.setBounds(436, 47, 523, 68);
+		contentPane.add(lblPainelDeControle);
+
+		JButton btnPais = new JButton("cadastrar Pais");
+		btnPais.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				FormPais formPais = new FormPais();
+				formPais.setVisible(true);
+				formPais.setLocationRelativeTo(null);
+			}
+		});
+		btnPais.setBounds(590, 123, 123, 21);
+		contentPane.add(btnPais);
 		preencheLIsta();
 	}
 
 	public void preencheLIsta() {
-		
-		List<MoedaEntity> lista = moedaService.listar();
-		DefaultTableModel modeloTabela = (DefaultTableModel) table.getModel();
-		modeloTabela.setRowCount(0);
-		for (MoedaEntity moedaEntity : lista) {
-			modeloTabela.addRow(new Object[] { moedaEntity.getCodigoCatalogo(), moedaEntity.getTitulo(),
-					moedaEntity.getPaisEntity(), moedaEntity.getAno(), moedaEntity.getValor(), moedaEntity.getPeso(),
-					moedaEntity.getEspessura(), moedaEntity.getDiametro(), moedaEntity.getBordas(),
-					moedaEntity.getMateriais() });
 
+		MoedaService moedaService = new MoedaService();
+		try {
+			List<MoedaEntity> lista = moedaService.listar();
+			DefaultTableModel modeloTabela = (DefaultTableModel) table.getModel();
+			modeloTabela.setRowCount(0);
+			for (MoedaEntity moeda : lista) {
+				String dataFormatada = FormataData.getDate(moeda.getAno());
+				String bordas = "";
+				for (BordasEntity borda : moeda.getBordas()) {
+					if (!bordas.isEmpty()) {
+						bordas += ", ";
+					}
+					bordas += borda;
+				}
+				String materiais = "";
+				for (MaterialEntity material : moeda.getMateriais()) {
+					if (!materiais.isEmpty()) {
+						materiais += ", ";
+					}
+					materiais += material;
+				}
+				modeloTabela.addRow(new Object[] { moeda.getIdMoeda(), moeda.getTitulo(), moeda.getCodigoCatalogo(),
+						dataFormatada, moeda.getValor(), moeda.getEspessura(), moeda.getPeso(), moeda.getDiametro(),
+						moeda.getPaisEntity(), bordas, materiais });
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
 		}
 
 	}
-
 }

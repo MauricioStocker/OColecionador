@@ -16,7 +16,9 @@ import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import oColecionador.entity.BordasEntity;
 import oColecionador.entity.ColecaoEntity;
+import oColecionador.entity.MaterialEntity;
 import oColecionador.entity.MoedaEntity;
 import oColecionador.entity.PaisEntity;
 import oColecionador.entity.TipoTransacaoEntity;
@@ -28,8 +30,7 @@ import oColecionador.repository.TipoRepository;
 import oColecionador.repository.UsuarioRepository;
 import oColecionador.service.MoedaService;
 import oColecionador.service.UsuarioService;
-import revendaCarros.DAO.ColecaoDAO;
-import revendaCarros.entity.Pessoa;
+import oColecionador.util.FormataData;
 
 import javax.swing.JScrollPane;
 import javax.swing.JComboBox;
@@ -101,7 +102,7 @@ public class TelaPrincipalUser extends JFrame {
 		JButton btnColecao = new JButton("Criar Coleção");
 		btnColecao.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaCriarColecao1 criarColecao = new TelaCriarColecao1();
+				TelaCriarColecao criarColecao = new TelaCriarColecao();
 				criarColecao.setUser(lblUser.getText());
 				criarColecao.setVisible(true);
 			}
@@ -109,20 +110,23 @@ public class TelaPrincipalUser extends JFrame {
 		btnColecao.setBounds(10, 82, 145, 21);
 		contentPane.add(btnColecao);
 
-		JButton btnAjuda = new JButton("Ajuda");
-		btnAjuda.setBounds(862, 82, 85, 21);
-		contentPane.add(btnAjuda);
-
 		JButton btnNotaProduto = new JButton("Gerar nota Produto");
 		btnNotaProduto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaNotaProduto1 notaProduto = new TelaNotaProduto1();
-				notaProduto.setUser(lblUser.getText());
-				notaProduto.setVisible(true);
+				TelaNotaProduto notaProduto;
+				try {
+					notaProduto = new TelaNotaProduto();
+					notaProduto.setUser(lblUser.getText());
+					notaProduto.setVisible(true);
+				} catch (ParseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			
 
 			}
 		});
-		btnNotaProduto.setBounds(168, 82, 175, 21);
+		btnNotaProduto.setBounds(198, 82, 145, 21);
 		contentPane.add(btnNotaProduto);
 
 		JButton btnTransacao = new JButton("Venda");
@@ -140,7 +144,7 @@ public class TelaPrincipalUser extends JFrame {
 
 			}
 		});
-		btnTransacao.setBounds(380, 82, 85, 21);
+		btnTransacao.setBounds(380, 82, 145, 21);
 		contentPane.add(btnTransacao);
 
 		JScrollPane scrollPane = new JScrollPane();
@@ -165,9 +169,9 @@ public class TelaPrincipalUser extends JFrame {
 		table.getColumnModel().getColumn(8).setPreferredWidth(100);
 		table.getColumnModel().getColumn(9).setPreferredWidth(85);
 
-		JLabel lblMoedas = new JLabel("                    MOEDAS");
+		JLabel lblMoedas = new JLabel("MOEDAS CADASTRADAS");
 		lblMoedas.setFont(new Font("Goudy Stout", Font.ITALIC, 16));
-		lblMoedas.setBounds(179, 124, 316, 97);
+		lblMoedas.setBounds(299, 164, 379, 57);
 		contentPane.add(lblMoedas);
 
 		cbUserLog = new JComboBox();
@@ -199,15 +203,33 @@ public class TelaPrincipalUser extends JFrame {
 
 	public void preencheLIsta() {
 
-		List<MoedaEntity> lista = moedaService.listar();
-		DefaultTableModel modeloTabela = (DefaultTableModel) table.getModel();
-		modeloTabela.setRowCount(0);
-		for (MoedaEntity moedaEntity : lista) {
-			modeloTabela.addRow(new Object[] { moedaEntity.getCodigoCatalogo(), moedaEntity.getTitulo(),
-					moedaEntity.getPaisEntity(), moedaEntity.getAno(), moedaEntity.getValor(), moedaEntity.getPeso(),
-					moedaEntity.getEspessura(), moedaEntity.getDiametro(), moedaEntity.getBordas(),
-					moedaEntity.getMateriais() });
-
+		MoedaService moedaService = new MoedaService();
+		try {
+			List<MoedaEntity> lista = moedaService.listar();
+			DefaultTableModel modeloTabela = (DefaultTableModel) table.getModel();
+			modeloTabela.setRowCount(0);
+			for (MoedaEntity moeda : lista) {
+				String dataFormatada = FormataData.getDate(moeda.getAno());
+				String bordas = "";
+				for (BordasEntity borda : moeda.getBordas()) {
+					if (!bordas.isEmpty()) {
+						bordas += ", ";
+					}
+					bordas += borda;
+				}
+				String materiais = "";
+				for (MaterialEntity material : moeda.getMateriais()) {
+					if (!materiais.isEmpty()) {
+						materiais += ", ";
+					}
+					materiais += material;
+				}
+				modeloTabela.addRow(new Object[] { moeda.getIdMoeda(), moeda.getTitulo(), moeda.getCodigoCatalogo(),
+						dataFormatada, moeda.getValor(), moeda.getEspessura(), moeda.getPeso(), moeda.getDiametro(),
+						moeda.getPaisEntity(), bordas, materiais });
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
 		}
 
 	}

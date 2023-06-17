@@ -1,11 +1,12 @@
 package oColecionador.entity;
 
-
-
+import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,8 +17,12 @@ import javax.persistence.ManyToOne;
 
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.google.protobuf.TextFormat.ParseException;
 
 import lombok.Data;
+import oColecionador.util.FormataData;
 
 @Table(name = "moeda")
 @Entity
@@ -28,23 +33,30 @@ public class MoedaEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_moeda")
 	private Long idMoeda;
+
 	@Column(name = "titulo", length = 100)
 	private String titulo;
+
 	@Column(name = "ano")
-	private String ano;
+	private Date ano;
+
 	@Column(name = "valor")
 	private String valor;
+
 	@Column(name = "peso")
 	private String peso;
+
 	@Column(name = "espessura")
 	private String espessura;
+
 	@Column(name = "diametro")
 	private String diametro;
+
 	@Column(name = "codigo_catalogo")
 	private String codigoCatalogo;
 
 	@ManyToMany
-	@JoinTable(name = "moeda_Borda", joinColumns = @JoinColumn(name = "id_moeda"), inverseJoinColumns = @JoinColumn(name = "id_borda"))
+	@JoinTable(name = "moeda_borda", joinColumns = @JoinColumn(name = "id_moeda"), inverseJoinColumns = @JoinColumn(name = "id_borda"))
 	private List<BordasEntity> bordas;
 
 	@ManyToMany
@@ -54,13 +66,12 @@ public class MoedaEntity {
 	@ManyToOne
 	@JoinColumn(name = "id_pais")
 	private PaisEntity paisEntity;
-	
+
+	@OneToOne(mappedBy = "idColecaMoeda.idMoeda", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 
 	@Override
 	public String toString() {
-		return " (1) " + getTitulo() +"   (2) " + getCodigoCatalogo()+ "   (3) " +getAno() +"   (4) " + getValor() + "   (5) " +getEspessura() + "   (6) "
-	+getPeso()+ "   (7) " + getDiametro()+ "   (8) " + getPaisEntity().getNome()+ "   (9) " + getBordas()+"   (10) "+ getMateriais();
+		return "ID MOEDA = " + getIdMoeda() + "      TITULO: " +getTitulo() ;
 	}
-	
 
 }

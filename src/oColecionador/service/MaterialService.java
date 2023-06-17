@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import oColecionador.entity.BordasEntity;
 import oColecionador.entity.MaterialEntity;
 import oColecionador.entity.PaisEntity;
 import oColecionador.repository.MaterialRepository;
@@ -16,19 +17,27 @@ public class MaterialService {
 	}
 
 	public MaterialEntity salvar(MaterialEntity materialEntity) {
+		MaterialEntity entity = materialRepository.pesquisaPeloNome(materialEntity.getNome());
 		if (materialEntity.getIdMaterial() == null) {
-			MaterialEntity entity = materialRepository.pesquisaPeloNome(materialEntity.getNome());
+
 			if (entity == null) {
+
 				materialRepository.inserir(materialEntity);
 			} else {
-				JOptionPane.showInternalMessageDialog(null, " Material "  +  " '"  +  materialEntity.getNome() +  "' "  +  " já cadastrado");
+				JOptionPane.showInternalMessageDialog(null,
+						" Material " + " '" + materialEntity.getNome() + "' " + " já cadastrado");
 			}
 		} else {
-			materialRepository.atualizar(materialEntity);
-			MaterialEntity material1 = new MaterialEntity();
-			material1 = materialRepository.pesquisaPeloNome(materialEntity.getNome());
-			JOptionPane.showInternalMessageDialog(null,
-					"Nome do Material foi editado para : "+ material1);
+			MaterialEntity pais1 = new MaterialEntity();
+			pais1 = materialRepository.pesquisaPeloNome(materialEntity.getNome());
+			if (pais1 == null) {
+
+				materialRepository.atualizar(materialEntity);
+			} else {
+				JOptionPane.showInternalMessageDialog(null,
+						" Material " + " '" + materialEntity.getNome() + "' " + " já cadastrado");
+			}
+
 		}
 		return materialEntity;
 	}
@@ -39,8 +48,7 @@ public class MaterialService {
 
 	public void remover(Long idMaterial) {
 		materialRepository.remover(idMaterial);
-		JOptionPane.showInternalMessageDialog(null,
-				"Excluido ");
+		JOptionPane.showInternalMessageDialog(null, "Excluido ");
 	}
 
 }

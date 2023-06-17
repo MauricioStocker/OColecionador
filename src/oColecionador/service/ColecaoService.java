@@ -6,6 +6,8 @@ import javax.swing.JOptionPane;
 
 import oColecionador.entity.BordasEntity;
 import oColecionador.entity.ColecaoEntity;
+import oColecionador.entity.ColecaoMoedaEntity;
+import oColecionador.entity.MoedaEntity;
 import oColecionador.entity.UsuarioEntity;
 import oColecionador.repository.ColecaoRepository;
 
@@ -18,22 +20,24 @@ public class ColecaoService {
 	}
 
 	public ColecaoEntity salvar(ColecaoEntity colecaoEntity) {
-		if (colecaoEntity.getIdColecao() == null) {
-			ColecaoEntity entity = colecaoRepository.pesquisaPeloId(colecaoEntity.getIdColecao());
-			if (entity == null) {
-				colecaoRepository.inserir(colecaoEntity);
-			} else {
-				JOptionPane.showInternalMessageDialog(null,
-						" Borda " + " '" + colecaoEntity.getIdColecao() + "' " + " já cadastrado");
 
-			}
+		if (colecaoEntity.getIdColecao() == null) {
+
+			colecaoRepository.inserir(colecaoEntity);
+			JOptionPane.showMessageDialog(null, "Cooleção  cadastrada!");
+
 		} else {
+
 			colecaoRepository.atualizar(colecaoEntity);
-			ColecaoEntity entity1 = new ColecaoEntity();
-			entity1 = colecaoRepository.pesquisaPeloId(colecaoEntity.getIdColecao());
-		
+			JOptionPane.showMessageDialog(null, "Moeda atualizada com sucesso!");
+
 		}
 		return colecaoEntity;
+	}
+
+	public ColecaoEntity presquisaId(Long id) {
+
+		return colecaoRepository.pesquisaPeloId(id);
 	}
 
 	public List<ColecaoEntity> listar() {
@@ -46,5 +50,15 @@ public class ColecaoService {
 
 	public List<ColecaoEntity> listarColecaoLogado(UsuarioEntity usuarioEntity) {
 		return colecaoRepository.obterColecoesDoUsuarioLogado(usuarioEntity);
+	}
+
+	public ColecaoEntity presquisaIdColecao(Long id) {
+
+		return colecaoRepository.pesquisaPeloIdColecao(id);
+	}
+	
+	public List<ColecaoMoedaEntity> presquisaMoedasColeção(Long idColecao) {
+
+		return colecaoRepository.obterMoedasDaColecaoPorId(idColecao);
 	}
 }

@@ -41,9 +41,13 @@ public class UsuarioEntity {
 
 	@Column(name = "email")
 	private String email;
+	
+	@Column(name = "cpf")
+	private String cpf;
 
 	@Override
 	public String toString() {
-		return ""+ getNome();
+		return   getNome() ;
 	}
+	
 }

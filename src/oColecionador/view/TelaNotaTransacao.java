@@ -155,12 +155,12 @@ public class TelaNotaTransacao extends JFrame {
 				/*
 				 * UsuarioRepository repository1 = new UsuarioRepository(); Usuario userLog =
 				 * repository1.pesquisaPeloUser(lblUser.getText());
-				 */
+				 
 				NotaProdutoRepository repository = new NotaProdutoRepository();
 				List<NotaProdutoEntity> notasProdutoVenda = repository.obterNotasProdutoVenda();
 				for (NotaProdutoEntity notaProdutoEntity : notasProdutoVenda) {
 					cbMoeda.addItem(notaProdutoEntity);
-				}
+				}*/
 
 			}
 
@@ -217,7 +217,7 @@ public class TelaNotaTransacao extends JFrame {
 				JOptionPane.showMessageDialog(null,
 						"NOTA DA VENDA GERADA COM SUCESSO" + "\nCOMPRADOR: " + notaTransacaoEntity.getUsuarioEntity()
 								+ "\nVENDEDOR: " + notaTransacaoEntity.getNotaProdutos());
-				preencheLIstaColecaoProd();
+				//preencheLIstaColecaoProd();
 
 			}
 		});
@@ -232,7 +232,7 @@ public class TelaNotaTransacao extends JFrame {
 		lblNewLabel_4.setBounds(10, 197, 186, 13);
 		contentPane.add(lblNewLabel_4);
 
-		preencheLIstaColecaoProd();
+	//	preencheLIstaColecaoProd();
 
 	}
 
@@ -243,7 +243,7 @@ public class TelaNotaTransacao extends JFrame {
 		modeloTabela.setRowCount(0);
 		for (NotaProdutoEntity colecao : lista) {
 			modeloTabela.addRow(
-					new Object[] { colecao.getIdNotaProduto(), colecao.getUsuarioEntity(), colecao.getValorUni() });
+					new Object[] { colecao.getIdNotaProduto(), colecao.getValorUni() });
 		}
 	}
 

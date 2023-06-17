@@ -29,11 +29,7 @@
 		    <version>1.18.26</version>
 		    <scope>provided</scope>
 		</dependency>
-		<dependency>
-			<groupId>revendaCarros</groupId>
-			<artifactId>revendaCarros</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
+	
     </dependencies>
   	<build>
 		<sourceDirectory>src</sourceDirectory>

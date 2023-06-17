@@ -21,10 +21,11 @@ public class MaterialEntity {
 	
 	@Column(name = "nome")
 	private String nome;
-	
-	
+
 	@Override
 	public String toString() {
-		return "" + getNome();
+		return   getNome() ;
 	}
+	
+	
 }

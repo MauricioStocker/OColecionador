@@ -26,8 +26,9 @@ public class BordasEntity {
 	@Column(name = "nome", length = 50, unique = true)
 	private String nome;
 
+
 	@Override
 	public String toString() {
-		return "" + getNome();
+		return   getNome() ;
 	}
 }

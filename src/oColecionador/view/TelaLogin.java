@@ -50,36 +50,36 @@ public class TelaLogin extends JFrame {
 	 * Create the frame.
 	 */
 	public TelaLogin() {
-		setBounds(100, 100, 557, 350);
+		setBounds(100, 100, 426, 350);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		JLabel lblNewLabel = new JLabel("                         LOGIN");
+		JLabel lblNewLabel = new JLabel("LOGIN");
 		lblNewLabel.setFont(new Font("Goudy Stout", Font.ITALIC, 16));
-		lblNewLabel.setBounds(10, 21, 523, 97);
+		lblNewLabel.setBounds(128, 31, 188, 53);
 		contentPane.add(lblNewLabel);
 
 		JLabel lblNewLabel_1 = new JLabel("Usuário");
-		lblNewLabel_1.setBounds(20, 128, 45, 13);
+		lblNewLabel_1.setBounds(10, 84, 45, 13);
 		contentPane.add(lblNewLabel_1);
 
 		JLabel lblNewLabel_1_1 = new JLabel("Senha");
-		lblNewLabel_1_1.setBounds(274, 128, 45, 13);
+		lblNewLabel_1_1.setBounds(228, 84, 45, 13);
 		contentPane.add(lblNewLabel_1_1);
 
 		txtUser = new JTextField();
-		txtUser.setBounds(10, 151, 119, 19);
+		txtUser.setBounds(10, 107, 119, 19);
 		contentPane.add(txtUser);
 		txtUser.setColumns(10);
 
 		pswSenha = new JPasswordField();
-		pswSenha.setBounds(255, 151, 119, 19);
+		pswSenha.setBounds(228, 107, 119, 19);
 		contentPane.add(pswSenha);
 
-		JButton btnCadastro = new JButton("Cadastrar");
+		JButton btnCadastro = new JButton("CADASTRAR USUÁRIO");
 		btnCadastro.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				FormUsuario formUsuario;
@@ -93,12 +93,8 @@ public class TelaLogin extends JFrame {
 
 			}
 		});
-		btnCadastro.setBounds(414, 290, 119, 13);
+		btnCadastro.setBounds(10, 270, 183, 30);
 		contentPane.add(btnCadastro);
-
-		JLabel lblNewLabel_2 = new JLabel("Para se cadastrar click");
-		lblNewLabel_2.setBounds(285, 290, 136, 13);
-		contentPane.add(lblNewLabel_2);
 
 		JButton btnEntrar = new JButton("LOGIN");
 		btnEntrar.setMnemonic(KeyEvent.VK_ENTER);
@@ -110,7 +106,7 @@ public class TelaLogin extends JFrame {
 				TelaPrincipalUser principalUser = new TelaPrincipalUser();
 				String userLog = null;
 
-				TelaCriarColecao1 criarColecao = new TelaCriarColecao1();
+				TelaCriarColecao criarColecao = new TelaCriarColecao();
 				usuarioEntity.setUser(txtUser.getText());
 				usuarioEntity.setSenha(pswSenha.getText());
 				usuarioService.login(usuarioEntity);
@@ -118,7 +114,6 @@ public class TelaLogin extends JFrame {
 					if (usuarioEntity.getSenha().equals("admin") && usuarioEntity.getUser().equals("admin")) {
 						userLog = usuarioEntity.getUser();
 
-						JOptionPane.showInternalMessageDialog(null, "Seja bem vindo " + userLog + " !! ");
 						principal = new TelaPrincipal();
 						principal.setUser(userLog);
 
@@ -131,7 +126,7 @@ public class TelaLogin extends JFrame {
 						System.out.println(userLog);
 						UsuarioEntity sessaoUser = usuarioService.pesquisaUser(userLog);
 						System.out.println(sessaoUser);
-						JOptionPane.showInternalMessageDialog(null, "Seja bem vindo " + sessaoUser.getNome() + " !!");
+
 						principalUser = new TelaPrincipalUser();
 						principalUser.setUser(userLog);
 						principalUser.setVisible(true);
@@ -141,8 +136,7 @@ public class TelaLogin extends JFrame {
 					}
 
 				} else {
-					JOptionPane.showMessageDialog(null, "Erro ao logar, usuário ou senha inválidos!!", "Erro",
-							JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Erro ao logar!!", "Erro", JOptionPane.ERROR_MESSAGE);
 
 				}
 
@@ -151,12 +145,12 @@ public class TelaLogin extends JFrame {
 
 			}
 		});
-		btnEntrar.setBounds(136, 221, 119, 30);
+		btnEntrar.setBounds(124, 163, 119, 30);
 		contentPane.add(btnEntrar);
 
-		JLabel lblOColecionador = new JLabel("                    O COLECIONADOR");
+		JLabel lblOColecionador = new JLabel("O COLECIONADOR");
 		lblOColecionador.setFont(new Font("Goudy Stout", Font.ITALIC, 16));
-		lblOColecionador.setBounds(-15, -28, 523, 97);
+		lblOColecionador.setBounds(81, 0, 254, 61);
 		contentPane.add(lblOColecionador);
 
 		JButton btnNewButton = new JButton("RECUPERAR SENHA");
@@ -167,7 +161,7 @@ public class TelaLogin extends JFrame {
 				recSenha.setLocationRelativeTo(null);
 			}
 		});
-		btnNewButton.setBounds(67, 261, 288, 13);
+		btnNewButton.setBounds(217, 270, 183, 30);
 		contentPane.add(btnNewButton);
 	}
 

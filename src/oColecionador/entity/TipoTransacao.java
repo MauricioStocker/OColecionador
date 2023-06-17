@@ -10,14 +10,13 @@ import javax.persistence.Table;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+
 @Getter
 @Setter
 @Entity
 @Data
 @Table(name = "tipo")
 public class TipoTransacao {
-
-	
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,10 +25,10 @@ public class TipoTransacao {
 
 	@Column(name = "nome", length = 7)
 	private String nome;
-	
 
 	@Override
 	public String toString() {
-		return  getNome();
+		return getNome();
 	}
+
 }

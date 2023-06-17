@@ -6,6 +6,7 @@ import javax.swing.JOptionPane;
 
 import oColecionador.entity.BordasEntity;
 import oColecionador.entity.MaterialEntity;
+import oColecionador.entity.PaisEntity;
 import oColecionador.repository.BordasRepository;
 
 public class BordasService {
@@ -16,21 +17,27 @@ public class BordasService {
 	}
 
 	public BordasEntity salvar(BordasEntity bordasEntity) {
+		BordasEntity entity = bordasRepository.pesquisaPeloNome(bordasEntity.getNome());
 		if (bordasEntity.getIdBordas() == null) {
-			BordasEntity entity = bordasRepository.pesquisaPeloNome(bordasEntity.getNome());
+
 			if (entity == null) {
+
 				bordasRepository.inserir(bordasEntity);
 			} else {
 				JOptionPane.showInternalMessageDialog(null,
 						" Borda " + " '" + bordasEntity.getNome() + "' " + " já cadastrado");
-
 			}
 		} else {
-			bordasRepository.atualizar(bordasEntity);
-			BordasEntity bordas1 = new BordasEntity();
-			bordas1 = bordasRepository.pesquisaPeloNome(bordasEntity.getNome());
-			JOptionPane.showInternalMessageDialog(null,
-					"Nome do Material foi editado para : "+ bordas1);
+			BordasEntity pais1 = new BordasEntity();
+			pais1 = bordasRepository.pesquisaPeloNome(bordasEntity.getNome());
+			if (pais1 == null) {
+
+				bordasRepository.atualizar(bordasEntity);
+			} else {
+				JOptionPane.showInternalMessageDialog(null,
+						" Borda " + " '" + bordasEntity.getNome() + "' " + " já cadastrado");
+			}
+
 		}
 		return bordasEntity;
 	}

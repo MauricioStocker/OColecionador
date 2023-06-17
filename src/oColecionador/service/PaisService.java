@@ -15,22 +15,30 @@ public class PaisService {
 		paisRepository = new PaisRepository();
 	}
 
-	
 	public PaisEntity salvar(PaisEntity paisEntity) {
+
 		PaisEntity entity = paisRepository.pesquisaPeloNome(paisEntity.getNome());
 		if (paisEntity.getIdPais() == null) {
-			
+
 			if (entity == null) {
+
 				paisRepository.inserir(paisEntity);
 			} else {
-				JOptionPane.showInternalMessageDialog(null, " Pais " + " '" + paisEntity.getNome() + "' " + " já cadastrado");
+				JOptionPane.showInternalMessageDialog(null,
+						" Pais " + " '" + paisEntity.getNome() + "' " + " já cadastrado");
 			}
 		} else {
-			paisRepository.atualizar(paisEntity);
 			PaisEntity pais1 = new PaisEntity();
 			pais1 = paisRepository.pesquisaPeloNome(paisEntity.getNome());
-			JOptionPane.showInternalMessageDialog(null,
-					"Nome do pais foi editado para : "+ pais1);
+			if (pais1 == null) {
+
+				paisRepository.atualizar(paisEntity);
+			} else {
+				JOptionPane.showInternalMessageDialog(null,
+						" Pais " + " '" + paisEntity.getNome() + "' " + " já cadastrado");
+			}
+
+
 		}
 		return paisEntity;
 	}
@@ -41,9 +49,8 @@ public class PaisService {
 
 	public void remover(Long idPais) {
 		paisRepository.remover(idPais);
-		JOptionPane.showInternalMessageDialog(null,
-				"removido  ");
-		
+		JOptionPane.showInternalMessageDialog(null, "removido  ");
+
 	}
 
 }

@@ -128,17 +128,34 @@ public class ColecaoRepository {
 		}
 		return colecaoEntity;
 	}
+
 	public List<ColecaoMoedaEntity> obterMoedasDaColecaoPorId(Long idColecao) {
-	    List<ColecaoMoedaEntity> moedas = null;
-	    try {
-	        Query query = em.createQuery("SELECT m FROM ColecaoMoedaEntity m WHERE m.colecaoEntity.idColecao = :idColecao");
-	        query.setParameter("idColecao", idColecao);
-	        moedas = query.getResultList();
-	    } catch (Exception e) {
-	        System.out.println("Ocorreu um erro ao obter as moedas da coleção por ID");
-	    }
-	    return moedas;
+		List<ColecaoMoedaEntity> moedas = null;
+		try {
+			Query query = em
+					.createQuery("SELECT m FROM ColecaoMoedaEntity m WHERE m.colecaoEntity.idColecao = :idColecao");
+			query.setParameter("idColecao", idColecao);
+			moedas = query.getResultList();
+		} catch (Exception e) {
+			System.out.println("Ocorreu um erro ao obter as moedas da coleção por ID");
+		}
+		return moedas;
 	}
 
+	public void excluirMoedaDaColecao(Long idColecao, Long idMoeda) {
+		try {
+			em.getTransaction().begin();
+			Query query = em.createQuery(
+					"DELETE FROM ColecaoMoedaEntity cm WHERE cm.colecaoEntity.idColecao = :idColecao AND cm.colecaoMoedaID.moedaEntity.idMoeda = :idMoeda");
+			query.setParameter("idColecao", idColecao);
+			query.setParameter("idMoeda", idMoeda);
+			query.executeUpdate();
+			em.getTransaction().commit();
+			System.out.println("Moeda removida da coleção com sucesso");
+		} catch (Exception e) {
+			em.getTransaction().rollback();
+			System.out.println("Ocorreu um erro ao excluir a moeda da coleção");
+		}
+	}
 
 }

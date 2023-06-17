@@ -32,6 +32,7 @@ public class TelaLogin extends JFrame {
 	/**
 	 * Launch the application.
 	 */
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -119,7 +120,7 @@ public class TelaLogin extends JFrame {
 
 						principal.setVisible(true);
 						principal.setLocationRelativeTo(null);
-						setVisible(false);
+						//setVisible(false);
 
 					} else {
 						userLog = usuarioEntity.getUser();
@@ -131,7 +132,7 @@ public class TelaLogin extends JFrame {
 						principalUser.setUser(userLog);
 						principalUser.setVisible(true);
 						criarColecao.setUser(userLog);
-						setVisible(false);
+					//	setVisible(false);
 						principalUser.setLocationRelativeTo(null);
 					}
 

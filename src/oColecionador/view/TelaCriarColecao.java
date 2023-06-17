@@ -3,6 +3,8 @@ package oColecionador.view;
 import java.awt.Component;
 import java.awt.EventQueue;
 import java.util.ArrayList;
+import java.util.Iterator;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -44,6 +46,9 @@ import javax.swing.JTextField;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.awt.event.ActionEvent;
+import javax.swing.JSeparator;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class TelaCriarColecao extends JFrame {
 
@@ -53,6 +58,8 @@ public class TelaCriarColecao extends JFrame {
 	private JTextField txtTitulo;
 	private JComboBox cbUserLog;
 	private JComboBox cbAdicionaMoedaColecao;
+	private JTextField txtIdColecao;
+	private JTextField txtIdMoeda;
 
 	// metodo de pegar o user do usuario logado, e guardado na jlabel
 	public void setUser(String user) {
@@ -83,7 +90,7 @@ public class TelaCriarColecao extends JFrame {
 	public TelaCriarColecao() {
 
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 1016, 580);
+		setBounds(100, 100, 1666, 580);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -92,7 +99,7 @@ public class TelaCriarColecao extends JFrame {
 
 		JLabel lblOColecionador = new JLabel("                    O COLECIONADOR");
 		lblOColecionador.setFont(new Font("Goudy Stout", Font.ITALIC, 16));
-		lblOColecionador.setBounds(217, -20, 523, 58);
+		lblOColecionador.setBounds(270, -16, 523, 58);
 		contentPane.add(lblOColecionador);
 
 		lblUser = new JLabel("...");
@@ -106,20 +113,34 @@ public class TelaCriarColecao extends JFrame {
 		getContentPane().add(lblNewLabel_1);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 409, 949, 97);
+		scrollPane.setBounds(819, 126, 711, 417);
 		contentPane.add(scrollPane);
 
 		table = new JTable();
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				resgataValorTabelaColecao();
+			}
+		});
 		scrollPane.setViewportView(table);
 		table.setModel(new DefaultTableModel(
-				new Object[][] { { null, null, null, null, null }, { null, null, null, null, null },
-						{ null, null, null, null, null }, },
-				new String[] { "ID", "titulo", "moedas", "Status", "Usuario" }));
-		table.getColumnModel().getColumn(4).setPreferredWidth(139);
+			new Object[][] {
+				{"", null, null, null, null, null},
+				{null, null, null, null, null, null},
+				{null, null, null, null, null, null},
+			},
+			new String[] {
+				"ID COLE\u00C7\u00C3O", "ID MOEDA", "TITULO DA COLE\u00C7\u00C3O", "MOEDA", "Status", "Usuario"
+			}
+		));
+		table.getColumnModel().getColumn(2).setPreferredWidth(200);
+		table.getColumnModel().getColumn(3).setPreferredWidth(200);
+		table.getColumnModel().getColumn(5).setPreferredWidth(139);
 
 		JLabel lblMoedas = new JLabel("COLEÇÃO");
 		lblMoedas.setFont(new Font("Goudy Stout", Font.ITALIC, 16));
-		lblMoedas.setBounds(398, 360, 204, 39);
+		lblMoedas.setBounds(488, 34, 204, 39);
 		contentPane.add(lblMoedas);
 
 		cbUserLog = new JComboBox();
@@ -138,10 +159,10 @@ public class TelaCriarColecao extends JFrame {
 			public void ancestorRemoved(AncestorEvent event) {
 			}
 		});
-		cbUserLog.setBounds(10, 316, 252, 21);
+		cbUserLog.setBounds(10, 442, 252, 21);
 		contentPane.add(cbUserLog);
 
-		JButton btnAtualizaTabela = new JButton("ATUALIZA COLEÇÃO");
+		JButton btnAtualizaTabela = new JButton("MOSTRAR MOEDAS DA COLEÇÃO");
 		btnAtualizaTabela.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ColecaoService colecaoService = new ColecaoService();
@@ -160,8 +181,8 @@ public class TelaCriarColecao extends JFrame {
 
 					for (ColecaoMoedaEntity moeda : moedas) {
 						modeloTabela.addRow(
-								new Object[] { colecaoSelecionada.getIdColecao(), colecaoSelecionada.getTituloColecao(),
-										moeda.toString(), moeda.getTipoTransacaoEntity().getNome(),
+								new Object[] { colecaoSelecionada.getIdColecao(),moeda.getColecaoMoedaID().getMoedaEntity().getIdMoeda(), colecaoSelecionada.getTituloColecao(),
+										moeda.getColecaoMoedaID().getMoedaEntity().getTitulo(), moeda.getTipoTransacaoEntity().getNome(),
 										colecaoSelecionada.getUsuarioEntity().getNome() });
 					}
 				} else {
@@ -171,7 +192,7 @@ public class TelaCriarColecao extends JFrame {
 			}
 
 		});
-		btnAtualizaTabela.setBounds(789, 378, 170, 21);
+		btnAtualizaTabela.setBounds(1293, 21, 237, 21);
 		contentPane.add(btnAtualizaTabela);
 
 		JComboBox cbMoeda = new JComboBox();
@@ -193,7 +214,7 @@ public class TelaCriarColecao extends JFrame {
 			public void ancestorRemoved(AncestorEvent event) {
 			}
 		});
-		cbMoeda.setBounds(10, 197, 845, 21);
+		cbMoeda.setBounds(10, 197, 768, 21);
 		contentPane.add(cbMoeda);
 
 		JComboBox cbStatus = new JComboBox();
@@ -215,20 +236,20 @@ public class TelaCriarColecao extends JFrame {
 			public void ancestorRemoved(AncestorEvent event) {
 			}
 		});
-		cbStatus.setBounds(10, 147, 170, 21);
+		cbStatus.setBounds(10, 253, 170, 21);
 		contentPane.add(cbStatus);
 
 		JLabel lblNewLabel = new JLabel("Titulo da Coleção");
-		lblNewLabel.setBounds(190, 124, 136, 13);
+		lblNewLabel.setBounds(217, 228, 136, 13);
 		contentPane.add(lblNewLabel);
 
 		txtTitulo = new JTextField();
 		;
-		txtTitulo.setBounds(190, 148, 153, 19);
+		txtTitulo.setBounds(217, 254, 153, 19);
 		contentPane.add(txtTitulo);
 		txtTitulo.setColumns(10);
 
-		JButton btnCriarColec = new JButton("Criar Coleção");
+		JButton btnCriarColec = new JButton("CRIAR COLEÇÃO");
 		btnCriarColec.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
@@ -244,7 +265,6 @@ public class TelaCriarColecao extends JFrame {
 
 				colecaoMoedaEntity.setColecaoMoedaID(colecaoMoedaId);
 				colecaoMoedaEntity.setTipoTransacaoEntity(tipoTransacaoEntity);
-				// colecaoMoedaEntity.setUsuarioEntity(usuarioEntity);;
 
 				List<ColecaoMoedaEntity> listaColecaoMoedas = colecaoEntity.getColecaoMoedaEntities();
 				if (listaColecaoMoedas == null) {
@@ -254,16 +274,15 @@ public class TelaCriarColecao extends JFrame {
 
 				listaColecaoMoedas.add(colecaoMoedaEntity);
 				colecaoEntity.setTituloColecao(txtTitulo.getText());
-				// colecaoEntity.setTipoTransacaoEntity(tipoTransacaoEntity);
 
 				colecaoEntity.setUsuarioEntity(usuarioEntity);
 				colecaoService.salvar(colecaoEntity);
 				JOptionPane.showMessageDialog(null, "MOEDA SALVA NA COLEÇÃO COM SUCESSO");
-				// preencheLIstaColecao();
+
 				txtTitulo.setText("");
 				UsuarioEntity usuarioEntity1 = (UsuarioEntity) cbUserLog.getSelectedItem();
 				ColecaoService colecaoService1 = new ColecaoService();
-
+				cbAdicionaMoedaColecao.removeAllItems();
 				for (ColecaoEntity colecaoEntity1 : colecaoService1.listarColecaoLogado(usuarioEntity1)) {
 
 					cbAdicionaMoedaColecao.addItem(colecaoEntity1);
@@ -273,7 +292,7 @@ public class TelaCriarColecao extends JFrame {
 			}
 
 		});
-		btnCriarColec.setBounds(379, 147, 164, 21);
+		btnCriarColec.setBounds(488, 253, 164, 21);
 		contentPane.add(btnCriarColec);
 
 		JLabel lblNewLabel_2 = new JLabel("MOEDAS CADASTRADAS");
@@ -281,11 +300,11 @@ public class TelaCriarColecao extends JFrame {
 		contentPane.add(lblNewLabel_2);
 
 		JLabel lblNewLabel_3 = new JLabel("STATUS");
-		lblNewLabel_3.setBounds(10, 124, 111, 13);
+		lblNewLabel_3.setBounds(10, 230, 111, 13);
 		contentPane.add(lblNewLabel_3);
 
 		JLabel lblNewLabel_4 = new JLabel("COLEÇÃO DE :");
-		lblNewLabel_4.setBounds(10, 292, 186, 13);
+		lblNewLabel_4.setBounds(22, 421, 186, 13);
 		contentPane.add(lblNewLabel_4);
 
 		cbAdicionaMoedaColecao = new JComboBox();
@@ -307,10 +326,10 @@ public class TelaCriarColecao extends JFrame {
 			public void ancestorRemoved(AncestorEvent event) {
 			}
 		});
-		cbAdicionaMoedaColecao.setBounds(10, 262, 845, 21);
+		cbAdicionaMoedaColecao.setBounds(10, 512, 768, 21);
 		contentPane.add(cbAdicionaMoedaColecao);
 
-		JButton btnAdcMoedaColecao = new JButton("Adiciona Moeda Coleção");
+		JButton btnAdcMoedaColecao = new JButton("ADICIONAR MOEDAS A COLEÇÃO");
 		btnAdcMoedaColecao.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ColecaoService colecaoService = new ColecaoService();
@@ -346,22 +365,121 @@ public class TelaCriarColecao extends JFrame {
 
 			}
 		});
-		btnAdcMoedaColecao.setBounds(10, 372, 229, 21);
+		btnAdcMoedaColecao.setBounds(306, 442, 229, 21);
 		contentPane.add(btnAdcMoedaColecao);
 
-		JLabel lblNewLabel_5 = new JLabel(
-				"QUER APRENDER CADASTRA UMA COLEÇÃO E ADICIONAR MOEDAS NELA CLICK AQUI NO BOTÃO AJUDA !!!");
+		JLabel lblNewLabel_5 = new JLabel("QUER APRENDER A CADASTRAR UMA COLEÇÃO DE MOEDAS? CLIQUE AQUI!");
 		lblNewLabel_5.setToolTipText("");
-		lblNewLabel_5.setBounds(10, 68, 730, 14);
+		lblNewLabel_5.setBounds(10, 82, 472, 14);
 		contentPane.add(lblNewLabel_5);
 
 		JButton btnAjuda = new JButton("AJUDA");
-		btnAjuda.setBounds(766, 64, 89, 23);
+		btnAjuda.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				TelaAjuda telaAjuda = new TelaAjuda();
+				telaAjuda.setVisible(true);
+				telaAjuda.setLocationRelativeTo(null);
+			}
+		});
+		btnAjuda.setBounds(555, 78, 89, 23);
 		contentPane.add(btnAjuda);
 
 		JLabel lblNewLabel_4_1 = new JLabel("COLEÇÕES");
-		lblNewLabel_4_1.setBounds(10, 238, 186, 13);
+		lblNewLabel_4_1.setBounds(10, 489, 186, 13);
 		contentPane.add(lblNewLabel_4_1);
 
+		JSeparator separator = new JSeparator();
+		separator.setBounds(10, 337, 799, 13);
+		contentPane.add(separator);
+
+		JSeparator separator_1 = new JSeparator();
+		separator_1.setBounds(590, 83, 1, 82);
+		contentPane.add(separator_1);
+
+		JLabel lblNewLabel_6 = new JLabel("ESPAÇO DE CRIAR COLEÇÃO");
+		lblNewLabel_6.setFont(new Font("Tahoma", Font.BOLD, 10));
+		lblNewLabel_6.setBounds(306, 124, 186, 13);
+		contentPane.add(lblNewLabel_6);
+
+		JLabel lblNewLabel_6_1 = new JLabel("ESPAÇO DE ADICIONAR MOEDA A COLEÇÃO");
+		lblNewLabel_6_1.setFont(new Font("Tahoma", Font.BOLD, 10));
+		lblNewLabel_6_1.setBounds(295, 360, 296, 13);
+		contentPane.add(lblNewLabel_6_1);
+
+		JLabel lblNewLabel_6_2 = new JLabel("VER MOEDAS DA COLEÇÃO");
+		lblNewLabel_6_2.setBounds(1039, 25, 186, 13);
+		contentPane.add(lblNewLabel_6_2);
+
+		JLabel lblNewLabel_7 = new JLabel("ID MOEDA");
+		lblNewLabel_7.setBounds(819, 78, 89, 13);
+		contentPane.add(lblNewLabel_7);
+
+		JButton btnRemoveMoeda = new JButton("Remover");
+		btnRemoveMoeda.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// Obtém os valores dos campos de texto
+				Long idMoeda = Long.parseLong(txtIdMoeda.getText());
+				Long idColecao = Long.parseLong(txtIdColecao.getText());
+
+				// Chama o método removerMoedaDaColecao com os valores dos campos de texto
+				removerMoedaDaColecao(idColecao, idMoeda);
+			}
+		});
+		btnRemoveMoeda.setBounds(1118, 82, 85, 21);
+		contentPane.add(btnRemoveMoeda);
+
+		JLabel lblNewLabel_7_1 = new JLabel("ID COLEÇÃO");
+		lblNewLabel_7_1.setBounds(819, 29, 89, 13);
+		contentPane.add(lblNewLabel_7_1);
+
+		txtIdColecao = new JTextField();
+		txtIdColecao.setEnabled(false);
+		txtIdColecao.setBounds(819, 46, 96, 19);
+		contentPane.add(txtIdColecao);
+		txtIdColecao.setColumns(10);
+
+		txtIdMoeda = new JTextField();
+		txtIdMoeda.setEnabled(false);
+		txtIdMoeda.setText("");
+		txtIdMoeda.setBounds(819, 97, 96, 19);
+		contentPane.add(txtIdMoeda);
+		txtIdMoeda.setColumns(10);
+
 	}
+
+	public void resgataValorTabelaColecao() {
+
+		// Recupera a linha selecionada
+		int selectedRow = table.getSelectedRow();
+
+		// Verifica se uma linha foi selecionada
+		if (selectedRow != -1) {
+			// Recupera os valores das colunas da linha selecionada
+			String idColecao = table.getValueAt(selectedRow, 0).toString();
+			String idMoeda = table.getValueAt(selectedRow, 1).toString();
+
+			txtIdColecao.setText(idColecao);
+			txtIdMoeda.setText(idMoeda);
+			// Preenche os campos de texto com os valores recuperados
+			// cbIdColecao.setSelectedItem(idColecao);
+			// cbIdMoeda.setSelectedItem(idMoeda);
+
+		}
+	}
+
+	public void removerMoedaDaColecao(Long idColecao, Long idMoeda) {
+		// Verificar se os campos de ID estão preenchidos corretamente
+		idColecao = Long.parseLong(txtIdColecao.getText());
+		idMoeda = Long.parseLong(txtIdMoeda.getText());
+		if (idColecao == null || idMoeda == null) {
+			JOptionPane.showMessageDialog(null, "Informe o ID da coleção e da moeda");
+			return;
+		}
+
+		// Chamar o serviço para remover a moeda da coleção
+		ColecaoService colecaoService = new ColecaoService();
+		colecaoService.removerMoedaDaColecao(idColecao, idMoeda);
+	}
+	
+
 }

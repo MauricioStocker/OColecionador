@@ -1,0 +1,20 @@
+package oColecionador.entity;
+
+import javax.persistence.EmbeddedId;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+import lombok.ToString;
+
+public class NotaProdutoColecaoEntity {
+	
+	@ToString.Exclude
+	@EmbeddedId
+	private NotaProdutoColecaoId notaProdutoColecaoId;
+	
+	
+	@ManyToOne
+	@JoinColumn(name = "id_nota_produto", insertable = false, updatable = false)
+	private NotaProdutoEntity notaProdutoEntity;
+
+}

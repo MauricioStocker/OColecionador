@@ -409,7 +409,8 @@ public class TelaCriarColecao extends JFrame {
 		colecaoMoedaEntity.setColecaoMoedaID(colecaoMoedaId);
 		colecaoMoedaEntity.setTipoTransacaoEntity(tipoTransacaoEntity);
 
-		List<ColecaoMoedaEntity> listaColecaoMoedas = colecaoEntity.getColecaoMoedaEntities();
+		List<ColecaoMoedaEntity> listaColecaoMoedas = 
+				colecaoEntity.getColecaoMoedaEntities();
 		if (listaColecaoMoedas == null) {
 			listaColecaoMoedas = new ArrayList<>();
 			colecaoEntity.setColecaoMoedaEntities(listaColecaoMoedas);

@@ -236,16 +236,16 @@ public class TelaNotaTransacao extends JFrame {
 
 	}
 
-	public void preencheLIstaColecao() {
+//	public void preencheLIstaColecao() {
 		NotaProdutoRepository colecaoRepository = new NotaProdutoRepository();
-		List<NotaProdutoEntity> lista = colecaoRepository.obterNotasProdutoVenda();
-		DefaultTableModel modeloTabela = (DefaultTableModel) table.getModel();
-		modeloTabela.setRowCount(0);
-		for (NotaProdutoEntity colecao : lista) {
-			modeloTabela.addRow(
-					new Object[] { colecao.getIdNotaProduto(), colecao.getValorUni() });
-		}
-	}
+	//	List<NotaProdutoEntity> lista = colecaoRepository.obterNotasProdutoVenda();
+	//	DefaultTableModel modeloTabela = (DefaultTableModel) table.getModel();
+	//	modeloTabela.setRowCount(0);
+	//	for (NotaProdutoEntity colecao : lista) {
+	//		modeloTabela.addRow(
+		//			new Object[] { colecao.getIdNotaProduto(), colecao.getValorUni() });
+	//	}
+	//}
 
 	public void preencheLIstaColecaoProd() {
 		NotaTransacaoRepository notaTransacaoRepository = new NotaTransacaoRepository();

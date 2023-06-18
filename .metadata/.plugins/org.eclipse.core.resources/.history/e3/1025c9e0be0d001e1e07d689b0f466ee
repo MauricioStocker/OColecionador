@@ -1,0 +1,13 @@
+package oColecionador.entity;
+
+import javax.persistence.EmbeddedId;
+
+import lombok.ToString;
+
+public class NotaProdutoColecaoEntity {
+	
+	@ToString.Exclude
+	@EmbeddedId
+	private NotaProdutoColecaoId notaProdutoColecaoId;
+
+}

@@ -6,6 +6,8 @@ import javax.persistence.*;
 
 import oColecionador.entity.BordasEntity;
 import oColecionador.entity.ColecaoEntity;
+import oColecionador.entity.ColecaoMoedaEntity;
+import oColecionador.entity.MoedaEntity;
 import oColecionador.entity.NotaProdutoEntity;
 import oColecionador.entity.UsuarioEntity;
 
@@ -103,16 +105,16 @@ public class NotaProdutoRepository {
 		}
 		return notaProdutoEntities;
 	}
-	
-	public List<NotaProdutoEntity> obterNotasProdutoVenda() {
-	    List<NotaProdutoEntity> notasProdutoVenda = null;
+	public List<ColecaoMoedaEntity> obterMoedasVenderDoUsuario(UsuarioEntity usuario) {
+	    List<ColecaoMoedaEntity> moedasVender = null;
 	    try {
-	        Query query = em.createQuery("SELECT n FROM NotaProdutoEntity n WHERE n.colecaoEntity.tipoTransacaoEntity.nome = 'VENDER'");
-	        notasProdutoVenda = query.getResultList();
+	        Query query = em.createQuery("SELECT cm FROM ColecaoMoedaEntity cm JOIN cm.colecaoEntity c WHERE c.usuarioEntity = :usuario AND cm.tipoTransacaoEntity.nome = 'VENDER'");
+	        query.setParameter("usuario", usuario);
+	        moedasVender = query.getResultList();
 	    } catch (Exception e) {
-	        System.out.println("Ocorreu um erro ao obter as notas de produto para venda");
+	        System.out.println("Ocorreu um erro ao obter as moedas do usuário logado com tipo VENDER");
 	    }
-	    return notasProdutoVenda;
+	    return moedasVender;
 	}
 
 	

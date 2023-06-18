@@ -32,6 +32,6 @@ public class ColecaoMoedaEntity {
 
 	@Override
 	public String toString() {
-		return  "" +getColecaoMoedaID().getMoedaEntity().getIdMoeda() ;
+		return  "" +getColecaoMoedaID().getMoedaEntity().getIdMoeda() + getTipoTransacaoEntity() + getColecaoMoedaID().getColecaoEntity().getUsuarioEntity();
 	}
 }

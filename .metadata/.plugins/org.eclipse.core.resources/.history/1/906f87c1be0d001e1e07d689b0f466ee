@@ -1,0 +1,5 @@
+package oColecionador.entity;
+
+public class NotaProdutoColecaoEntity {
+
+}

@@ -41,7 +41,6 @@ public class ColecaoEntity {
     
     @ToString.Exclude
     @OneToMany(mappedBy = "colecaoEntity", cascade = CascadeType.ALL)
-   
     private List<ColecaoMoedaEntity> colecaoMoedaEntities;
     
     @Override

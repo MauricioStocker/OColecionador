@@ -35,6 +35,7 @@ import oColecionador.repository.TipoRepository;
 import oColecionador.repository.UsuarioRepository;
 import oColecionador.service.ColecaoService;
 import oColecionador.service.MoedaService;
+import oColecionador.service.TipoService;
 import oColecionador.util.FormataData;
 
 import javax.swing.JScrollPane;
@@ -60,6 +61,8 @@ public class TelaCriarColecao extends JFrame {
 	private JComboBox cbAdicionaMoedaColecao;
 	private JTextField txtIdColecao;
 	private JTextField txtIdMoeda;
+	private JComboBox cbStatus;
+	private JComboBox cbMoeda;
 
 	// metodo de pegar o user do usuario logado, e guardado na jlabel
 	public void setUser(String user) {
@@ -125,15 +128,10 @@ public class TelaCriarColecao extends JFrame {
 		});
 		scrollPane.setViewportView(table);
 		table.setModel(new DefaultTableModel(
-			new Object[][] {
-				{"", null, null, null, null, null},
-				{null, null, null, null, null, null},
-				{null, null, null, null, null, null},
-			},
-			new String[] {
-				"ID COLE\u00C7\u00C3O", "ID MOEDA", "TITULO DA COLE\u00C7\u00C3O", "MOEDA", "Status", "Usuario"
-			}
-		));
+				new Object[][] { { "", null, null, null, null, null }, { null, null, null, null, null, null },
+						{ null, null, null, null, null, null }, },
+				new String[] { "ID COLE\u00C7\u00C3O", "ID MOEDA", "TITULO DA COLE\u00C7\u00C3O", "MOEDA", "Status",
+						"Usuario" }));
 		table.getColumnModel().getColumn(2).setPreferredWidth(200);
 		table.getColumnModel().getColumn(3).setPreferredWidth(200);
 		table.getColumnModel().getColumn(5).setPreferredWidth(139);
@@ -165,77 +163,21 @@ public class TelaCriarColecao extends JFrame {
 		JButton btnAtualizaTabela = new JButton("MOSTRAR MOEDAS DA COLEÇÃO");
 		btnAtualizaTabela.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ColecaoService colecaoService = new ColecaoService();
-				ColecaoEntity colecao = (ColecaoEntity) cbAdicionaMoedaColecao.getSelectedItem();
-				Long idColecao = colecao.getIdColecao(); // Obtém o ID da coleção selecionada
 
-				// Chama o método pesquisaPeloId para obter a coleção correspondente
-				ColecaoEntity colecaoSelecionada = colecaoService.presquisaIdColecao(idColecao);
-
-				DefaultTableModel modeloTabela = (DefaultTableModel) table.getModel();
-				modeloTabela.setRowCount(0);
-
-				if (colecaoSelecionada != null) {
-					List<ColecaoMoedaEntity> moedas = colecaoService
-							.presquisaMoedasColeção(colecaoSelecionada.getIdColecao());
-
-					for (ColecaoMoedaEntity moeda : moedas) {
-						modeloTabela.addRow(
-								new Object[] { colecaoSelecionada.getIdColecao(),moeda.getColecaoMoedaID().getMoedaEntity().getIdMoeda(), colecaoSelecionada.getTituloColecao(),
-										moeda.getColecaoMoedaID().getMoedaEntity().getTitulo(), moeda.getTipoTransacaoEntity().getNome(),
-										colecaoSelecionada.getUsuarioEntity().getNome() });
-					}
-				} else {
-					// A coleção não foi encontrada pelo ID
-				}
-
+				carregaColecaoUsuario();
 			}
 
 		});
 		btnAtualizaTabela.setBounds(1293, 21, 237, 21);
 		contentPane.add(btnAtualizaTabela);
 
-		JComboBox cbMoeda = new JComboBox();
-		cbMoeda.addAncestorListener(new AncestorListener() {
+		cbMoeda = new JComboBox();
 
-			public void ancestorAdded(AncestorEvent event) {
-				MoedaRepository mdao = new MoedaRepository();
-
-				for (MoedaEntity p : mdao.listar()) {
-
-					cbMoeda.addItem(p);
-
-				}
-			}
-
-			public void ancestorMoved(AncestorEvent event) {
-			}
-
-			public void ancestorRemoved(AncestorEvent event) {
-			}
-		});
 		cbMoeda.setBounds(10, 197, 768, 21);
 		contentPane.add(cbMoeda);
 
-		JComboBox cbStatus = new JComboBox();
-		cbStatus.addAncestorListener(new AncestorListener() {
-			public void ancestorAdded(AncestorEvent event) {
-				TipoRepository tdao = new TipoRepository();
+		cbStatus = new JComboBox();
 
-				for (TipoTransacaoEntity p : tdao.listar()) {
-
-					cbStatus.addItem(p);
-
-				}
-
-			}
-
-			public void ancestorMoved(AncestorEvent event) {
-			}
-
-			public void ancestorRemoved(AncestorEvent event) {
-			}
-		});
 		cbStatus.setBounds(10, 253, 170, 21);
 		contentPane.add(cbStatus);
 
@@ -253,41 +195,7 @@ public class TelaCriarColecao extends JFrame {
 		btnCriarColec.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				ColecaoService colecaoService = new ColecaoService();
-				ColecaoEntity colecaoEntity = new ColecaoEntity();
-				ColecaoMoedaId colecaoMoedaId = new ColecaoMoedaId();
-				ColecaoMoedaEntity colecaoMoedaEntity = new ColecaoMoedaEntity();
-				MoedaEntity moedaEntity = (MoedaEntity) cbMoeda.getSelectedItem();
-				UsuarioEntity usuarioEntity = (UsuarioEntity) cbUserLog.getSelectedItem();
-				TipoTransacaoEntity tipoTransacaoEntity = (TipoTransacaoEntity) cbStatus.getSelectedItem();
-				colecaoMoedaId.setColecaoEntity(colecaoEntity);
-				colecaoMoedaId.setMoedaEntity(moedaEntity);
-
-				colecaoMoedaEntity.setColecaoMoedaID(colecaoMoedaId);
-				colecaoMoedaEntity.setTipoTransacaoEntity(tipoTransacaoEntity);
-
-				List<ColecaoMoedaEntity> listaColecaoMoedas = colecaoEntity.getColecaoMoedaEntities();
-				if (listaColecaoMoedas == null) {
-					listaColecaoMoedas = new ArrayList<>();
-					colecaoEntity.setColecaoMoedaEntities(listaColecaoMoedas);
-				}
-
-				listaColecaoMoedas.add(colecaoMoedaEntity);
-				colecaoEntity.setTituloColecao(txtTitulo.getText());
-
-				colecaoEntity.setUsuarioEntity(usuarioEntity);
-				colecaoService.salvar(colecaoEntity);
-				JOptionPane.showMessageDialog(null, "MOEDA SALVA NA COLEÇÃO COM SUCESSO");
-
-				txtTitulo.setText("");
-				UsuarioEntity usuarioEntity1 = (UsuarioEntity) cbUserLog.getSelectedItem();
-				ColecaoService colecaoService1 = new ColecaoService();
-				cbAdicionaMoedaColecao.removeAllItems();
-				for (ColecaoEntity colecaoEntity1 : colecaoService1.listarColecaoLogado(usuarioEntity1)) {
-
-					cbAdicionaMoedaColecao.addItem(colecaoEntity1);
-
-				}
+				criarColecaoUsuario();
 
 			}
 
@@ -326,42 +234,14 @@ public class TelaCriarColecao extends JFrame {
 			public void ancestorRemoved(AncestorEvent event) {
 			}
 		});
+
 		cbAdicionaMoedaColecao.setBounds(10, 512, 768, 21);
 		contentPane.add(cbAdicionaMoedaColecao);
 
 		JButton btnAdcMoedaColecao = new JButton("ADICIONAR MOEDAS A COLEÇÃO");
 		btnAdcMoedaColecao.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ColecaoService colecaoService = new ColecaoService();
-				ColecaoMoedaId colecaoMoedaId = new ColecaoMoedaId();
-				ColecaoMoedaEntity colecaoMoedaEntity = new ColecaoMoedaEntity();
-				MoedaEntity moedaEntity = (MoedaEntity) cbMoeda.getSelectedItem();
-				UsuarioEntity usuarioEntity = (UsuarioEntity) cbUserLog.getSelectedItem();
-				ColecaoEntity colecaoId = (ColecaoEntity) cbAdicionaMoedaColecao.getSelectedItem();
-				TipoTransacaoEntity tipoTransacaoEntity = (TipoTransacaoEntity) cbStatus.getSelectedItem();
-
-				colecaoMoedaId.setColecaoEntity(colecaoId);
-				colecaoMoedaId.setMoedaEntity(moedaEntity);
-
-				colecaoMoedaEntity.setColecaoMoedaID(colecaoMoedaId);
-				colecaoMoedaEntity.setTipoTransacaoEntity(tipoTransacaoEntity);
-				// colecaoMoedaEntity.setUsuarioEntity(usuarioEntity);
-
-				ColecaoEntity colecaoEntity = colecaoService.presquisaId(colecaoId.getIdColecao());
-				if (colecaoEntity != null) {
-					List<ColecaoMoedaEntity> listaColecaoMoedas = colecaoEntity.getColecaoMoedaEntities();
-					if (listaColecaoMoedas == null) {
-						listaColecaoMoedas = new ArrayList<>();
-						colecaoEntity.setColecaoMoedaEntities(listaColecaoMoedas);
-					}
-
-					listaColecaoMoedas.add(colecaoMoedaEntity);
-
-					// colecaoEntity.setTipoTransacaoEntity(tipoTransacaoEntity);
-					colecaoEntity.setUsuarioEntity(usuarioEntity);
-					colecaoService.salvar(colecaoEntity);
-					JOptionPane.showMessageDialog(null, "MOEDA Atualizada NA COLEÇÃO COM SUCESSO");
-				}
+				adicionaMoedaColecao();
 
 			}
 		});
@@ -425,7 +305,7 @@ public class TelaCriarColecao extends JFrame {
 				removerMoedaDaColecao(idColecao, idMoeda);
 			}
 		});
-		btnRemoveMoeda.setBounds(1118, 82, 85, 21);
+		btnRemoveMoeda.setBounds(947, 79, 117, 21);
 		contentPane.add(btnRemoveMoeda);
 
 		JLabel lblNewLabel_7_1 = new JLabel("ID COLEÇÃO");
@@ -445,6 +325,9 @@ public class TelaCriarColecao extends JFrame {
 		contentPane.add(txtIdMoeda);
 		txtIdMoeda.setColumns(10);
 
+		carregaMoedas();
+		carregaStatus();
+
 	}
 
 	public void resgataValorTabelaColecao() {
@@ -460,9 +343,6 @@ public class TelaCriarColecao extends JFrame {
 
 			txtIdColecao.setText(idColecao);
 			txtIdMoeda.setText(idMoeda);
-			// Preenche os campos de texto com os valores recuperados
-			// cbIdColecao.setSelectedItem(idColecao);
-			// cbIdMoeda.setSelectedItem(idMoeda);
 
 		}
 	}
@@ -479,7 +359,126 @@ public class TelaCriarColecao extends JFrame {
 		// Chamar o serviço para remover a moeda da coleção
 		ColecaoService colecaoService = new ColecaoService();
 		colecaoService.removerMoedaDaColecao(idColecao, idMoeda);
+
 	}
-	
+
+	public void adicionaMoedaColecao() {
+
+		ColecaoService colecaoService = new ColecaoService();
+		ColecaoMoedaId colecaoMoedaId = new ColecaoMoedaId();
+		ColecaoMoedaEntity colecaoMoedaEntity = new ColecaoMoedaEntity();
+		MoedaEntity moedaEntity = (MoedaEntity) cbMoeda.getSelectedItem();
+		UsuarioEntity usuarioEntity = (UsuarioEntity) cbUserLog.getSelectedItem();
+		ColecaoEntity colecaoId = (ColecaoEntity) cbAdicionaMoedaColecao.getSelectedItem();
+		TipoTransacaoEntity tipoTransacaoEntity = (TipoTransacaoEntity) cbStatus.getSelectedItem();
+
+		colecaoMoedaId.setColecaoEntity(colecaoId);
+		colecaoMoedaId.setMoedaEntity(moedaEntity);
+
+		colecaoMoedaEntity.setColecaoMoedaID(colecaoMoedaId);
+		colecaoMoedaEntity.setTipoTransacaoEntity(tipoTransacaoEntity);
+
+		ColecaoEntity colecaoEntity = colecaoService.presquisaId(colecaoId.getIdColecao());
+		if (colecaoEntity != null) {
+			List<ColecaoMoedaEntity> listaColecaoMoedas = colecaoEntity.getColecaoMoedaEntities();
+			if (listaColecaoMoedas == null) {
+				listaColecaoMoedas = new ArrayList<>();
+				colecaoEntity.setColecaoMoedaEntities(listaColecaoMoedas);
+			}
+
+			listaColecaoMoedas.add(colecaoMoedaEntity);
+
+			colecaoEntity.setUsuarioEntity(usuarioEntity);
+			colecaoService.salvar(colecaoEntity);
+			JOptionPane.showMessageDialog(null, "MOEDA Atualizada NA COLEÇÃO COM SUCESSO");
+		}
+	}
+
+	public void criarColecaoUsuario() {
+
+		ColecaoService colecaoService = new ColecaoService();
+		ColecaoEntity colecaoEntity = new ColecaoEntity();
+		ColecaoMoedaId colecaoMoedaId = new ColecaoMoedaId();
+		ColecaoMoedaEntity colecaoMoedaEntity = new ColecaoMoedaEntity();
+		MoedaEntity moedaEntity = (MoedaEntity) cbMoeda.getSelectedItem();
+		UsuarioEntity usuarioEntity = (UsuarioEntity) cbUserLog.getSelectedItem();
+		TipoTransacaoEntity tipoTransacaoEntity = (TipoTransacaoEntity) cbStatus.getSelectedItem();
+		colecaoMoedaId.setColecaoEntity(colecaoEntity);
+		colecaoMoedaId.setMoedaEntity(moedaEntity);
+
+		colecaoMoedaEntity.setColecaoMoedaID(colecaoMoedaId);
+		colecaoMoedaEntity.setTipoTransacaoEntity(tipoTransacaoEntity);
+
+		List<ColecaoMoedaEntity> listaColecaoMoedas = colecaoEntity.getColecaoMoedaEntities();
+		if (listaColecaoMoedas == null) {
+			listaColecaoMoedas = new ArrayList<>();
+			colecaoEntity.setColecaoMoedaEntities(listaColecaoMoedas);
+		}
+
+		listaColecaoMoedas.add(colecaoMoedaEntity);
+		colecaoEntity.setTituloColecao(txtTitulo.getText());
+
+		colecaoEntity.setUsuarioEntity(usuarioEntity);
+		colecaoService.salvar(colecaoEntity);
+		JOptionPane.showMessageDialog(null, "MOEDA SALVA NA COLEÇÃO COM SUCESSO");
+
+		txtTitulo.setText("");
+		UsuarioEntity usuarioEntity1 = (UsuarioEntity) cbUserLog.getSelectedItem();
+		ColecaoService colecaoService1 = new ColecaoService();
+		cbAdicionaMoedaColecao.removeAllItems();
+		for (ColecaoEntity colecaoEntity1 : colecaoService1.listarColecaoLogado(usuarioEntity1)) {
+
+			cbAdicionaMoedaColecao.addItem(colecaoEntity1);
+
+		}
+	}
+
+	public void carregaMoedas() {
+
+		MoedaService moedaService = new MoedaService();
+
+		for (MoedaEntity moedaEntity : moedaService.listar()) {
+
+			cbMoeda.addItem(moedaEntity);
+
+		}
+	}
+
+	public void carregaStatus() {
+
+		TipoService tipoService = new TipoService();
+
+		for (TipoTransacaoEntity tipoTransacaoEntity : tipoService.listar()) {
+
+			cbStatus.addItem(tipoTransacaoEntity);
+
+		}
+	}
+
+	public void carregaColecaoUsuario() {
+
+		ColecaoService colecaoService = new ColecaoService();
+		ColecaoEntity colecao = (ColecaoEntity) cbAdicionaMoedaColecao.getSelectedItem();
+		Long idColecao = colecao.getIdColecao(); // Obtém o ID da coleção selecionada
+
+		// Chama o método pesquisaPeloId para obter a coleção correspondente
+		ColecaoEntity colecaoSelecionada = colecaoService.presquisaIdColecao(idColecao);
+
+		DefaultTableModel modeloTabela = (DefaultTableModel) table.getModel();
+		modeloTabela.setRowCount(0);
+
+		if (colecaoSelecionada != null) {
+			List<ColecaoMoedaEntity> moedas = colecaoService.presquisaMoedasColeção(colecaoSelecionada.getIdColecao());
+
+			for (ColecaoMoedaEntity moeda : moedas) {
+				modeloTabela.addRow(new Object[] { colecaoSelecionada.getIdColecao(),
+						moeda.getColecaoMoedaID().getMoedaEntity().getIdMoeda(), colecaoSelecionada.getTituloColecao(),
+						moeda.getColecaoMoedaID().getMoedaEntity().getTitulo(),
+						moeda.getTipoTransacaoEntity().getNome(), colecaoSelecionada.getUsuarioEntity().getNome() });
+			}
+		} else {
+
+		}
+	}
 
 }

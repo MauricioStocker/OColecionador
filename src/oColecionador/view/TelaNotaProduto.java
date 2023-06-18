@@ -147,7 +147,7 @@ public class TelaNotaProduto extends JFrame {
 		JComboBox cbMoeda = new JComboBox();
 		cbMoeda.setBounds(10, 82, 829, 21);
 		contentPane.add(cbMoeda);
-		
+
 		JLabel lblNewLabel = new JLabel("QUANTIDADE");
 		lblNewLabel.setBounds(10, 125, 156, 13);
 		contentPane.add(lblNewLabel);
@@ -160,7 +160,6 @@ public class TelaNotaProduto extends JFrame {
 		JButton btnCriarColec = new JButton("Salvar Nota do produto");
 		btnCriarColec.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			
 
 			}
 		});
@@ -183,8 +182,6 @@ public class TelaNotaProduto extends JFrame {
 		txtQuant.setBounds(205, 148, 96, 19);
 		contentPane.add(txtQuant);
 		txtQuant.setColumns(10);
-
-	
 
 	}
 
